@@ -2,8 +2,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>at.fhhagenberg.sqe.esd.ws20</groupId>
-    <artifactId>javafx-base</artifactId>
-    <version>ecc-team-f</version>
+    <artifactId>ecc-team-f</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
