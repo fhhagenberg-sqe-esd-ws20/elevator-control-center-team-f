@@ -206,4 +206,38 @@ public class MockElevatorTests {
 	void testFloorHeightGet() throws Exception {
 		assertEquals(FLOOR_HEIGHT, mockElevator.getFloorHeight());
 	}
+	
+	@Test
+	void testAccGetSet() throws Exception
+	{
+		assertEquals(MockElevator.ELEVATOR_ACCELERATION_MOCK_VALUE,mockElevator.getElevatorAccel(ELEVATOR_0));
+		assertEquals(MockElevator.ELEVATOR_ACCELERATION_MOCK_VALUE,mockElevator.getElevatorAccel(ELEVATOR_1));
+		mockElevator.getElevators().get(ELEVATOR_0).setAcceleration(-10);
+		mockElevator.getElevators().get(ELEVATOR_1).setAcceleration(-10);
+		assertEquals(-10,mockElevator.getElevatorAccel(ELEVATOR_0));
+		assertEquals(-10,mockElevator.getElevatorAccel(ELEVATOR_1));
+	}
+	
+	@Test
+	void testWeighGetSet() throws Exception
+	{
+		assertEquals(MockElevator.ELEVATOR_WEIGHT_MOCK_VALUE,mockElevator.getElevatorWeight(ELEVATOR_0));
+		assertEquals(MockElevator.ELEVATOR_WEIGHT_MOCK_VALUE,mockElevator.getElevatorWeight(ELEVATOR_1));
+		mockElevator.getElevators().get(ELEVATOR_0).setWeight(100);
+		mockElevator.getElevators().get(ELEVATOR_1).setWeight(100);
+		assertEquals(100,mockElevator.getElevatorWeight(ELEVATOR_0));
+		assertEquals(100,mockElevator.getElevatorWeight(ELEVATOR_1));
+	}
+	
+	@Test
+	void testSpeedGetSet() throws Exception
+	{
+		assertEquals(MockElevator.ELEVATOR_SPEED_MOCK_VALUE,mockElevator.getElevatorSpeed(ELEVATOR_0));
+		assertEquals(MockElevator.ELEVATOR_SPEED_MOCK_VALUE,mockElevator.getElevatorSpeed(ELEVATOR_1));
+		mockElevator.getElevators().get(ELEVATOR_0).setSpeed(100);
+		mockElevator.getElevators().get(ELEVATOR_1).setSpeed(100);
+		assertEquals(100,mockElevator.getElevatorSpeed(ELEVATOR_0));
+		assertEquals(100,mockElevator.getElevatorSpeed(ELEVATOR_1));
+	}
+
 }

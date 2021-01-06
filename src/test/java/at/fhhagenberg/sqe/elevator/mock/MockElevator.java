@@ -10,7 +10,7 @@ import at.fhhagenberg.sqe.elevator.mock.MockFloorState;
 import sqelevator.IElevator;
 
 public class MockElevator implements IElevator {
-    public static final int CLOCK_TICK_MOCK_VALUE = 42;
+    public static final int CLOCK_TICK_MOCK_VALUE = 10;
     public static final int ELEVATOR_ACCELERATION_MOCK_VALUE = 10;
     public static final int ELEVATOR_SPEED_MOCK_VALUE = 20;
     public static final int ELEVATOR_WEIGHT_MOCK_VALUE = 100;
@@ -181,7 +181,6 @@ public class MockElevator implements IElevator {
         checkFloorNumber(target);
 
         elevators.get(elevatorNumber).setTargetFloor(target);
-        //sleep()
         elevators.get(elevatorNumber).setCurrentFloor(target);
     }
 
@@ -192,13 +191,13 @@ public class MockElevator implements IElevator {
 
     private void checkElevatorNumber(int elevatorNumber) throws MockElevatorException {
         if (elevatorNumber < 0 || elevatorNumber >= numElevators) {
-            throw new MockElevatorException("MockElevatorState number is invalid!");
+            throw new MockElevatorException("Elevator: MockElevatorState number is invalid!");
         }
     }
 
     private void checkFloorNumber(int floorNumber) throws MockElevatorException {
         if (floorNumber < 0 || floorNumber >= numFloors) {
-            throw new MockElevatorException("MockFloorState number is invalid!");
+            throw new MockElevatorException("Elevator: MockFloorState number is invalid!");
         }
     }
 
@@ -206,7 +205,7 @@ public class MockElevator implements IElevator {
         if (direction != IElevator.ELEVATOR_DIRECTION_DOWN &&
                 direction != IElevator.ELEVATOR_DIRECTION_UNCOMMITTED &&
                 direction != IElevator.ELEVATOR_DIRECTION_UP) {
-            throw new MockElevatorException("Direction number is invalid!");
+            throw new MockElevatorException("Elevator: Direction number is invalid!");
         }
     }
 

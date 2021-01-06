@@ -119,7 +119,7 @@ public class MockElevatorState {
 
     private void checkFloorNumber(int floorNumber) throws MockElevatorException {
         if (floorNumber < 0 || floorNumber >= numFloors) {
-            throw new MockElevatorException("MockFloorState number is invalid!");
+            throw new MockElevatorException("Elevator: MockFloorState number is invalid!");
         }
     }
 
@@ -128,7 +128,7 @@ public class MockElevatorState {
                 doorStatus != IElevator.ELEVATOR_DOORS_CLOSED &&
                 doorStatus != IElevator.ELEVATOR_DOORS_OPENING &&
                 doorStatus != IElevator.ELEVATOR_DOORS_CLOSING) {
-            throw new MockElevatorException("Door status is invalid!");
+            throw new MockElevatorException("Elevator: Door status is invalid!");
         }
     }
 }
