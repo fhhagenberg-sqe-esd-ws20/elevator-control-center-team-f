@@ -83,7 +83,7 @@ public class ElevatorGUI implements IElevatorGUI {
 		full.add(constructElevatorSelectionPane(), 1, 1);
 		full.add(constructErrorPane(), 2, 1);
 
-		m_Scene = new Scene(full, 550, 350);
+		m_Scene = new Scene(full, 850, 550);
 
 	}
 	
@@ -133,7 +133,7 @@ public class ElevatorGUI implements IElevatorGUI {
 			// labels holding values
 			Label lb_pl_cntnd = new Label(Integer.toString(e.getWeight()));
 			lb_pl_cntnd.setStyle(m_LabelStyle);
-			lb_pl_cntnd.setId("m_lbStatsPayload_" + e.getNum());
+			lb_pl_cntnd.setId("lbStatsWeight_" + e.getNum());
 			e.addWeightPropertyChangeListener(pr -> lb_pl_cntnd.setText(Integer.toString((int)pr.getNewValue())));
 			stats.add(lb_pl_cntnd, 1, 1);
 
@@ -216,9 +216,9 @@ public class ElevatorGUI implements IElevatorGUI {
 			component.setVisible(false);
 		m_StatsPane.getChildren().get(i).setVisible(true);
 
-		for (Node component : m_ElevatorPane.getChildren())
-			component.setVisible(false);
-		m_ElevatorPane.getChildren().get(i).setVisible(true);
+		//for (Node component : m_ElevatorPane.getChildren())
+		//	component.setVisible(false);
+		//m_ElevatorPane.getChildren().get(i).setVisible(true);
 
 		for (Node component : m_ManualModePane.getChildren())
 			component.setVisible(false);
