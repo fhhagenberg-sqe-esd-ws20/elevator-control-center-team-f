@@ -194,5 +194,10 @@ public class ElevatorControllerImpl implements IElevatorController {
             m_BuildingModel.setConnectionState(false);
         }
     }
+
+    @Override
+    public IBuildingModel getBuilding(){
+        return m_BuildingModel;
+    }
     
 }

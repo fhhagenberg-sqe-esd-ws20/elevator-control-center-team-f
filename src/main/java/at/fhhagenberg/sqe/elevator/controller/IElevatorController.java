@@ -3,6 +3,8 @@
  */
 package at.fhhagenberg.sqe.elevator.controller;
 
+import at.fhhagenberg.sqe.elevator.model.IBuildingModel;
+
 /**
  * Controller interface for sending commands to the elevator(s).
  */
@@ -34,4 +36,9 @@ public interface IElevatorController {
      * Try to restore a failsafe state after loosing connection.
      */
     public void maintainConnection();
+
+    /**
+     * @return Building which is controlled by this controller.
+     */
+    public IBuildingModel getBuilding();
 }

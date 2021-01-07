@@ -18,8 +18,10 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
-import at.fhhagenberg.sqe.elevator.wrappers.IElevatorWrapper;
-
+import at.fhhagenberg.sqe.elevator.controller.IElevatorController;
+import at.fhhagenberg.sqe.elevator.model.IBuildingModel;
+import at.fhhagenberg.sqe.elevator.model.IElevatorModel;
+import at.fhhagenberg.sqe.elevator.model.IFloorModel;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Border;
@@ -39,9 +41,9 @@ import javafx.scene.paint.Color;
 /**
  * This Class represents the graphical user interface for the Elevator control panel.
  */
-public class ElevatorGUI {
+public class ElevatorGUI implements IElevatorGUI {
 
-	private IElevatorWrapper m_Elevator;
+	private IElevatorController m_Controller;
 	private int m_SelectedElevator = 0;
 
 	private TextArea m_taErrorMessages = new TextArea();
@@ -50,28 +52,9 @@ public class ElevatorGUI {
 	private String m_LabelStyle = "-fx-font: bold 12 arial;";
 
 
-	// stats elements
-	private ArrayList<Label> m_lbStatsPayload = new ArrayList<Label>();
-	private ArrayList<Label> m_lbStatsSpeed = new ArrayList<Label>();
-	private ArrayList<Label> m_lbStatsTarget = new ArrayList<Label>();
-	private ArrayList<Label> m_lbStatsDoor = new ArrayList<Label>();
-	private ArrayList<Label> m_lbStatsDir= new ArrayList<Label>();
-	private ArrayList<Label> m_lbStatsMode = new ArrayList<Label>();
-	private ArrayList<Label> m_lbStatsCap = new ArrayList<Label>();
-	private ArrayList<Label> m_lbStatsMaxWeight = new ArrayList<Label>();
 	private StackPane m_StatsPane;
-
-	// elevator elements
-	private ArrayList<Button> m_AutomaticModeButtons = new ArrayList<Button>();
-	private ArrayList<Button> m_ManualModeButtons = new ArrayList<Button>();
-	private ArrayList<ArrayList<Button>> m_FloorButtons = new ArrayList<ArrayList<Button>>();
-
 	private StackPane m_ElevatorPane;
-
-	// manual mode elements
-	private ArrayList<ComboBox> m_NavigateFloor = new ArrayList<ComboBox>();
 	private StackPane m_ManualModePane;
-
 	private Scene m_Scene;
 
 	// elevator selector
@@ -80,10 +63,10 @@ public class ElevatorGUI {
 	
 	/**
 	 * CTor
-	 * @param e Elevator to be controlled.
+	 * @param e Elevator controller.
 	 */
-	public ElevatorGUI(IElevatorWrapper e) throws RemoteException {
-		m_Elevator = e;
+	public ElevatorGUI(IElevatorController e) {
+		m_Controller = e;
 
 		m_taErrorMessages.setId("m_taErrorMessages");
 
@@ -100,19 +83,18 @@ public class ElevatorGUI {
 		full.add(constructElevatorSelectionPane(), 1, 1);
 		full.add(constructErrorPane(), 2, 1);
 
-		m_Scene = new Scene(full, 250, 250);
+		m_Scene = new Scene(full, 550, 350);
 
 	}
 	
 	/**
 	 * @return The status section of the control panel.
-	 * @throws RemoteException
 	 */
-	private StackPane constructStatusPane() throws RemoteException {
+	private StackPane constructStatusPane() {
 
 		StackPane stacked = new StackPane();
 
-		for(int i = 0; i < m_Elevator.getElevatorNum(); i++){
+		for(IElevatorModel e : m_Controller.getBuilding().getElevators()){
 			GridPane stats = new GridPane();
 			stats.setPadding(new Insets(10, 10, 10, 10));
 			stats.setVgap(10); 
@@ -144,68 +126,76 @@ public class ElevatorGUI {
 			lb_dir.setStyle(m_LabelStyle);
 			stats.add(lb_dir, 0, 5);
 
-			Label lb_mode = new Label("Mode:");
-			lb_mode.setStyle(m_LabelStyle);
-			stats.add(lb_mode, 0, 6);
-
 			Label lb_cpcty = new Label("Capacity [pers]:");
 			lb_cpcty.setStyle(m_LabelStyle);
-			stats.add(lb_cpcty, 0, 7);
-
-			Label lb_maxWeight = new Label("Max Weight[lbs]:");
-			lb_maxWeight.setStyle(m_LabelStyle);
-			stats.add(lb_maxWeight, 0, 8);
+			stats.add(lb_cpcty, 0, 6);
 
 			// labels holding values
-			Label lb_pl_cntnd = new Label("Payload [lbs]:" + i);
+			Label lb_pl_cntnd = new Label(Integer.toString(e.getWeight()));
 			lb_pl_cntnd.setStyle(m_LabelStyle);
-			lb_pl_cntnd.setId("m_lbStatsPayload_" + i);
-			m_lbStatsPayload.add(lb_pl_cntnd);
+			lb_pl_cntnd.setId("m_lbStatsPayload_" + e.getNum());
+			e.addWeightPropertyChangeListener(pr -> lb_pl_cntnd.setText(Integer.toString((int)pr.getNewValue())));
 			stats.add(lb_pl_cntnd, 1, 1);
 
-			Label lb_speed_cntnd  = new Label("Speed [m/s]:");
+			Label lb_speed_cntnd  = new Label(Integer.toString(e.getSpeed()));
 			lb_speed_cntnd.setStyle(m_LabelStyle);
-			lb_speed_cntnd.setId("m_lbStatsSpeed_" + i);
-			m_lbStatsSpeed.add(lb_speed_cntnd);
+			lb_speed_cntnd.setId("lbStatsSpeed_" + e.getNum());
+			e.addSpeedPropertyChangeListener(pr -> lb_speed_cntnd.setText(Integer.toString((int)pr.getNewValue())));
 			stats.add(lb_speed_cntnd , 1, 2);
 
-			Label lb_target_cntnd  = new Label("Target:");
+			Label lb_target_cntnd  = new Label(Integer.toString(e.getTarget()));
 			lb_target_cntnd.setStyle(m_LabelStyle);
-			lb_target_cntnd.setId("m_lbStatsTarget_" + i);
-			m_lbStatsTarget.add(lb_target_cntnd);
+			lb_target_cntnd.setId("lbStatsTarget_" + e.getNum());
+			e.addTargetPropertyChangeListener(pr -> lb_target_cntnd.setText(Integer.toString((int)pr.getNewValue())));
 			stats.add(lb_target_cntnd , 1, 3);
 
-			Label lb_doors_cntnd  = new Label("Door:");
+			IElevatorModel.DoorStatus s = e.getDoorStatus();
+			String doorStat = "";
+			if(s == IElevatorModel.DoorStatus.CLOSED) doorStat = "Closed";
+			else if(s == IElevatorModel.DoorStatus.CLOSING) doorStat = "Closing";
+			else if(s == IElevatorModel.DoorStatus.OPEN) doorStat = "Open";
+			else if(s == IElevatorModel.DoorStatus.OPENING) doorStat = "Opening";
+			Label lb_doors_cntnd  = new Label(doorStat);
 			lb_doors_cntnd.setStyle(m_LabelStyle);
-			lb_doors_cntnd.setId("m_lbStatsDoor_" + i);
-			m_lbStatsDoor.add(lb_doors_cntnd);
+			lb_doors_cntnd.setId("lbStatsDoor_" + e.getNum());
+			e.addDoorStatusPropertyChangeListener(pr -> {
+					IElevatorModel.DoorStatus st = (IElevatorModel.DoorStatus)pr.getNewValue();
+					String ds = "";
+					if(st == IElevatorModel.DoorStatus.CLOSED) ds = "Closed";
+					else if(st == IElevatorModel.DoorStatus.CLOSING) ds = "Closing";
+					else if(st == IElevatorModel.DoorStatus.OPEN) ds = "Open";
+					else if(st== IElevatorModel.DoorStatus.OPENING) ds = "Opening";
+					lb_doors_cntnd.setText(ds);
+				}	
+			);
 			stats.add(lb_doors_cntnd , 1, 4);
 
-			Label lb_dir_cntnd  = new Label("Direction:");
+			IElevatorModel.CommitedDirection c = e.getCommitedDirection();
+			String dirStat = "";
+			if(c == IElevatorModel.CommitedDirection.UP) dirStat = "Up";
+			else if(c == IElevatorModel.CommitedDirection.DOWN) dirStat = "Down";
+			else if(c == IElevatorModel.CommitedDirection.UNCOMMITED) dirStat = "Uncommited";
+			Label lb_dir_cntnd  = new Label(dirStat);
 			lb_dir_cntnd.setStyle(m_LabelStyle);
-			lb_dir_cntnd.setId("m_lbStatsDir_" + i);
-			m_lbStatsDir.add(lb_dir_cntnd);
+			lb_dir_cntnd.setId("lbStatsDir_" + e.getNum());
+			e.addCommitedDirectionPropertyChangeListener(pr -> {
+					IElevatorModel.CommitedDirection cmD = (IElevatorModel.CommitedDirection)pr.getNewValue();
+					String drs = "";
+					if(cmD == IElevatorModel.CommitedDirection.UP) drs = "Up";
+					else if(cmD == IElevatorModel.CommitedDirection.DOWN) drs = "Down";
+					else if(cmD == IElevatorModel.CommitedDirection.UNCOMMITED) drs = "Uncommited";
+					lb_dir_cntnd.setText(drs);
+				}	
+			);
 			stats.add(lb_dir_cntnd , 1, 5);
 
-			Label lb_mode_cntnd  = new Label("Mode:");
-			lb_mode_cntnd.setStyle(m_LabelStyle);
-			lb_mode_cntnd.setId("m_lbStatsMode_" + i);
-			m_lbStatsMode.add(lb_mode_cntnd);
-			stats.add(lb_mode_cntnd , 1, 6);
 
-			Label lb_cpcty_cntnd  = new Label("Capacity [pers]:");
+			Label lb_cpcty_cntnd  = new Label(Integer.toString(e.getCapacity())); // does never change
 			lb_cpcty_cntnd.setStyle(m_LabelStyle);
-			lb_cpcty_cntnd.setId("m_lbStatsCap_" + i);
-			m_lbStatsCap.add(lb_cpcty_cntnd);
-			stats.add(lb_cpcty_cntnd, 1, 7);
+			lb_cpcty_cntnd.setId("lbStatsCap_" + e.getNum());
+			stats.add(lb_cpcty_cntnd, 1, 6);
 
-			Label lb_maxWeight_cntnd  = new Label("Max Weight[lbs]:");
-			lb_maxWeight_cntnd.setStyle(m_LabelStyle);
-			lb_maxWeight_cntnd.setId("m_lbStatsMaxWeight_" + i);
-			m_lbStatsMaxWeight.add(lb_maxWeight_cntnd);
-			stats.add(lb_maxWeight_cntnd, 1, 8);
-
-			stats.setVisible(i == 0);
+			stats.setVisible(e.getNum() == 0);
 
 			stacked.getChildren().add(stats);
 		}
@@ -217,10 +207,9 @@ public class ElevatorGUI {
 	/**
 	 * Configure which elevator to show.
 	 * @param i Zero based index of elevator to show.
-	 * @throws RemoteException
 	 */
-	public void showElevator(int i) throws RemoteException {
-		if(i > m_Elevator.getElevatorNum() || i < 0)
+	private void showElevator(int i) {
+		if(i > m_Controller.getBuilding().getElevators().size() || i < 0)
 			return;
 
 		for (Node component : m_StatsPane.getChildren())
@@ -240,12 +229,11 @@ public class ElevatorGUI {
 
 	/**
 	 * @return The manual mode section of the control panel.
-	 * @throws RemoteException 
 	 */
-	private StackPane constructManualModePane() throws RemoteException {
+	private StackPane constructManualModePane() {
 		StackPane stacked = new StackPane();
 
-		for(int i = 0; i < m_Elevator.getElevatorNum(); i++){
+		for(IElevatorModel e : m_Controller.getBuilding().getElevators()){
 			GridPane mmode = new GridPane();
 			mmode.setPadding(new Insets(10, 10, 10, 10));
 			mmode.setVgap(10); 
@@ -262,22 +250,18 @@ public class ElevatorGUI {
 			mmode.add(lb_nf, 0, 1);
 
 			ComboBox cb_floors = new ComboBox();
-			cb_floors.setId("m_NavigateFloor_" + i);
-			for(int j = 0; j < m_Elevator.getFloorNum(); j++){
-				cb_floors.getItems().add(j);
+			cb_floors.setId("cbNavigateFloor_" + e.getNum());
+
+			for(IFloorModel f : m_Controller.getBuilding().getFloors()){
+				cb_floors.getItems().add(f.getNum());
 			}
 
 			cb_floors.getSelectionModel().selectedItemProperty().addListener( (options, oldValue, newValue) -> {
-				try{
-					m_Elevator.setTarget(m_SelectedElevator, (int)newValue);
-				} catch(RemoteException e){}
+					m_Controller.setTarget(m_SelectedElevator, (int)newValue);
 			});
 			 
-			m_NavigateFloor.add(cb_floors);
-
 			mmode.add(cb_floors, 0, 2);
-			mmode.setVisible(i == 0);
-
+			mmode.setVisible(e.getNum() == 0);
 			stacked.getChildren().add(mmode);
 		}
 
@@ -286,11 +270,11 @@ public class ElevatorGUI {
 	
 	/**
 	 * @return The elevator section of the control panel.
-	 * @throws RemoteException
 	 */
-	private StackPane constructElevatorPane() throws RemoteException {
+	private StackPane constructElevatorPane() {
 		StackPane stack = new StackPane();
 
+		/*
 		for(int i = 0; i < m_Elevator.getElevatorNum(); i++){
 			GridPane elev = new GridPane();
 			elev.setPadding(new Insets(10, 10, 10, 10));
@@ -317,18 +301,17 @@ public class ElevatorGUI {
 
 			/*Slider slider = new Slider();
 			slider.setOrientation(Orientation.VERTICAL);
-			elev.add(slider, 1, 0, 1, m_Elevator.getFloorNum()+1);*/
-			stack.getChildren().add(elev);
-		}
+			elev.add(slider, 1, 0, 1, m_Elevator.getFloorNum()+1);
+			stack.getChildren().add(elev); 
+		}*/
 
 		return stack;
 	}
 
 	/**
 	 * @return The elevator section of the control panel.
-	 * @throws RemoteException
 	 */
-	private GridPane constructElevatorSelectionPane() throws RemoteException {
+	private GridPane constructElevatorSelectionPane() {
 		GridPane sel = new GridPane();
 		sel.setPadding(new Insets(10, 10, 10, 10));
 		sel.setVgap(10); 
@@ -336,14 +319,14 @@ public class ElevatorGUI {
 		sel.setBorder(new Border(new BorderStroke(Color.GRAY, BorderStrokeStyle.SOLID, new CornerRadii(0), new BorderWidths(3))));
 
 		final ToggleGroup group = new ToggleGroup();
-		for(int i = 0; i < m_Elevator.getElevatorNum(); i++){
+		for(IElevatorModel e : m_Controller.getBuilding().getElevators()){
 			RadioButton rb = new RadioButton();
-			rb.setSelected(i == 0);
+			rb.setSelected(e.getNum() == 0);
 			rb.setToggleGroup(group);
-			rb.setText("Elevator " + i);
-			rb.setId("m_rbSelectElevator_" + i);
-			rb.setUserData(i);
-			sel.add(rb, 0, i);
+			rb.setText("Elevator " + e.getNum());
+			rb.setId("m_rbSelectElevator_" + e.getNum());
+			rb.setUserData(e.getNum());
+			sel.add(rb, 0, e.getNum());
 			m_rbSelectElevator.add(rb);
 		}
 
@@ -352,10 +335,7 @@ public class ElevatorGUI {
 			public void changed(ObservableValue<? extends Toggle> ov,
 				Toggle old_toggle, Toggle new_toggle) {
 					if (group.getSelectedToggle() != null) {
-						try{
 							showElevator((int)group.getSelectedToggle().getUserData());
-						}
-						catch(RemoteException e){}
 					}                
 				}
 		});
@@ -384,12 +364,9 @@ public class ElevatorGUI {
 		return err;
 	}
 	
-	/**
-	 * @return The JavaFX scene to be drawn.
-	 */
-	public Scene getScene() throws RemoteException {
-    	return m_Scene;
+	@Override
+	public Scene getScene() {
+		return m_Scene;
 	}
-	
 	
 }

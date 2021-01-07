@@ -1,11 +1,10 @@
 package at.fhhagenberg.sqe.elevator.gui;
 
+import javafx.scene.Scene;
+
 public interface IElevatorGUI {
-    
-    /**
-	 * Update the position of a given elevator.
-	 * @param elevatorNum elevator index (zero based)
-	 * @param pos New position
+	/**
+	 * @return The JavaFX scene to be drawn.
 	 */
-	public void updateElevatorPosition(int elevatorNum, int pos);
+	public Scene getScene();
 }
