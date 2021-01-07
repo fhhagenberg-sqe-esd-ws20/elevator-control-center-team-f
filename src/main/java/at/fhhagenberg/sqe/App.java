@@ -7,6 +7,12 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import at.fhhagenberg.sqe.elevator.mock.MockElevator;
+
+import java.rmi.RemoteException;
+
+import at.fhhagenberg.sqe.elevator.gui.ElevatorGUI;
+
 /**
  * JavaFX App
  */
@@ -14,19 +20,16 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
-        var javaVersion = SystemInfo.javaVersion();
-        var javafxVersion = SystemInfo.javafxVersion();
+        
+        try {
+            MockElevator ele = new MockElevator(2,3,5,10);
+            ElevatorGUI gui = new ElevatorGUI(ele);
+            stage.setScene(gui.getScene());
+            stage.show();
+        }
+        catch(RemoteException e){
 
-        var label = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-        var layout = new BorderPane(label);
-        var button = new Button("Click me!");
-        button.setOnAction(evt -> button.setText("Clicked!"));
-        layout.setBottom(button);
-
-        var scene = new Scene(layout, 640, 480);
-
-        stage.setScene(scene);
-        stage.show();
+        }
     }
 
     public static void main(String[] args) {
