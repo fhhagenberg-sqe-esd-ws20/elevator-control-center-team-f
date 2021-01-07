@@ -1,6 +1,6 @@
 package at.fhhagenberg.sqe.elevator.gui;
 
-public interface IGUI {
+public interface IElevatorGUI {
     
     /**
 	 * Update the position of a given elevator.
