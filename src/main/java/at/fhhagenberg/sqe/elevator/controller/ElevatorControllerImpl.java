@@ -7,15 +7,12 @@ import java.rmi.RemoteException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.lang.model.util.ElementScanner6;
-
 import at.fhhagenberg.sqe.elevator.model.IBuildingModel;
 import at.fhhagenberg.sqe.elevator.model.IElevatorModel;
 import at.fhhagenberg.sqe.elevator.model.IFloorModel;
 import at.fhhagenberg.sqe.elevator.model.IBuildingModel.BuildingInvalidClockTickException;
 import at.fhhagenberg.sqe.elevator.model.IBuildingModel.BuildingInvalidFloorHeightException;
 import at.fhhagenberg.sqe.elevator.model.IElevatorModel.ElevatorInvalidCapacityException;
-import at.fhhagenberg.sqe.elevator.model.IElevatorModel.ElevatorInvalidFloorPositionException;
 import at.fhhagenberg.sqe.elevator.model.IElevatorModel.ElevatorInvalidNumberException;
 import at.fhhagenberg.sqe.elevator.model.IFloorModel.FloorInvalidFloorException;
 import at.fhhagenberg.sqe.elevator.wrappers.IElevatorWrapper;
@@ -113,7 +110,6 @@ public class ElevatorControllerImpl implements IElevatorController {
         }
 
         try{
-
             // update elevators
             for(IElevatorModel e : m_BuildingModel.getElevators()){
                 e.setAccel(m_Elevator.getElevatorAccel(e.getNum()));
@@ -166,5 +162,37 @@ public class ElevatorControllerImpl implements IElevatorController {
         }
     }
 
+    @Override
+    public void setCommittedDirection(int elevatorNumber, int direction){
+        try{
+            m_Elevator.setCommittedDirection(elevatorNumber, direction);
+        }
+        catch(RemoteException re){
+            re.printStackTrace();
+            m_BuildingModel.setConnectionState(false);
+        }
+    }
+
+    @Override
+    public void setServicesFloors(int elevatorNumber, int floor, boolean service){
+        try{
+            m_Elevator.setServicesFloors(elevatorNumber, floor, service);
+        }
+        catch(RemoteException re){
+            re.printStackTrace();
+            m_BuildingModel.setConnectionState(false);
+        }
+    }
+
+    @Override
+    public void setTarget(int elevatorNumber, int target){
+        try{
+            m_Elevator.setTarget(elevatorNumber, target);
+        }
+        catch(RemoteException re){
+            re.printStackTrace();
+            m_BuildingModel.setConnectionState(false);
+        }
+    }
     
 }
