@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
-import at.fhhagenberg.sqe.SystemInfo;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,8 +16,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
-import sqelevator.IElevator;
+import at.fhhagenberg.sqe.elevator.wrappers.IElevatorWrapper;
 
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
@@ -33,7 +33,7 @@ import javafx.scene.layout.StackPane;
 import javafx.geometry.HPos;
 
 import javafx.geometry.Insets;
-
+import javafx.geometry.Orientation;
 import javafx.scene.paint.Color;
 
 /**
@@ -41,7 +41,7 @@ import javafx.scene.paint.Color;
  */
 public class ElevatorGUI {
 
-	private IElevator m_Elevator;
+	private IElevatorWrapper m_Elevator;
 	private int m_SelectedElevator = 0;
 
 	private TextArea m_taErrorMessages = new TextArea();
@@ -62,6 +62,10 @@ public class ElevatorGUI {
 	private StackPane m_StatsPane;
 
 	// elevator elements
+	private ArrayList<Button> m_AutomaticModeButtons = new ArrayList<Button>();
+	private ArrayList<Button> m_ManualModeButtons = new ArrayList<Button>();
+	private ArrayList<ArrayList<Button>> m_FloorButtons = new ArrayList<ArrayList<Button>>();
+
 	private StackPane m_ElevatorPane;
 
 	// manual mode elements
@@ -78,16 +82,25 @@ public class ElevatorGUI {
 	 * CTor
 	 * @param e Elevator to be controlled.
 	 */
-	public ElevatorGUI(IElevator e) throws RemoteException {
+	public ElevatorGUI(IElevatorWrapper e) throws RemoteException {
 		m_Elevator = e;
 
 		m_taErrorMessages.setId("m_taErrorMessages");
+
+
+		GridPane full = new GridPane();
 
 		m_StatsPane = constructStatusPane();
 		m_ManualModePane = constructManualModePane();
 		m_ElevatorPane = constructElevatorPane();
 
-		m_Scene = new Scene(m_ManualModePane, 250, 250);
+		full.add(m_ElevatorPane, 0 , 0, 1, 2);
+		full.add(m_StatsPane, 1, 0);
+		full.add(m_ManualModePane, 2, 0);
+		full.add(constructElevatorSelectionPane(), 1, 1);
+		full.add(constructErrorPane(), 2, 1);
+
+		m_Scene = new Scene(full, 250, 250);
 
 	}
 	
@@ -249,11 +262,18 @@ public class ElevatorGUI {
 			mmode.add(lb_nf, 0, 1);
 
 			ComboBox cb_floors = new ComboBox();
+			cb_floors.setId("m_NavigateFloor_" + i);
 			for(int j = 0; j < m_Elevator.getFloorNum(); j++){
 				cb_floors.getItems().add(j);
 			}
 
-			//m_Elevator.setTarget(m_SelectedElevator, target);
+			cb_floors.getSelectionModel().selectedItemProperty().addListener( (options, oldValue, newValue) -> {
+				try{
+					m_Elevator.setTarget(m_SelectedElevator, (int)newValue);
+				} catch(RemoteException e){}
+			});
+			 
+			m_NavigateFloor.add(cb_floors);
 
 			mmode.add(cb_floors, 0, 2);
 			mmode.setVisible(i == 0);
@@ -266,9 +286,42 @@ public class ElevatorGUI {
 	
 	/**
 	 * @return The elevator section of the control panel.
+	 * @throws RemoteException
 	 */
-	private StackPane constructElevatorPane() {
-		return new StackPane();
+	private StackPane constructElevatorPane() throws RemoteException {
+		StackPane stack = new StackPane();
+
+		for(int i = 0; i < m_Elevator.getElevatorNum(); i++){
+			GridPane elev = new GridPane();
+			elev.setPadding(new Insets(10, 10, 10, 10));
+			elev.setVgap(10); 
+			elev.setHgap(10); 
+
+			ArrayList<Button> btns = new ArrayList<Button>();
+			for(int j = 0; j < m_Elevator.getFloorNum(); j++){
+				Button btn = new Button(Integer.toString(j));
+				btn.setId("m_FloorButtons_" + i + "_" + j);
+				btns.add(btn);
+				elev.add(btn, 2, m_Elevator.getFloorNum() - j);
+			}
+
+			Button btn_auto = new Button("Automatic");
+			Button btn_manual = new Button("Manual");
+
+			btn_auto.setId("m_AutomaticModeButtons_" + i);
+			btn_manual.setId("m_ManualModeButtons_" + i);
+
+			elev.add(btn_auto, 0, m_Elevator.getFloorNum() + 1, 1, 2);
+			elev.add(btn_manual, 1, m_Elevator.getFloorNum() + 1, 1, 2);
+			m_FloorButtons.add(btns);
+
+			/*Slider slider = new Slider();
+			slider.setOrientation(Orientation.VERTICAL);
+			elev.add(slider, 1, 0, 1, m_Elevator.getFloorNum()+1);*/
+			stack.getChildren().add(elev);
+		}
+
+		return stack;
 	}
 
 	/**
