@@ -4,9 +4,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-import at.fhhagenberg.sqe.elevator.mock.MockElevatorException;
-import at.fhhagenberg.sqe.elevator.mock.MockElevatorState;
-import at.fhhagenberg.sqe.elevator.mock.MockFloorState;
 import sqelevator.IElevator;
 
 public class MockElevator implements IElevator {
