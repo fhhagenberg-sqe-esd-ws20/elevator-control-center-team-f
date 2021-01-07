@@ -78,14 +78,26 @@ public interface IBuildingModel {
     ArrayList<IFloorModel> getFloors();
 
     /**
-     * Allows adding a PropertyChangeListener which fires an event when any of the properties changes.
+     * Allows adding a PropertyChangeListener which fires an event when the ConnectionState property changes.
      * @param l PropertyChangeListener to add.
      */
-    public void addPropertyChangeListener(PropertyChangeListener l);
+    public void addConnectionStatePropertyChangeListener(PropertyChangeListener l);
 
     /**
-     * Removes a formerly added propertychangedlistener.
+     * Removes a formerly added ConnectionState propertychangedlistener.
      * @param l PropertyChangeListener to remove.
      */
-    public void removePropertyChangeListener(PropertyChangeListener l);
+    public void removeConnectionStatePropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Allows adding a PropertyChangeListener which fires an event when the ClockTick property changes.
+     * @param l PropertyChangeListener to add.
+     */
+    public void addClockTickPropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Removes a formerly added ClockTick propertychangedlistener.
+     * @param l PropertyChangeListener to remove.
+     */
+    public void removeClockTickPropertyChangeListener(PropertyChangeListener l);
 }

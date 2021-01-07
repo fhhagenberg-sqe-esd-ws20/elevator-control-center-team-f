@@ -18,7 +18,8 @@ public class BuildingModelImpl implements IBuildingModel {
     ArrayList<IElevatorModel> m_Elevators = new ArrayList<IElevatorModel>();
     ArrayList<IFloorModel> m_Floors = new ArrayList<IFloorModel>();
 
-    private PropertyChangeSupport m_Changes = new PropertyChangeSupport(this);
+    private PropertyChangeSupport m_ChangesClockTick = new PropertyChangeSupport(this);
+    private PropertyChangeSupport m_ChangesConnState = new PropertyChangeSupport(this);
 
     /**
      * CTor
@@ -45,8 +46,10 @@ public class BuildingModelImpl implements IBuildingModel {
     @Override
     public IBuildingModel createBuildingModel(long clockTick, int floorHeight) throws BuildingInvalidFloorHeightException, BuildingInvalidClockTickException{
         BuildingModelImpl bm = new BuildingModelImpl(clockTick, floorHeight);
-        for(PropertyChangeListener l : m_Changes.getPropertyChangeListeners())
-            bm.addPropertyChangeListener(l);
+        for(PropertyChangeListener l : m_ChangesClockTick.getPropertyChangeListeners())
+            bm.addClockTickPropertyChangeListener(l);
+        for(PropertyChangeListener l : m_ChangesConnState.getPropertyChangeListeners())
+            bm.addConnectionStatePropertyChangeListener(l);
         return bm;
     }
 
@@ -69,14 +72,14 @@ public class BuildingModelImpl implements IBuildingModel {
     public void setConnectionState(boolean s){
         boolean oldVal = m_ConnectionState;
         m_ConnectionState = s;
-        m_Changes.firePropertyChange("m_ConnectionState", oldVal, m_ConnectionState);
+        m_ChangesConnState.firePropertyChange("m_ConnectionState", oldVal, m_ConnectionState);
     }
 
     @Override
     public void setClockTick(long l){
         long oldVal = m_ClockTick;
         m_ClockTick = l;
-        m_Changes.firePropertyChange("m_ClockTick", oldVal, m_ClockTick);
+        m_ChangesClockTick.firePropertyChange("m_ClockTick", oldVal, m_ClockTick);
     }
 
     @Override
@@ -85,13 +88,23 @@ public class BuildingModelImpl implements IBuildingModel {
     }
 
     @Override
-    public void addPropertyChangeListener(PropertyChangeListener l){
-        m_Changes.addPropertyChangeListener(l);
+    public void addClockTickPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesClockTick.addPropertyChangeListener(l);
     }
 
     @Override
-    public void removePropertyChangeListener(PropertyChangeListener l){
-        m_Changes.removePropertyChangeListener(l);
+    public void removeClockTickPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesClockTick.removePropertyChangeListener(l);
+    }
+
+    @Override
+    public void addConnectionStatePropertyChangeListener(PropertyChangeListener l){
+        m_ChangesConnState.addPropertyChangeListener(l);
+    }
+
+    @Override
+    public void removeConnectionStatePropertyChangeListener(PropertyChangeListener l){
+        m_ChangesConnState.removePropertyChangeListener(l);
     }
 
     @Override

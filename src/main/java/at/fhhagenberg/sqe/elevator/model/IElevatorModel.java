@@ -186,16 +186,113 @@ public interface IElevatorModel {
     public int getCapacity();
 
     /**
-     * Allows adding a PropertyChangeListener which fires an event when any of the properties changes.
+     * Allows adding a PropertyChangeListener which fires an event when the CommitedDirection property changes.
      * @param l PropertyChangeListener to add.
      */
-    public void addPropertyChangeListener(PropertyChangeListener l);
+    public void addCommitedDirectionPropertyChangeListener(PropertyChangeListener l);
 
     /**
-     * Removes a formerly added propertychangedlistener.
+     * Removes a formerly added CommitedDirection propertychangedlistener.
      * @param l PropertyChangeListener to remove.
      */
-    public void removePropertyChangeListener(PropertyChangeListener l);
+    public void removeCommitedDirectionPropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Allows adding a PropertyChangeListener which fires an event when the DoorStatus property changes.
+     * @param l PropertyChangeListener to add.
+     */
+    public void addDoorStatusPropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Removes a formerly added DoorStatus propertychangedlistener.
+     * @param l PropertyChangeListener to remove.
+     */
+    public void removeDoorStatusDirectionPropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Allows adding a PropertyChangeListener which fires an event when the acceleration property changes.
+     * @param l PropertyChangeListener to add.
+     */
+    public void addAccelerationPropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Removes a formerly added acceleration propertychangedlistener.
+     * @param l PropertyChangeListener to remove.
+     */
+    public void removeAccelerationPropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Allows adding a PropertyChangeListener which fires an event when any the state of any of the elevator floor buttons changes.
+     * @param l PropertyChangeListener to add.
+     */
+    public void addButtonStatusPropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Removes a formerly added button status propertychangedlistener.
+     * @param l PropertyChangeListener to remove.
+     */
+    public void removeButtonStatusPropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Allows adding a PropertyChangeListener which fires an event when the floor position changes.
+     * @param l PropertyChangeListener to add.
+     */
+    public void addFloorPositionPropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Removes a formerly added floor position propertychangedlistener.
+     * @param l PropertyChangeListener to remove.
+     */
+    public void removeFloorPositionPropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Allows adding a PropertyChangeListener which fires an event when the elevator speed changes.
+     * @param l PropertyChangeListener to add.
+     */
+    public void addSpeedPropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Removes a formerly added speed propertychangedlistener.
+     * @param l PropertyChangeListener to remove.
+     */
+    public void removeSpeedPropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Allows adding a PropertyChangeListener which fires an event when the load weight changes.
+     * @param l PropertyChangeListener to add.
+     */
+    public void addWeightPropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Removes a formerly added weight propertychangedlistener.
+     * @param l PropertyChangeListener to remove.
+     */
+    public void removeWeightPropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Allows adding a PropertyChangeListener which fires an event when the elevator target changes.
+     * @param l PropertyChangeListener to add.
+     */
+    public void addTargetPropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Removes a formerly added target propertychangedlistener.
+     * @param l PropertyChangeListener to remove.
+     */
+    public void removeTargetPropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Allows adding a PropertyChangeListener which fires an event when the position property changes.
+     * @param l PropertyChangeListener to add.
+     */
+    public void addPositionPropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Removes a formerly added position propertychangedlistener.
+     * @param l PropertyChangeListener to remove.
+     */
+    public void removePositionPropertyChangeListener(PropertyChangeListener l);
+
 
     /**
      * Sets elevator position in feet from the bottom of the building. 

@@ -19,7 +19,8 @@ public class FloorModelImpl implements IFloorModel {
     int m_Num;
     SmartList<IElevatorModel> m_ServicedElevators = new SmartList<IElevatorModel>();
 
-    private PropertyChangeSupport m_Changes = new PropertyChangeSupport(this);
+    private PropertyChangeSupport m_ChangesBtnDown = new PropertyChangeSupport(this);
+    private PropertyChangeSupport m_ChangesBtnUp = new PropertyChangeSupport(this);
 
     /**
      * CTor
@@ -38,8 +39,12 @@ public class FloorModelImpl implements IFloorModel {
     @Override
     public IFloorModel createFloorModel(int num) throws FloorInvalidFloorException {
         FloorModelImpl fm = new FloorModelImpl(num);
-        for(PropertyChangeListener l : m_Changes.getPropertyChangeListeners())
-            fm.addPropertyChangeListener(l);
+        for(PropertyChangeListener l : m_ChangesBtnDown.getPropertyChangeListeners())
+            fm.addButtonDownPropertyChangeListener(l);
+        for(PropertyChangeListener l : m_ChangesBtnUp.getPropertyChangeListeners())
+            fm.addButtonUpPropertyChangeListener(l);
+        for(PropertyChangeListener l : m_ServicedElevators.getPropertyChangeListeners())
+            fm.addServicedElevatorsPropertyChangeListener(l);
         return fm;
     }
 
@@ -57,7 +62,7 @@ public class FloorModelImpl implements IFloorModel {
     public void setButtonDownPressed(boolean s){
         boolean oldVal = m_ButtonDown;
         m_ButtonDown = s;
-        m_Changes.firePropertyChange("m_ButtonDown", oldVal, m_ButtonDown);
+        m_ChangesBtnDown.firePropertyChange("m_ButtonDown", oldVal, m_ButtonDown);
     }
 
     @Override
@@ -69,7 +74,7 @@ public class FloorModelImpl implements IFloorModel {
     public void setButtonUpPressed(boolean s){
         boolean oldVal = m_ButtonUp;
         m_ButtonUp = s;
-        m_Changes.firePropertyChange("m_ButtonUp", oldVal, m_ButtonUp);
+        m_ChangesBtnUp.firePropertyChange("m_ButtonUp", oldVal, m_ButtonUp);
     }
 
     @Override
@@ -78,14 +83,36 @@ public class FloorModelImpl implements IFloorModel {
     }
 
     @Override
-    public void addPropertyChangeListener(PropertyChangeListener l){
-        m_Changes.addPropertyChangeListener(l);
+    public void addButtonDownPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesBtnDown.addPropertyChangeListener(l);
         m_ServicedElevators.addPropertyChangeListener(l);
     }
 
     @Override
-    public void removePropertyChangeListener(PropertyChangeListener l){
-        m_Changes.removePropertyChangeListener(l);
+    public void removeButtonDownPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesBtnDown.removePropertyChangeListener(l);
+        m_ServicedElevators.removePropertyChangeListener(l);
+    }
+
+    @Override
+    public void addButtonUpPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesBtnUp.addPropertyChangeListener(l);
+        m_ServicedElevators.addPropertyChangeListener(l);
+    }
+
+    @Override
+    public void removeUpDownPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesBtnUp.removePropertyChangeListener(l);
+        m_ServicedElevators.removePropertyChangeListener(l);
+    }
+
+    @Override
+    public void addServicedElevatorsPropertyChangeListener(PropertyChangeListener l){
+        m_ServicedElevators.addPropertyChangeListener(l);
+    }
+
+    @Override
+    public void removeServicedElevatorsPropertyChangeListener(PropertyChangeListener l){
         m_ServicedElevators.removePropertyChangeListener(l);
     }
 

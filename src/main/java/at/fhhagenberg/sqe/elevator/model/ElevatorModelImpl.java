@@ -28,7 +28,15 @@ public class ElevatorModelImpl implements IElevatorModel {
 
     IBuildingModel m_Building;
 
-    private PropertyChangeSupport m_Changes = new PropertyChangeSupport(this);
+    private PropertyChangeSupport m_ChangesCommitedDirection = new PropertyChangeSupport(this);
+    private PropertyChangeSupport m_ChangesDoorStatus  = new PropertyChangeSupport(this);
+    private PropertyChangeSupport m_ChangesAccell = new PropertyChangeSupport(this);
+    private PropertyChangeSupport m_ChangesButtonState = new PropertyChangeSupport(this);
+    private PropertyChangeSupport m_ChangesFloorPos = new PropertyChangeSupport(this);
+    private PropertyChangeSupport m_ChangesSpeed = new PropertyChangeSupport(this);
+    private PropertyChangeSupport m_ChangesTarget = new PropertyChangeSupport(this);
+    private PropertyChangeSupport m_ChangesWeight = new PropertyChangeSupport(this);
+    private PropertyChangeSupport m_ChangesPos = new PropertyChangeSupport(this);
 
     /**
      * CTor
@@ -67,8 +75,24 @@ public class ElevatorModelImpl implements IElevatorModel {
     @Override
     public IElevatorModel createElevatorModel(int personCapacity, int num, IBuildingModel b) throws NullPointerException, ElevatorInvalidNumberException, ElevatorInvalidCapacityException{
         ElevatorModelImpl em = new ElevatorModelImpl(personCapacity, num, b);
-        for(PropertyChangeListener l : m_Changes.getPropertyChangeListeners())
-            em.addPropertyChangeListener(l);
+        for(PropertyChangeListener l : m_ChangesAccell.getPropertyChangeListeners())
+            em.addAccelerationPropertyChangeListener(l);
+        for(PropertyChangeListener l : m_ChangesCommitedDirection.getPropertyChangeListeners())
+            em.addCommitedDirectionPropertyChangeListener(l);
+        for(PropertyChangeListener l : m_ChangesDoorStatus.getPropertyChangeListeners())
+            em.addDoorStatusPropertyChangeListener(l);
+        for(PropertyChangeListener l : m_ChangesButtonState.getPropertyChangeListeners())
+            em.addButtonStatusPropertyChangeListener(l);
+        for(PropertyChangeListener l : m_ChangesFloorPos.getPropertyChangeListeners())
+            em.addFloorPositionPropertyChangeListener(l);
+        for(PropertyChangeListener l : m_ChangesPos.getPropertyChangeListeners())
+            em.addPositionPropertyChangeListener(l);
+        for(PropertyChangeListener l : m_ChangesSpeed.getPropertyChangeListeners())
+            em.addSpeedPropertyChangeListener(l);;
+        for(PropertyChangeListener l : m_ChangesTarget.getPropertyChangeListeners())
+            em.addTargetPropertyChangeListener(l);
+        for(PropertyChangeListener l : m_ChangesWeight.getPropertyChangeListeners())
+            em.addWeightPropertyChangeListener(l);
         return em;
     }
     
@@ -86,7 +110,7 @@ public class ElevatorModelImpl implements IElevatorModel {
     public void setCommitedDirection(CommitedDirection d){
         CommitedDirection oldVal = m_CommitedDirection;
         m_CommitedDirection = d;
-        m_Changes.firePropertyChange("m_CommitedDirection", oldVal, m_CommitedDirection);
+        m_ChangesCommitedDirection.firePropertyChange("m_CommitedDirection", oldVal, m_CommitedDirection);
     }
 
     @Override
@@ -98,7 +122,7 @@ public class ElevatorModelImpl implements IElevatorModel {
     public void setAccel(int a) {
         int oldVal = m_Accell;
         m_Accell = a;
-        m_Changes.firePropertyChange("m_Accell", oldVal, m_Accell);
+        m_ChangesAccell.firePropertyChange("m_Accell", oldVal, m_Accell);
     }
 
     @Override
@@ -115,7 +139,7 @@ public class ElevatorModelImpl implements IElevatorModel {
     public void setDoorStatus(DoorStatus d){
         DoorStatus oldVal = m_DoorStatus;
         m_DoorStatus = d;
-        m_Changes.firePropertyChange("m_DoorStatus", oldVal, m_DoorStatus);
+        m_ChangesDoorStatus.firePropertyChange("m_DoorStatus", oldVal, m_DoorStatus);
     }
 
     @Override
@@ -131,7 +155,7 @@ public class ElevatorModelImpl implements IElevatorModel {
             throw new ElevatorInvalidFloorPositionException("Given position is out of range (greater then maximum floor number)!");
         int oldVal = m_FloorPos;
         m_FloorPos = p;
-        m_Changes.firePropertyChange("m_FloorPos", oldVal, m_FloorPos);
+        m_ChangesFloorPos.firePropertyChange("m_FloorPos", oldVal, m_FloorPos);
     }
     
     @Override
@@ -143,7 +167,7 @@ public class ElevatorModelImpl implements IElevatorModel {
     public void setSpeed(int s) {
         int oldVal = m_Speed;
         m_Speed = s;
-        m_Changes.firePropertyChange("m_Speed", oldVal, m_Speed);
+        m_ChangesSpeed.firePropertyChange("m_Speed", oldVal, m_Speed);
     }
 
     @Override
@@ -157,7 +181,7 @@ public class ElevatorModelImpl implements IElevatorModel {
             throw new ElevatorInvalidWeightException("Tried to set negative weight!");
         int oldVal = m_Weight;
         m_Weight = w;
-        m_Changes.firePropertyChange("m_Weight", oldVal, m_Weight);
+        m_ChangesWeight.firePropertyChange("m_Weight", oldVal, m_Weight);
     }
     
     @Override
@@ -173,7 +197,7 @@ public class ElevatorModelImpl implements IElevatorModel {
             throw new ElevatorInvalidTargetException("Given position is out of range (greater then maximum floor number)!");
         int oldVal = m_Target;
         m_Target = t;
-        m_Changes.firePropertyChange("m_Target", oldVal, m_Target);
+        m_ChangesTarget.firePropertyChange("m_Target", oldVal, m_Target);
     }
 
     @Override
@@ -182,13 +206,98 @@ public class ElevatorModelImpl implements IElevatorModel {
     }
 
     @Override
-    public void addPropertyChangeListener(PropertyChangeListener l){
-        m_Changes.addPropertyChangeListener(l);
+    public void addCommitedDirectionPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesCommitedDirection.addPropertyChangeListener(l);
     }
 
     @Override
-    public void removePropertyChangeListener(PropertyChangeListener l){
-        m_Changes.removePropertyChangeListener(l);
+    public void removeCommitedDirectionPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesCommitedDirection.removePropertyChangeListener(l);
+    }
+
+    @Override
+    public void addDoorStatusPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesDoorStatus.addPropertyChangeListener(l);
+    }
+
+    @Override
+    public void removeDoorStatusDirectionPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesDoorStatus.removePropertyChangeListener(l);
+    }
+
+    @Override
+    public void addAccelerationPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesAccell.addPropertyChangeListener(l);
+    }
+
+    @Override
+    public void removeAccelerationPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesAccell.removePropertyChangeListener(l);
+    }
+
+    @Override
+    public void addButtonStatusPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesButtonState.addPropertyChangeListener(l);
+    }
+
+    @Override
+    public void removeButtonStatusPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesButtonState.removePropertyChangeListener(l);
+    }
+
+    @Override
+    public void addFloorPositionPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesFloorPos.addPropertyChangeListener(l);
+    }
+
+    @Override
+    public void removeFloorPositionPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesFloorPos.removePropertyChangeListener(l);
+    }
+
+
+    @Override
+    public void addSpeedPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesSpeed.addPropertyChangeListener(l);
+    }
+
+
+    @Override
+    public void removeSpeedPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesSpeed.removePropertyChangeListener(l);
+    }
+
+
+    @Override
+    public void addWeightPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesWeight.addPropertyChangeListener(l);
+    }
+
+
+    @Override
+    public void removeWeightPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesWeight.removePropertyChangeListener(l);
+    }
+
+
+    @Override
+    public void addTargetPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesTarget.addPropertyChangeListener(l);
+    }
+
+    @Override
+    public void removeTargetPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesTarget.removePropertyChangeListener(l);
+    }
+
+    @Override
+    public void addPositionPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesPos.addPropertyChangeListener(l);
+    }
+
+    @Override
+    public void removePositionPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesPos.removePropertyChangeListener(l);
     }
 
     @Override
@@ -197,7 +306,7 @@ public class ElevatorModelImpl implements IElevatorModel {
             throw new ElevatorInvalidPositionException("Relative position can not be negative!");
         int oldVal = m_Pos;
         m_Pos = p;
-        m_Changes.firePropertyChange("m_Pos", oldVal, m_Pos);
+        m_ChangesPos.firePropertyChange("m_Pos", oldVal, m_Pos);
     }
 
     @Override

@@ -62,14 +62,39 @@ public interface IFloorModel {
     public SmartList<IElevatorModel> getServicedElevators();
 
     /**
-     * Allows adding a PropertyChangeListener which fires an event when any of the properties changes.
+     * Allows adding a PropertyChangeListener which fires an event when the button down property changes.
      * @param l PropertyChangeListener to add.
      */
-    public void addPropertyChangeListener(PropertyChangeListener l);
+    public void addButtonDownPropertyChangeListener(PropertyChangeListener l);
 
     /**
-     * Removes a formerly added propertychangedlistener.
+     * Removes a formerly added button down propertychangedlistener.
      * @param l PropertyChangeListener to remove.
      */
-    public void removePropertyChangeListener(PropertyChangeListener l);
+    public void removeButtonDownPropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Allows adding a PropertyChangeListener which fires an event when the button up property changes.
+     * @param l PropertyChangeListener to add.
+     */
+    public void addButtonUpPropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Removes a formerly added button up propertychangedlistener.
+     * @param l PropertyChangeListener to remove.
+     */
+    public void removeUpDownPropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Allows adding a PropertyChangeListener which fires an event when the list of serviced elevators changes.
+     * @param l PropertyChangeListener to add.
+     */
+    public void addServicedElevatorsPropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Removes a formerly added serviced elevators propertychangedlistener.
+     * @param l PropertyChangeListener to remove.
+     */
+    public void removeServicedElevatorsPropertyChangeListener(PropertyChangeListener l);
+
 }
