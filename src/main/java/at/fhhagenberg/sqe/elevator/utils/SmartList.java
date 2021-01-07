@@ -125,4 +125,8 @@ public class SmartList<T> extends ArrayList<T> {
     public void removePropertyChangeListener(PropertyChangeListener l){
         m_Changes.removePropertyChangeListener(l);
     }
+
+    public PropertyChangeListener[] getPropertyChangeListeners(){
+        return m_Changes.getPropertyChangeListeners();
+    }
 }
