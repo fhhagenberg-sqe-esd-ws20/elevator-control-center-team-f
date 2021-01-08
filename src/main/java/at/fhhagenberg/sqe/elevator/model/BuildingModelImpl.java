@@ -122,7 +122,7 @@ public class BuildingModelImpl implements IBuildingModel {
     public void setError(String e){
         String oldVal = m_Error;
         m_Error = e;
-        m_ChangesClockTick.firePropertyChange("m_Error", oldVal, m_Error);
+        m_ChangesError.firePropertyChange("m_Error", oldVal, m_Error);
     }
 
     @Override
