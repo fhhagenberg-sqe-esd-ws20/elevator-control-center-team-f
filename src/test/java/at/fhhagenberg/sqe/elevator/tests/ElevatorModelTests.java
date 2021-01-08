@@ -18,7 +18,6 @@ import at.fhhagenberg.sqe.elevator.model.ElevatorModelImpl;
 import at.fhhagenberg.sqe.elevator.model.FloorModelImpl;
 import at.fhhagenberg.sqe.elevator.model.IBuildingModel;
 import at.fhhagenberg.sqe.elevator.model.IElevatorModel;
-import at.fhhagenberg.sqe.elevator.model.IFloorModel;
 import at.fhhagenberg.sqe.elevator.model.IElevatorModel.ElevatorInvalidCapacityException;
 import at.fhhagenberg.sqe.elevator.model.IElevatorModel.ElevatorInvalidFloorPositionException;
 import at.fhhagenberg.sqe.elevator.model.IElevatorModel.ElevatorInvalidNumberException;
@@ -26,7 +25,7 @@ import at.fhhagenberg.sqe.elevator.model.IElevatorModel.ElevatorInvalidPositionE
 import at.fhhagenberg.sqe.elevator.model.IElevatorModel.ElevatorInvalidTargetException;
 import at.fhhagenberg.sqe.elevator.model.IElevatorModel.ElevatorInvalidWeightException;
 
-public class ElevatorTests {
+public class ElevatorModelTests {
 
     @Test
     void testCreateElavatorModel() throws Exception {
