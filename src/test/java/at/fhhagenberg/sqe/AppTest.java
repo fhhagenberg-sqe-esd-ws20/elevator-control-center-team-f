@@ -17,8 +17,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.stage.Stage;
 import sqelevator.IElevator;
+import at.fhhagenberg.sqe.elevator.mock.ElevatorWrapperTestImpl;
 import at.fhhagenberg.sqe.elevator.mock.MockElevator;
-import at.fhhagenberg.sqe.elevator.wrappers.ElevatorWrapperImpl;
 import at.fhhagenberg.sqe.elevator.wrappers.IElevatorWrapper;
 
 @ExtendWith(ApplicationExtension.class)
@@ -41,7 +41,7 @@ public class AppTest {
     public void start(Stage stage) {
         var app = new App();
         m_Mock = new MockElevator(NUM_ELEVATORS, NUM_FLOORS, FLOOR_HEIGHT, ELEVATOR_CAPACITY);
-        m_Elevator = new ElevatorWrapperImpl(m_Mock);
+        m_Elevator = new ElevatorWrapperTestImpl(m_Mock);
         app.setElevator(m_Elevator); // inject mocked elevator into main application
         app.start(stage);
     }

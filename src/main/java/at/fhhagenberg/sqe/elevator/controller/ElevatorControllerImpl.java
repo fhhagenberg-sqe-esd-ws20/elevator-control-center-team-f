@@ -24,6 +24,7 @@ public class ElevatorControllerImpl implements IElevatorController {
     private IFloorModel m_FloorModel;
     private IElevatorModel m_ElevatorModel;
     private Timer m_PollingCall;
+    private boolean m_Initialized = false;
 
     /**
      * CTor
@@ -52,12 +53,16 @@ public class ElevatorControllerImpl implements IElevatorController {
     @Override
     public void maintainConnection(){
         try{
-            m_BuildingModel = m_BuildingModel.createBuildingModel(m_Elevator.getClockTick(), m_Elevator.getFloorHeight());
-            for(int i = 0; i < m_Elevator.getFloorNum(); i++)
-                m_BuildingModel.getFloors().add(m_FloorModel.createFloorModel(i));
+            m_Elevator.reconnect();
 
-            for(int i = 0; i < m_Elevator.getElevatorNum(); i++)
-                m_BuildingModel.getElevators().add(m_ElevatorModel.createElevatorModel(m_Elevator.getElevatorCapacity(i), i, m_BuildingModel));
+            if(!m_Initialized){
+                m_BuildingModel = m_BuildingModel.createBuildingModel(m_Elevator.getClockTick(), m_Elevator.getFloorHeight());
+                for(int i = 0; i < m_Elevator.getFloorNum(); i++)
+                    m_BuildingModel.getFloors().add(m_FloorModel.createFloorModel(i));
+
+                for(int i = 0; i < m_Elevator.getElevatorNum(); i++)
+                    m_BuildingModel.getElevators().add(m_ElevatorModel.createElevatorModel(m_Elevator.getElevatorCapacity(i), i, m_BuildingModel));
+            }
         }
         catch(Exception ex){
             ex.printStackTrace();
@@ -65,6 +70,7 @@ public class ElevatorControllerImpl implements IElevatorController {
             m_BuildingModel.setConnectionState(false);
         }
         m_BuildingModel.setConnectionState(true);
+        m_Initialized = true;
     }
 
 
@@ -78,6 +84,9 @@ public class ElevatorControllerImpl implements IElevatorController {
         try{
             // update elevators
             for(IElevatorModel e : m_BuildingModel.getElevators()){
+
+                // -- Receive Values
+
                 e.setAccel(m_Elevator.getElevatorAccel(e.getNum()));
 
                 int d = m_Elevator.getCommittedDirection(e.getNum());
@@ -119,8 +128,18 @@ public class ElevatorControllerImpl implements IElevatorController {
                     f.setButtonDownPressed(m_Elevator.getFloorButtonDown(f.getNum()));
                     f.setButtonUpPressed(m_Elevator.getFloorButtonUp(f.getNum()));
                 }
-                if(e.getFloorPos() != e.getNextTargetFloor())
+
+                // ---- Send Values
+
+                if(e.getFloorPos() != e.getNextTargetFloor()) // fires automatic mode commands
                     m_Elevator.setTarget(e.getNum(), e.getNextTargetFloor());
+
+                if(e.getFloorPos() < e.getTarget())
+                    m_Elevator.setCommittedDirection(e.getNum(), IElevatorWrapper.ELEVATOR_DIRECTION_UP);
+                else if(e.getFloorPos() > e.getTarget())
+                    m_Elevator.setCommittedDirection(e.getNum(), IElevatorWrapper.ELEVATOR_DIRECTION_DOWN);
+                else
+                    m_Elevator.setCommittedDirection(e.getNum(), IElevatorWrapper.ELEVATOR_DIRECTION_UNCOMMITTED);
             }
         }
         catch(Exception ex){
@@ -157,7 +176,8 @@ public class ElevatorControllerImpl implements IElevatorController {
     @Override
     public void setTarget(int elevatorNumber, int target){
         try{
-            m_Elevator.setTarget(elevatorNumber, target);
+            if(!m_BuildingModel.getElevators().get(elevatorNumber).getAutomaticMode())
+                m_Elevator.setTarget(elevatorNumber, target);
         }
         catch(RemoteException ex){
             ex.printStackTrace();
