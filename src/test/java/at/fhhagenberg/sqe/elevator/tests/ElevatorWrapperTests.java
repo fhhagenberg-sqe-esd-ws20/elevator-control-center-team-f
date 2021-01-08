@@ -1,4 +1,4 @@
-package at.fhhagenberg.sqe.elevator.mock;
+package at.fhhagenberg.sqe.elevator.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import at.fhhagenberg.sqe.elevator.mock.MockElevator;
+import at.fhhagenberg.sqe.elevator.mock.MockElevatorException;
 import at.fhhagenberg.sqe.elevator.wrappers.ElevatorWrapperImpl;
 import at.fhhagenberg.sqe.elevator.wrappers.IElevatorWrapper;
 
