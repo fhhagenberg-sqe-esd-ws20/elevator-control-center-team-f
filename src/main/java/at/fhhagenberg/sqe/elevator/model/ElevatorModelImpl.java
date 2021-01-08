@@ -14,18 +14,20 @@ import at.fhhagenberg.sqe.elevator.utils.SmartList;
  * This class represents the state of an elevator.
  */
 public class ElevatorModelImpl implements IElevatorModel {
-    CommitedDirection m_CommitedDirection = CommitedDirection.UNCOMMITED;
-    DoorStatus m_DoorStatus = DoorStatus.CLOSED;
-    int m_Accell = 0;
-    int m_Capacity = 1;
-    SmartList<Boolean> m_Buttons = new SmartList<Boolean>();
-    int m_FloorPos = 0;
-    int m_Speed = 0;
-    int m_Target = 0;
-    int m_Weight = 0;
-    int m_Num = 0;
-    int m_Pos = 0;
-    boolean m_AutomaticMode = false;
+    private CommitedDirection m_CommitedDirection = CommitedDirection.UNCOMMITED;
+    private DoorStatus m_DoorStatus = DoorStatus.CLOSED;
+    private int m_Accell = 0;
+    private int m_Capacity = 1;
+    private SmartList<Boolean> m_Buttons = new SmartList<Boolean>();
+    private int m_FloorPos = 0;
+    private int m_Speed = 0;
+    private int m_Target = 0;
+    private int m_Weight = 0;
+    private int m_Num = 0;
+    private int m_Pos = 0;
+    private boolean m_AutomaticMode = false;
+    private int m_AutoDirVal = -1;
+
 
     IBuildingModel m_Building;
 
@@ -341,7 +343,12 @@ public class ElevatorModelImpl implements IElevatorModel {
     @Override
     public int getNextTargetFloor(){
         if(m_AutomaticMode){
-            return m_FloorPos; // implement algorithm here
+            // idiotic automatic mode implement better one here if there is time
+            if(m_FloorPos == m_Building.getFloors().size()-1)
+                m_AutoDirVal = -1;
+            else if(m_FloorPos == 0)
+                m_AutoDirVal = 1;
+            return m_FloorPos + m_AutoDirVal;
         }
         else{
             return m_FloorPos;
