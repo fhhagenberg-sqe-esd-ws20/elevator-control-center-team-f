@@ -1,5 +1,7 @@
 package at.fhhagenberg.sqe;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.testfx.api.FxAssert.verifyThat;
 
 import org.junit.jupiter.api.Test;
@@ -12,6 +14,7 @@ import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.matcher.control.TextInputControlMatchers;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.stage.Stage;
 import sqelevator.IElevator;
 import at.fhhagenberg.sqe.elevator.mock.MockElevator;
@@ -23,10 +26,11 @@ public class AppTest {
     
     private static final Integer ELEVATOR_CAPACITY = 10;
 	private static final Integer NUM_ELEVATORS = 3;
-	private static final Integer NUM_FLOORS = 4;
+	private static final Integer NUM_FLOORS = 10;
 	private static final Integer FLOOR_HEIGHT = 5;
 
     private IElevatorWrapper m_Elevator;
+    private MockElevator m_Mock;
 
     /**
      * Will be called with {@code @Before} semantics, i. e. before each test method.
@@ -36,8 +40,9 @@ public class AppTest {
     @Start
     public void start(Stage stage) {
         var app = new App();
-        m_Elevator = new ElevatorWrapperImpl(new MockElevator(NUM_ELEVATORS, NUM_FLOORS, FLOOR_HEIGHT, ELEVATOR_CAPACITY));
-        app.setElevator(m_Elevator); // inject mocked elevator
+        m_Mock = new MockElevator(NUM_ELEVATORS, NUM_FLOORS, FLOOR_HEIGHT, ELEVATOR_CAPACITY);
+        m_Elevator = new ElevatorWrapperImpl(m_Mock);
+        app.setElevator(m_Elevator); // inject mocked elevator into main application
         app.start(stage);
     }
 
@@ -66,8 +71,35 @@ public class AppTest {
     }
 
     @Test
-    public void testSelectManualFloor(FxRobot robot){
-        //robot.sleep(100000);
-        robot.clickOn("#cbNavigateFloor_1");
+    public void testToTestStuffRemoveMe(FxRobot robot) throws Exception {
+        m_Mock.getElevators().get(0).setFloorButtonActive(3, true);
+        m_Mock.getElevators().get(1).setFloorButtonActive(2, true);
+        m_Mock.getFloors().get(0).setDownButtonActive(true);
+        m_Mock.getFloors().get(4).setUpButtonActive(true);
+        robot.sleep(1000;
+        m_Mock.getElevators().get(0).setFloorButtonActive(3, false);
+        m_Mock.getElevators().get(1).setFloorButtonActive(2, false);
+        m_Mock.getFloors().get(0).setDownButtonActive(false);
+        m_Mock.getFloors().get(4).setUpButtonActive(false);
+        robot.sleep(1000);
+      //  robot.clickOn("#cbNavigateFloor_1");
+    }
+
+    @Test
+    public void testSimpleBackendFrontend(FxRobot robot) throws Exception{
+        m_Mock.getElevators().get(0).setServicesFloors(2, false);
+        robot.sleep(200); // ==> polling update interval
+        verifyThat("#chkServiced_0_2", (CheckBox c) -> !c.isSelected());
+        m_Mock.getElevators().get(0).setServicesFloors(2, true);
+        robot.sleep(200);
+        verifyThat("#chkServiced_0_2", (CheckBox c) -> c.isSelected());
+    }
+
+    @Test
+    public void testSimpleFrontendBackend(FxRobot robot) throws Exception{
+        robot.clickOn("#chkServiced_0_3");
+        assertFalse(m_Mock.getElevators().get(0).getServicesFloors(3));
+        robot.clickOn("#chkServiced_0_3");
+        assertTrue(m_Mock.getElevators().get(0).getServicesFloors(3));
     }
 }
