@@ -11,7 +11,7 @@ import java.beans.PropertyChangeSupport;
  */
 public class BuildingModelImpl implements IBuildingModel {
 
-    private long m_ClockTick = 1;
+    private long m_ClockTick = 0;
     private int m_FloorHeight = 1;
     private boolean m_ConnectionState = false;
     private String m_Error = "";
