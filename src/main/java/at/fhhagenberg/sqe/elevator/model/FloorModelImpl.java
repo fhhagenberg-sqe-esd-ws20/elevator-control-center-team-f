@@ -14,10 +14,10 @@ import at.fhhagenberg.sqe.elevator.utils.SmartList;
  */
 public class FloorModelImpl implements IFloorModel {
 
-    boolean m_ButtonDown = false;
-    boolean m_ButtonUp = false;
-    int m_Num;
-    SmartList<IElevatorModel> m_ServicedElevators = new SmartList<IElevatorModel>();
+    private boolean m_ButtonDown = false;
+    private boolean m_ButtonUp = false;
+    private int m_Num;
+    private SmartList<IElevatorModel> m_ServicedElevators = new SmartList<IElevatorModel>();
 
     private PropertyChangeSupport m_ChangesBtnDown = new PropertyChangeSupport(this);
     private PropertyChangeSupport m_ChangesBtnUp = new PropertyChangeSupport(this);
@@ -85,25 +85,21 @@ public class FloorModelImpl implements IFloorModel {
     @Override
     public void addButtonDownPropertyChangeListener(PropertyChangeListener l){
         m_ChangesBtnDown.addPropertyChangeListener(l);
-        m_ServicedElevators.addPropertyChangeListener(l);
     }
 
     @Override
     public void removeButtonDownPropertyChangeListener(PropertyChangeListener l){
         m_ChangesBtnDown.removePropertyChangeListener(l);
-        m_ServicedElevators.removePropertyChangeListener(l);
     }
 
     @Override
     public void addButtonUpPropertyChangeListener(PropertyChangeListener l){
         m_ChangesBtnUp.addPropertyChangeListener(l);
-        m_ServicedElevators.addPropertyChangeListener(l);
     }
 
     @Override
     public void removeUpDownPropertyChangeListener(PropertyChangeListener l){
         m_ChangesBtnUp.removePropertyChangeListener(l);
-        m_ServicedElevators.removePropertyChangeListener(l);
     }
 
     @Override
