@@ -1,3 +1,6 @@
+/**
+ * @author Daniel Giritzer, S1810567004
+ */
 package at.fhhagenberg.sqe.elevator.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
