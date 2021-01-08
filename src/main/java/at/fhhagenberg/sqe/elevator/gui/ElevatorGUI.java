@@ -3,13 +3,19 @@
  */
 package at.fhhagenberg.sqe.elevator.gui;
 
+import javafx.event.EventHandler;
+
+import static org.mockito.ArgumentMatchers.booleanThat;
+
 import java.util.ArrayList;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Toggle;
@@ -20,6 +26,7 @@ import at.fhhagenberg.sqe.elevator.controller.IElevatorController;
 import at.fhhagenberg.sqe.elevator.model.IBuildingModel;
 import at.fhhagenberg.sqe.elevator.model.IElevatorModel;
 import at.fhhagenberg.sqe.elevator.model.IFloorModel;
+import at.fhhagenberg.sqe.elevator.model.IElevatorModel.CommitedDirection;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Border;
@@ -35,6 +42,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.VPos;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 
 /**
  * This Class represents the graphical user interface for the Elevator control panel.
@@ -48,6 +56,9 @@ public class ElevatorGUI implements IElevatorGUI {
 
 	private String m_HeadLineStyle = "-fx-font: bold 16 arial;";
 	private String m_LabelStyle = "-fx-font: bold 12 arial;";
+
+	private String m_ButtonSelectStyle = "-fx-background-color: #FFA500";
+	private String m_ButtonDefaultSyle = "-fx-background-color: #C0C0C0";
 
 
 	private StackPane m_StatsPane;
@@ -70,6 +81,10 @@ public class ElevatorGUI implements IElevatorGUI {
 
 
 		GridPane full = new GridPane();
+
+		full.setPadding(new Insets(10, 10, 10, 10));
+		full.setVgap(10); 
+		full.setHgap(10); 
 
 		m_StatsPane = constructStatusPane();
 		m_ManualModePane = constructManualModePane();
@@ -279,33 +294,175 @@ public class ElevatorGUI implements IElevatorGUI {
 			elev.setVgap(10); 
 			elev.setHgap(10); 
 
-			ArrayList<Button> btns = new ArrayList<Button>();
+
+			// ---
+			// --- Elements that exist for every floor
+			// ---
 			for(IFloorModel f : m_Controller.getBuilding().getFloors()){
+
+				// -- floor state buttons (not clickable)
 				Button btn = new Button(Integer.toString(f.getNum()));
-				btn.setId("btnFloor" + e.getNum() + "_" + f.getNum());
-				btns.add(btn);
+				btn.setId("btnFloor_" + e.getNum() + "_" + f.getNum());
+				btn.setDisable(true);
+				btn.setStyle(m_ButtonDefaultSyle);
+				if(e.getButtons().get(f.getNum()))
+					btn.setStyle(m_ButtonSelectStyle);
+				btn.setOpacity(1);
+				e.addButtonStatusPropertyChangeListener(pl -> { 
+					if(((ArrayList<Boolean>)pl.getNewValue()).get(f.getNum()))
+						btn.setStyle(m_ButtonSelectStyle);
+					else
+						btn.setStyle(m_ButtonDefaultSyle);
+				});
 				elev.add(btn, 2, m_Controller.getBuilding().getFloors().size() - f.getNum() - 1);
+
+				// serviced checkbox
+				CheckBox cb = new CheckBox("Serviced");
+				cb.setId("chkServiced_" + e.getNum() + "_" + f.getNum());
+				if(f.getServicedElevators().contains(e))
+					cb.setSelected(true);
+
+				f.addServicedElevatorsPropertyChangeListener(pl -> {
+					if(((ArrayList<IElevatorModel>)pl.getNewValue()).contains(e))
+						cb.setSelected(true);
+					else
+						cb.setSelected(false);
+					}
+				);
+				cb.selectedProperty().addListener(new ChangeListener<Boolean>() {
+					@Override
+					public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+						m_Controller.setServicesFloors(e.getNum(), f.getNum(), newValue);
+					}
+				});
+				elev.add(cb, 5, m_Controller.getBuilding().getFloors().size() - f.getNum() - 1);
+
+				// Up/Down Arrows
+				Polygon upArrow = new Polygon();
+				upArrow.setStroke(Color.BLACK);
+				upArrow.getPoints().addAll(new Double[]{
+					5.0, 0.0,
+					0.0, 10.0,
+					10.0, 10.0 });
+				elev.add(upArrow, 3, m_Controller.getBuilding().getFloors().size() - f.getNum() - 1);
+				upArrow.setFill(Color.WHITE);
+				if(f.getButtonUpPressed())
+					upArrow.setFill(Color.BLUE);
+				f.addButtonUpPropertyChangeListener(pl -> {
+					if((boolean)pl.getNewValue())
+						upArrow.setFill(Color.BLUE);
+					else
+						upArrow.setFill(Color.WHITE);
+					});
+
+				Polygon downArrow = new Polygon();
+				downArrow.setStroke(Color.BLACK);
+				downArrow.getPoints().addAll(new Double[]{
+					0.0, 0.0,
+					10.0, 0.0,
+					5.0, 10.0 });
+				downArrow.setFill(Color.WHITE);
+				if(f.getButtonUpPressed())
+					downArrow.setFill(Color.BLUE);
+				f.addButtonDownPropertyChangeListener(pl -> {
+					if((boolean)pl.getNewValue())
+						downArrow.setFill(Color.BLUE);
+					else
+						downArrow.setFill(Color.WHITE);
+				 });
+					
+				elev.add(downArrow, 4, m_Controller.getBuilding().getFloors().size() - f.getNum() - 1);
 			}
 
+			// --- Big Up/Down Arrows
+			Polygon bigUpArrow = new Polygon();
+			bigUpArrow.setStroke(Color.BLACK);
+			bigUpArrow.getPoints().addAll(new Double[]{
+				15.0, 0.0,
+				0.0, 30.0,
+				30.0, 30.0 });
+			elev.add(bigUpArrow, 0, 0, 1, m_Controller.getBuilding().getFloors().size() / 2);
+			bigUpArrow.setFill(Color.WHITE);
+			if(e.getCommitedDirection() == CommitedDirection.UP)
+				bigUpArrow.setFill(Color.BLUE);
+			GridPane.setValignment(bigUpArrow, VPos.BOTTOM);
+
+			Polygon bigDownArrow = new Polygon();
+			bigDownArrow.setStroke(Color.BLACK);
+			bigDownArrow.getPoints().addAll(new Double[]{
+				0.0, 0.0,
+				30.0, 0.0,
+				15.0, 30.0 });
+			elev.add(bigDownArrow, 0, m_Controller.getBuilding().getFloors().size() / 2, 1, m_Controller.getBuilding().getFloors().size() / 2);
+			bigDownArrow.setFill(Color.WHITE);
+			if(e.getCommitedDirection() == CommitedDirection.DOWN)
+				bigDownArrow.setFill(Color.BLUE);
+			GridPane.setValignment(bigDownArrow, VPos.TOP);
+
+			e.addCommitedDirectionPropertyChangeListener(pl -> {
+				bigDownArrow.setFill(Color.WHITE);
+				bigUpArrow.setFill(Color.WHITE);
+				if((CommitedDirection)pl.getNewValue() == CommitedDirection.DOWN)
+					bigDownArrow.setFill(Color.BLUE);
+				else if((CommitedDirection)pl.getNewValue() == CommitedDirection.UP)
+					bigUpArrow.setFill(Color.BLUE);
+			 });
+
+			// --- Manual Mode / Auto mode buttons
 			Button btn_auto = new Button("Automatic");
-			Button btn_manual = new Button("Manual");
+			Button btn_manual = new Button("  Manual  ");
+
+			if(e.getAutomaticMode()){
+				btn_auto.setStyle(m_ButtonSelectStyle);
+				btn_manual.setStyle(m_ButtonDefaultSyle);
+			}else{
+				btn_auto.setStyle(m_ButtonDefaultSyle);
+				btn_manual.setStyle(m_ButtonSelectStyle);
+			}
 
 			btn_auto.setId("btnAutomaticMode_" + e.getNum());
+			btn_auto.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					e.setAutomaticMode(true);
+				}
+			});
+
 			btn_manual.setId("btnManualMode_" + e.getNum());
+			btn_manual.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					e.setAutomaticMode(false);
+				}
+			});
 
-			//elev.add(btn_auto, 0, m_Elevator.getFloorNum() + 1, 1, 2);
-			//elev.add(btn_manual, 1, m_Elevator.getFloorNum() + 1, 1, 2);
+			e.addAutomaticModePropertyChangeListener(pl -> {
+				if((boolean)pl.getNewValue()){
+					btn_auto.setStyle(m_ButtonSelectStyle);
+					btn_manual.setStyle(m_ButtonDefaultSyle);
+				}
+				else{
+					btn_auto.setStyle(m_ButtonDefaultSyle);
+					btn_manual.setStyle(m_ButtonSelectStyle);
+				}
+			});
+			elev.add(btn_auto, 0, m_Controller.getBuilding().getFloors().size(), 3, 1);
+			elev.add(btn_manual, 3, m_Controller.getBuilding().getFloors().size(), 3, 1);
 
+
+			// -- Vertical Elevator slider
 			Slider slider = new Slider();
 			slider.setOrientation(Orientation.VERTICAL);
 			GridPane.setValignment(slider, VPos.CENTER);
-			slider.setMinorTickCount(1);
 			slider.setMin(0);
-			slider.setMax(m_Controller.getBuilding().getFloors().size());
+			slider.setMax(m_Controller.getBuilding().getFloors().size() - 1);
 			slider.setId("sliPosition_" + e.getNum());
+			slider.setDisable(true);
+			slider.setOpacity(1);
 			elev.add(slider, 1, 0, 1, m_Controller.getBuilding().getFloors().size());
-			e.addPositionPropertyChangeListener(pl -> slider.setValue((int)pl.getNewValue()));
+			e.addFloorPositionPropertyChangeListener(pl -> slider.setValue((int)pl.getNewValue()));
 
+			elev.setVisible(0 == e.getNum());
 			stack.getChildren().add(elev);
 		}
 
@@ -363,8 +520,11 @@ public class ElevatorGUI implements IElevatorGUI {
 		err.add(hl_err, 0, 0);
 
 		m_taErrorMessages.setEditable(false);
-		err.add(m_taErrorMessages, 0, 1);
+		m_taErrorMessages.setMaxWidth(200);
+		
+		m_Controller.getBuilding().addErrorPropertyChangeListener(pl -> m_taErrorMessages.setText(m_taErrorMessages.getText() + "\n" + (String)pl.getNewValue()));
 
+		err.add(m_taErrorMessages, 0, 1);
 		return err;
 	}
 	
