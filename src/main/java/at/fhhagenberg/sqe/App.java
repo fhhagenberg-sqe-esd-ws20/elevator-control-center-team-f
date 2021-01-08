@@ -34,7 +34,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
-        IElevatorController controller = new ElevatorControllerImpl(m_Elevator, new BuildingModelImpl(), new ElevatorModelImpl(), new FloorModelImpl()); 
+        ElevatorControllerImpl controller = new ElevatorControllerImpl(m_Elevator, new BuildingModelImpl(), new ElevatorModelImpl(), new FloorModelImpl()); 
+        controller.startPolling();
         IElevatorGUI gui = new ElevatorGUI(controller);
         stage.setScene(gui.getScene());
         stage.show();
