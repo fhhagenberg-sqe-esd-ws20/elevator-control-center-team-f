@@ -4,9 +4,9 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-import at.fhhagenberg.sqe.elevator.wrappers.IElevatorWrapper;
+import sqelevator.IElevator;
 
-public class MockElevator implements IElevatorWrapper {
+public class MockElevator implements IElevator {
     public static final int CLOCK_TICK_MOCK_VALUE = 10;
     public static final int ELEVATOR_ACCELERATION_MOCK_VALUE = 10;
     public static final int ELEVATOR_SPEED_MOCK_VALUE = 20;
@@ -199,9 +199,9 @@ public class MockElevator implements IElevatorWrapper {
     }
 
     private void checkDirection(int direction) throws MockElevatorException {
-        if (direction != IElevatorWrapper.ELEVATOR_DIRECTION_DOWN &&
-                direction != IElevatorWrapper.ELEVATOR_DIRECTION_UNCOMMITTED &&
-                direction != IElevatorWrapper.ELEVATOR_DIRECTION_UP) {
+        if (direction != IElevator.ELEVATOR_DIRECTION_DOWN &&
+                direction != IElevator.ELEVATOR_DIRECTION_UNCOMMITTED &&
+                direction != IElevator.ELEVATOR_DIRECTION_UP) {
             throw new MockElevatorException("Elevator: Direction number is invalid!");
         }
     }

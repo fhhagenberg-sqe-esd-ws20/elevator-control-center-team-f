@@ -3,13 +3,13 @@ package at.fhhagenberg.sqe.elevator.mock;
 import java.util.ArrayList;
 import java.util.List;
 
-import at.fhhagenberg.sqe.elevator.wrappers.IElevatorWrapper;
+import sqelevator.IElevator;
 
 
 public class MockElevatorState {
-    private int direction = IElevatorWrapper.ELEVATOR_DIRECTION_UNCOMMITTED;
+    private int direction = IElevator.ELEVATOR_DIRECTION_UNCOMMITTED;
     private int acceleration = 0;
-    private int doorStatus = IElevatorWrapper.ELEVATOR_DOORS_CLOSED;
+    private int doorStatus = IElevator.ELEVATOR_DOORS_CLOSED;
     private int currentFloor = 0;
     private int targetFloor = 0;
     private int speed = 0;
@@ -124,10 +124,10 @@ public class MockElevatorState {
     }
 
     private void checkDoorStatus(int doorStatus) throws MockElevatorException {
-        if (doorStatus != IElevatorWrapper.ELEVATOR_DOORS_OPEN &&
-                doorStatus != IElevatorWrapper.ELEVATOR_DOORS_CLOSED &&
-                doorStatus != IElevatorWrapper.ELEVATOR_DOORS_OPENING &&
-                doorStatus != IElevatorWrapper.ELEVATOR_DOORS_CLOSING) {
+        if (doorStatus != IElevator.ELEVATOR_DOORS_OPEN &&
+                doorStatus != IElevator.ELEVATOR_DOORS_CLOSED &&
+                doorStatus != IElevator.ELEVATOR_DOORS_OPENING &&
+                doorStatus != IElevator.ELEVATOR_DOORS_CLOSING) {
             throw new MockElevatorException("Elevator: Door status is invalid!");
         }
     }
