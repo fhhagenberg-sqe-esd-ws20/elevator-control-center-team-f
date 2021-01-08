@@ -14,12 +14,14 @@ public class BuildingModelImpl implements IBuildingModel {
     private long m_ClockTick = 1;
     private int m_FloorHeight = 1;
     private boolean m_ConnectionState = false;
+    private String m_Error;
 
     ArrayList<IElevatorModel> m_Elevators = new ArrayList<IElevatorModel>();
     ArrayList<IFloorModel> m_Floors = new ArrayList<IFloorModel>();
 
     private PropertyChangeSupport m_ChangesClockTick = new PropertyChangeSupport(this);
     private PropertyChangeSupport m_ChangesConnState = new PropertyChangeSupport(this);
+    private PropertyChangeSupport m_ChangesError = new PropertyChangeSupport(this);
 
     /**
      * CTor
@@ -111,4 +113,27 @@ public class BuildingModelImpl implements IBuildingModel {
     public boolean getConnectionState(){
         return m_ConnectionState;
     }
+
+    @Override 
+    public void setError(String e){
+        String oldVal = m_Error;
+        m_Error = e;
+        m_ChangesClockTick.firePropertyChange("m_Error", oldVal, m_Error);
+    }
+
+    @Override
+    public String getError(){
+        return m_Error;
+    }
+
+    @Override
+    public void addErrorPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesError.addPropertyChangeListener(l);
+    }
+
+    @Override
+    public void removeErrorPropertyChangeListener(PropertyChangeListener l){
+        m_ChangesError.removePropertyChangeListener(l);
+    }
+
 }

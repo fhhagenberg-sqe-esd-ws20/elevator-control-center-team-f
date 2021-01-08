@@ -100,4 +100,27 @@ public interface IBuildingModel {
      * @param l PropertyChangeListener to remove.
      */
     public void removeClockTickPropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * @returns Last error occured at any elevator in this building.
+     */
+    public String getError();
+
+    /**
+     * Allows settig error messages on error.
+     * @param e Message to set.
+     */
+    public void setError(String e);
+
+    /**
+     * Allows adding a PropertyChangeListener which fires an event an error occurs.
+     * @param l PropertyChangeListener to add.
+     */
+    public void addErrorPropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Removes a formerly added error propertychangedlistener.
+     * @param l PropertyChangeListener to remove.
+     */
+    public void removeErrorPropertyChangeListener(PropertyChangeListener l);
 }
