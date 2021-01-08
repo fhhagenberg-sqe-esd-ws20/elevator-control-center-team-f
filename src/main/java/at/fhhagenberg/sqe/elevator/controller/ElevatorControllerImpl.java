@@ -10,11 +10,6 @@ import java.util.TimerTask;
 import at.fhhagenberg.sqe.elevator.model.IBuildingModel;
 import at.fhhagenberg.sqe.elevator.model.IElevatorModel;
 import at.fhhagenberg.sqe.elevator.model.IFloorModel;
-import at.fhhagenberg.sqe.elevator.model.IBuildingModel.BuildingInvalidClockTickException;
-import at.fhhagenberg.sqe.elevator.model.IBuildingModel.BuildingInvalidFloorHeightException;
-import at.fhhagenberg.sqe.elevator.model.IElevatorModel.ElevatorInvalidCapacityException;
-import at.fhhagenberg.sqe.elevator.model.IElevatorModel.ElevatorInvalidNumberException;
-import at.fhhagenberg.sqe.elevator.model.IFloorModel.FloorInvalidFloorException;
 import at.fhhagenberg.sqe.elevator.wrappers.IElevatorWrapper;
 import javafx.application.Platform;
 
@@ -64,28 +59,9 @@ public class ElevatorControllerImpl implements IElevatorController {
             for(int i = 0; i < m_Elevator.getElevatorNum(); i++)
                 m_BuildingModel.getElevators().add(m_ElevatorModel.createElevatorModel(m_Elevator.getElevatorCapacity(i), i, m_BuildingModel));
         }
-        catch(RemoteException re){
-            re.printStackTrace();
-            m_BuildingModel.setConnectionState(false);
-        }
-        catch(BuildingInvalidFloorHeightException he){
-            he.printStackTrace();
-            m_BuildingModel.setConnectionState(false);
-        }
-        catch(BuildingInvalidClockTickException cle){
-            cle.printStackTrace();
-            m_BuildingModel.setConnectionState(false);
-        }
-        catch(FloorInvalidFloorException invFl){
-            invFl.printStackTrace();
-            m_BuildingModel.setConnectionState(false);
-        }
-        catch(ElevatorInvalidNumberException inElNum){
-            inElNum.printStackTrace();
-            m_BuildingModel.setConnectionState(false);
-        }
-        catch(ElevatorInvalidCapacityException inElCap){
-            inElCap.printStackTrace();
+        catch(Exception ex){
+            ex.printStackTrace();
+            m_BuildingModel.setError(ex.getMessage());
             m_BuildingModel.setConnectionState(false);
         }
         m_BuildingModel.setConnectionState(true);
@@ -134,8 +110,12 @@ public class ElevatorControllerImpl implements IElevatorController {
 
                 for(IFloorModel f : m_BuildingModel.getFloors()) {
                     e.getButtons().set(f.getNum(), m_Elevator.getElevatorButton(e.getNum(), f.getNum()));
+                    
                     if(m_Elevator.getServicesFloors(e.getNum(), f.getNum()) && !f.getServicedElevators().contains(e))
                         f.getServicedElevators().add(e);
+                    else if(!m_Elevator.getServicesFloors(e.getNum(), f.getNum()) && f.getServicedElevators().contains(e))
+                        f.getServicedElevators().remove(e);
+
                     f.setButtonDownPressed(m_Elevator.getFloorButtonDown(f.getNum()));
                     f.setButtonUpPressed(m_Elevator.getFloorButtonUp(f.getNum()));
                 }
@@ -143,12 +123,9 @@ public class ElevatorControllerImpl implements IElevatorController {
                     m_Elevator.setTarget(e.getNum(), e.getNextTargetFloor());
             }
         }
-        catch(RemoteException re){
-            re.printStackTrace();
-            m_BuildingModel.setConnectionState(false);
-        }
         catch(Exception ex){
             ex.printStackTrace();
+            m_BuildingModel.setError(ex.getMessage());
             m_BuildingModel.setConnectionState(false);
         }
     }
@@ -158,8 +135,9 @@ public class ElevatorControllerImpl implements IElevatorController {
         try{
             m_Elevator.setCommittedDirection(elevatorNumber, direction);
         }
-        catch(RemoteException re){
-            re.printStackTrace();
+        catch(Exception ex){
+            ex.printStackTrace();
+            m_BuildingModel.setError(ex.getMessage());
             m_BuildingModel.setConnectionState(false);
         }
     }
@@ -169,8 +147,9 @@ public class ElevatorControllerImpl implements IElevatorController {
         try{
             m_Elevator.setServicesFloors(elevatorNumber, floor, service);
         }
-        catch(RemoteException re){
-            re.printStackTrace();
+        catch(Exception ex){
+            ex.printStackTrace();
+            m_BuildingModel.setError(ex.getMessage());
             m_BuildingModel.setConnectionState(false);
         }
     }
@@ -180,8 +159,9 @@ public class ElevatorControllerImpl implements IElevatorController {
         try{
             m_Elevator.setTarget(elevatorNumber, target);
         }
-        catch(RemoteException re){
-            re.printStackTrace();
+        catch(RemoteException ex){
+            ex.printStackTrace();
+            m_BuildingModel.setError(ex.getMessage());
             m_BuildingModel.setConnectionState(false);
         }
     }

@@ -340,10 +340,12 @@ public class ElevatorModelImpl implements IElevatorModel {
 
     @Override
     public int getNextTargetFloor(){
-        if(m_AutomaticMode)
+        if(m_AutomaticMode){
             return m_FloorPos; // implement algorithm here
-        else
+        }
+        else{
             return m_FloorPos;
+        }
     }
 
 }
