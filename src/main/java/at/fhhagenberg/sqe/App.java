@@ -6,7 +6,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import sqelevator.IElevator;
 
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 
 import at.fhhagenberg.sqe.elevator.controller.ElevatorControllerImpl;
@@ -16,6 +18,7 @@ import at.fhhagenberg.sqe.elevator.gui.IElevatorGUI;
 import at.fhhagenberg.sqe.elevator.model.BuildingModelImpl;
 import at.fhhagenberg.sqe.elevator.model.ElevatorModelImpl;
 import at.fhhagenberg.sqe.elevator.model.FloorModelImpl;
+import at.fhhagenberg.sqe.elevator.wrappers.ElevatorWrapperImpl;
 import at.fhhagenberg.sqe.elevator.wrappers.IElevatorWrapper;
 
 /**
@@ -29,7 +32,7 @@ public class App extends Application {
 
     @Override
     public void init() throws Exception {
-        // set m_Elevator here;
+        m_Elevator = new ElevatorWrapperImpl((IElevator) Naming.lookup("rmi://localhost/ElevatorSim"));
     }
 
     @Override
