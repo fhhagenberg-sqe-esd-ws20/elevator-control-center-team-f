@@ -52,16 +52,6 @@ public class ElevatorControllerImpl implements IElevatorController {
         m_FloorModel = fm;
 
         maintainConnection();
-
-        // periodic polling and setting model data
-        m_PollingCall = new Timer();
-        m_PollingCall.scheduleAtFixedRate(new TimerTask() {
-			@Override
-			public void run() {
-				Platform.runLater(() -> fillModel());
-			}
-		}, 0, 200);
-
     }
 
     @Override
@@ -149,8 +139,9 @@ public class ElevatorControllerImpl implements IElevatorController {
                     f.setButtonDownPressed(m_Elevator.getFloorButtonDown(f.getNum()));
                     f.setButtonUpPressed(m_Elevator.getFloorButtonUp(f.getNum()));
                 }
+                if(e.getFloorPos() != e.getNextTargetFloor())
+                    m_Elevator.setTarget(e.getNum(), e.getNextTargetFloor());
             }
-
         }
         catch(RemoteException re){
             re.printStackTrace();
@@ -199,5 +190,24 @@ public class ElevatorControllerImpl implements IElevatorController {
     public IBuildingModel getBuilding(){
         return m_BuildingModel;
     }
-    
+
+
+    /**
+     * Starts polling data from the given IElevatorWrapper interface.
+     */
+    public void startPolling(){
+        // periodic polling and setting model data
+        m_PollingCall = new Timer();
+        m_PollingCall.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				Platform.runLater(() -> fillModel());
+			}
+		}, 0, 200);
+    }
+
+    @Override
+    public void setAutomaticMode(int e, boolean m){
+        m_BuildingModel.getElevators().get(e).setAutomaticMode(m);
+    }
 }

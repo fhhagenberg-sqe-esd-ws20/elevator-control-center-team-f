@@ -33,6 +33,13 @@ public interface IElevatorController {
     public void setTarget(int elevatorNumber, int target);
 
     /**
+     * Disables or enables automatic mode for a given elevator. 
+     * @param elevatorNumber elevator number to change the mode for.
+     * @param mode true for automatic mode false otherwise.
+     */
+    public void setAutomaticMode(int elevatorNumber, boolean mode);
+
+    /**
      * Try to restore a failsafe state after loosing connection.
      */
     public void maintainConnection();

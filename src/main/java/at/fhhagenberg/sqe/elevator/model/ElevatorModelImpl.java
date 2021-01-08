@@ -25,6 +25,7 @@ public class ElevatorModelImpl implements IElevatorModel {
     int m_Weight = 0;
     int m_Num = 0;
     int m_Pos = 0;
+    boolean m_AutomaticMode = false;
 
     IBuildingModel m_Building;
 
@@ -36,6 +37,7 @@ public class ElevatorModelImpl implements IElevatorModel {
     private PropertyChangeSupport m_ChangesTarget = new PropertyChangeSupport(this);
     private PropertyChangeSupport m_ChangesWeight = new PropertyChangeSupport(this);
     private PropertyChangeSupport m_ChangesPos = new PropertyChangeSupport(this);
+    private PropertyChangeSupport m_ChangesAutomaticMode = new PropertyChangeSupport(this);
 
     /**
      * CTor
@@ -91,6 +93,8 @@ public class ElevatorModelImpl implements IElevatorModel {
             em.addTargetPropertyChangeListener(l);
         for(PropertyChangeListener l : m_ChangesWeight.getPropertyChangeListeners())
             em.addWeightPropertyChangeListener(l);
+        for(PropertyChangeListener l : m_ChangesAutomaticMode.getPropertyChangeListeners())
+            em.addAutomaticModePropertyChangeListener(l);
         return em;
     }
     
@@ -299,6 +303,16 @@ public class ElevatorModelImpl implements IElevatorModel {
     }
 
     @Override
+    public void addAutomaticModePropertyChangeListener(PropertyChangeListener l){
+        m_ChangesAutomaticMode.addPropertyChangeListener(l);
+    }
+
+    @Override
+    public void removeAutomaticModePropertyChangeListener(PropertyChangeListener l){
+        m_ChangesAutomaticMode.removePropertyChangeListener(l);
+    }
+
+    @Override
     public void setPos(int p) throws ElevatorInvalidPositionException{
         if(p < 0)
             throw new ElevatorInvalidPositionException("Relative position can not be negative!");
@@ -310,6 +324,26 @@ public class ElevatorModelImpl implements IElevatorModel {
     @Override
     public int getPos(){
         return m_Pos;
+    }
+
+    @Override
+    public boolean getAutomaticMode(){
+        return m_AutomaticMode;
+    }
+
+    @Override
+    public void setAutomaticMode(boolean m){
+       boolean oldVal = m_AutomaticMode;
+       m_AutomaticMode = m; 
+       m_ChangesAutomaticMode.firePropertyChange("m_AutomaticMode", oldVal, m_AutomaticMode);
+    }
+
+    @Override
+    public int getNextTargetFloor(){
+        if(m_AutomaticMode)
+            return m_FloorPos; // implement algorithm here
+        else
+            return m_FloorPos;
     }
 
 }
