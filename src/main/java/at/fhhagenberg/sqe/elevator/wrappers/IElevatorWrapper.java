@@ -165,6 +165,11 @@ public interface IElevatorWrapper extends java.rmi.Remote {
 	 * @return clock tick
 	 */
 	public long getClockTick() throws java.rmi.RemoteException;
+
+	/**
+	 * Allows reconnecting if connection is lost.
+	 */
+	public void reconnect() throws java.rmi.RemoteException, java.rmi.NotBoundException, java.net.MalformedURLException;
 	
 }
 

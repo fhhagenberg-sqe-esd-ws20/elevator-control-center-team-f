@@ -3,6 +3,8 @@
  */
 package at.fhhagenberg.sqe.elevator.wrappers;
 
+import java.rmi.Naming;
+
 import sqelevator.IElevator;
 
 /**
@@ -17,6 +19,11 @@ public class ElevatorWrapperImpl implements IElevatorWrapper {
 
         if(m_Elev == null)
             throw new NullPointerException("Invalid IElevator Object passed to the wrapper!");
+    }
+
+    @Override
+    public void reconnect() throws java.rmi.RemoteException, java.rmi.NotBoundException, java.net.MalformedURLException {
+        m_Elev = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
     }
 
     @Override
