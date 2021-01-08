@@ -275,4 +275,22 @@ public class ElevatorModelTests {
         assertThrows(ElevatorInvalidPositionException.class, () -> {t.setPos(-1);});
     }
 
+    @Test
+    void testAutomaticMode() throws Exception {
+        IElevatorModel e = new ElevatorModelImpl();
+
+        AtomicReference<Boolean> hasHanged = new AtomicReference<Boolean>(); hasHanged.set(false);
+        AtomicReference<Boolean> newVal = new AtomicReference<Boolean>(); newVal.set(false);
+
+        e.addAutomaticModePropertyChangeListener(pl -> {hasHanged.set(true); newVal.set((Boolean)pl.getNewValue());});
+
+        IElevatorModel t = e.createElevatorModel(5, 1, new BuildingModelImpl());
+
+        assertFalse(t.getAutomaticMode());
+        t.setAutomaticMode(true);
+        assertTrue(hasHanged.get());
+        assertTrue(t.getAutomaticMode());
+        assertTrue(newVal.get());
+    }
+
 }
