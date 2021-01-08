@@ -22,7 +22,7 @@ public interface IFloorModel {
 
 
     /**
-     * Create instance of implementation class.
+     * Create instance of implementation class. Listeners of current object are assiged to returned object aswell.
      * @param num Number of this floor.
      * @return Instance of implementation class.
      * @throws FloorInvalidFloorException
