@@ -5,8 +5,6 @@ package at.fhhagenberg.sqe.elevator.gui;
 
 import javafx.event.EventHandler;
 
-import static org.mockito.ArgumentMatchers.booleanThat;
-
 import java.util.ArrayList;
 
 import javafx.beans.value.ChangeListener;
@@ -20,10 +18,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.BorderPane;
 import at.fhhagenberg.sqe.elevator.controller.IElevatorController;
-import at.fhhagenberg.sqe.elevator.model.IBuildingModel;
 import at.fhhagenberg.sqe.elevator.model.IElevatorModel;
 import at.fhhagenberg.sqe.elevator.model.IFloorModel;
 import at.fhhagenberg.sqe.elevator.model.IElevatorModel.CommitedDirection;
@@ -96,7 +93,10 @@ public class ElevatorGUI implements IElevatorGUI {
 		full.add(constructElevatorSelectionPane(), 1, 1);
 		full.add(constructErrorPane(), 2, 1);
 
-		m_Scene = new Scene(full, 900, 500);
+		ScrollPane sp = new ScrollPane();
+		sp.setContent(full);
+
+		m_Scene = new Scene(sp, 800, 500);
 
 	}
 	
