@@ -31,7 +31,7 @@ public interface IBuildingModel {
     };
 
     /**
-     * Create instance of implementation class.
+     * Create instance of implementation class. Listeners of current object are assiged to returned object aswell.
      * @param clockTick Current clock tick.
      * @param floorHeight The hight of the floors in ft.
      * @return Instance of implementation class.
@@ -103,7 +103,7 @@ public interface IBuildingModel {
     public void removeClockTickPropertyChangeListener(PropertyChangeListener l);
 
     /**
-     * @returns Last error occured at any elevator in this building.
+     * @return Last error occured at any elevator in this building.
      */
     public String getError();
 

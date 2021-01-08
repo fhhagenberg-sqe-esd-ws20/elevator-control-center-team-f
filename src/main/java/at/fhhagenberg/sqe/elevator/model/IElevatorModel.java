@@ -80,7 +80,7 @@ public interface IElevatorModel {
     };
 
     /**
-     * Create instance of implementation class.
+     * Create instance of implementation class. Listeners of current object are assiged to returned object aswell.
      * @param personCapacity Maximum capacity (in persons) this elevator can handle.
      * @param b Building this elevator is located in.
      * @return Instance of implementation class.
@@ -305,4 +305,33 @@ public interface IElevatorModel {
      * @return Current elevator position in feet from the bottom of the building. 
      */
     public int getPos();
+
+    /**
+     * @return true if this elevator operates in automatic mode, false otherwise.
+     */
+    public boolean getAutomaticMode();
+
+    /**
+     * Allows setting the operation mode of this elevator.
+     * @param m true if this elevator should operate in automatic mode, false otherwise.
+     */
+    public void setAutomaticMode(boolean m);
+
+    /**
+     * Allows adding a PropertyChangeListener which fires an event when the automatic mode property changes.
+     * @param l PropertyChangeListener to add.
+     */
+    public void addAutomaticModePropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * Removes a formerly added automatic mode propertychangedlistener.
+     * @param l PropertyChangeListener to remove.
+     */
+    public void removeAutomaticModePropertyChangeListener(PropertyChangeListener l);
+
+    /**
+     * @return In automatic mode the number of the floor this elevator should navigate to.
+     * In manual mode the current floor position.
+     */
+    public int getNextTargetFloor();
 }
