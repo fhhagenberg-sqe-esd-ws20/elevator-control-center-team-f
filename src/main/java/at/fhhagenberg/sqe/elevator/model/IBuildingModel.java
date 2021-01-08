@@ -48,8 +48,9 @@ public interface IBuildingModel {
     /**
      * Allows setting a new ClockTick;
      * @param t Clock Tick to set.
+     * @throws BuildingInvalidClockTickException
      */
-    public void setClockTick(long t);
+    public void setClockTick(long t) throws BuildingInvalidClockTickException;
 
     /**
      * Allows setting the connection state between control center and hardware.

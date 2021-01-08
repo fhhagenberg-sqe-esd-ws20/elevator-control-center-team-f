@@ -52,6 +52,8 @@ public class BuildingModelImpl implements IBuildingModel {
             bm.addClockTickPropertyChangeListener(l);
         for(PropertyChangeListener l : m_ChangesConnState.getPropertyChangeListeners())
             bm.addConnectionStatePropertyChangeListener(l);
+        for(PropertyChangeListener l : m_ChangesError.getPropertyChangeListeners())
+            bm.addErrorPropertyChangeListener(l);
         return bm;
     }
 
@@ -78,7 +80,9 @@ public class BuildingModelImpl implements IBuildingModel {
     }
 
     @Override
-    public void setClockTick(long l){
+    public void setClockTick(long l) throws BuildingInvalidClockTickException{
+        if(l < 0)
+            throw new BuildingInvalidClockTickException("Clock tick must be a positive value!");
         long oldVal = m_ClockTick;
         m_ClockTick = l;
         m_ChangesClockTick.firePropertyChange("m_ClockTick", oldVal, m_ClockTick);
