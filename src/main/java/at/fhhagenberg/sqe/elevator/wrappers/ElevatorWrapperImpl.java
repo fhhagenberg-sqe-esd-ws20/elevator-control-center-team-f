@@ -97,7 +97,7 @@ public class ElevatorWrapperImpl implements IElevatorWrapper {
 
     @Override
 	public int getFloorNum() throws java.rmi.RemoteException{
-        return getFloorNum();
+        return m_Elev.getFloorNum();
     }
 
     @Override
