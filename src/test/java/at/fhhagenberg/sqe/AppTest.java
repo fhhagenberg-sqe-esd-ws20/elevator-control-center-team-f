@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import sqelevator.IElevator;
 import at.fhhagenberg.sqe.elevator.mock.MockElevator;
+import at.fhhagenberg.sqe.elevator.wrappers.ElevatorWrapperImpl;
 import at.fhhagenberg.sqe.elevator.wrappers.IElevatorWrapper;
 
 @ExtendWith(ApplicationExtension.class)
@@ -35,7 +36,7 @@ public class AppTest {
     @Start
     public void start(Stage stage) {
         var app = new App();
-        m_Elevator = new MockElevator(NUM_ELEVATORS, NUM_FLOORS, FLOOR_HEIGHT, ELEVATOR_CAPACITY);
+        m_Elevator = new ElevatorWrapperImpl(new MockElevator(NUM_ELEVATORS, NUM_FLOORS, FLOOR_HEIGHT, ELEVATOR_CAPACITY));
         app.setElevator(m_Elevator); // inject mocked elevator
         app.start(stage);
     }
@@ -62,5 +63,11 @@ public class AppTest {
 		//verifyThat("#lbStatsDoor_0", LabeledMatchers.hasText(Integer.toString(m_Elevator.getElevatorWeight(0))));
         //verifyThat("#lbStatsDir_0", LabeledMatchers.hasText(Integer.toString(m_Elevator.getElevatorWeight(0))));
         verifyThat("#lbStatsCap_1", LabeledMatchers.hasText(Integer.toString(m_Elevator.getElevatorCapacity(1))));
+    }
+
+    @Test
+    public void testSelectManualFloor(FxRobot robot){
+        //robot.sleep(100000);
+        robot.clickOn("#cbNavigateFloor_1");
     }
 }

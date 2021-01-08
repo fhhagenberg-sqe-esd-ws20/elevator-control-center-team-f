@@ -1,14 +1,12 @@
 /**
- * @author Daniel Giritzer
+ * @author Daniel Giritzer, S1810567004
  */
 package at.fhhagenberg.sqe.elevator.gui;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -30,12 +28,12 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.geometry.HPos;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.geometry.VPos;
 import javafx.scene.paint.Color;
 
 /**
@@ -83,7 +81,7 @@ public class ElevatorGUI implements IElevatorGUI {
 		full.add(constructElevatorSelectionPane(), 1, 1);
 		full.add(constructErrorPane(), 2, 1);
 
-		m_Scene = new Scene(full, 850, 550);
+		m_Scene = new Scene(full, 900, 500);
 
 	}
 	
@@ -216,9 +214,9 @@ public class ElevatorGUI implements IElevatorGUI {
 			component.setVisible(false);
 		m_StatsPane.getChildren().get(i).setVisible(true);
 
-		//for (Node component : m_ElevatorPane.getChildren())
-		//	component.setVisible(false);
-		//m_ElevatorPane.getChildren().get(i).setVisible(true);
+		for (Node component : m_ElevatorPane.getChildren())
+			component.setVisible(false);
+		m_ElevatorPane.getChildren().get(i).setVisible(true);
 
 		for (Node component : m_ManualModePane.getChildren())
 			component.setVisible(false);
@@ -274,36 +272,42 @@ public class ElevatorGUI implements IElevatorGUI {
 	private StackPane constructElevatorPane() {
 		StackPane stack = new StackPane();
 
-		/*
-		for(int i = 0; i < m_Elevator.getElevatorNum(); i++){
+		
+		for(IElevatorModel e : m_Controller.getBuilding().getElevators()){
 			GridPane elev = new GridPane();
 			elev.setPadding(new Insets(10, 10, 10, 10));
 			elev.setVgap(10); 
 			elev.setHgap(10); 
 
 			ArrayList<Button> btns = new ArrayList<Button>();
-			for(int j = 0; j < m_Elevator.getFloorNum(); j++){
-				Button btn = new Button(Integer.toString(j));
-				btn.setId("m_FloorButtons_" + i + "_" + j);
+			for(IFloorModel f : m_Controller.getBuilding().getFloors()){
+				Button btn = new Button(Integer.toString(f.getNum()));
+				btn.setId("btnFloor" + e.getNum() + "_" + f.getNum());
 				btns.add(btn);
-				elev.add(btn, 2, m_Elevator.getFloorNum() - j);
+				elev.add(btn, 2, m_Controller.getBuilding().getFloors().size() - f.getNum() - 1);
 			}
 
 			Button btn_auto = new Button("Automatic");
 			Button btn_manual = new Button("Manual");
 
-			btn_auto.setId("m_AutomaticModeButtons_" + i);
-			btn_manual.setId("m_ManualModeButtons_" + i);
+			btn_auto.setId("btnAutomaticMode_" + e.getNum());
+			btn_manual.setId("btnManualMode_" + e.getNum());
 
-			elev.add(btn_auto, 0, m_Elevator.getFloorNum() + 1, 1, 2);
-			elev.add(btn_manual, 1, m_Elevator.getFloorNum() + 1, 1, 2);
-			m_FloorButtons.add(btns);
+			//elev.add(btn_auto, 0, m_Elevator.getFloorNum() + 1, 1, 2);
+			//elev.add(btn_manual, 1, m_Elevator.getFloorNum() + 1, 1, 2);
 
-			/*Slider slider = new Slider();
+			Slider slider = new Slider();
 			slider.setOrientation(Orientation.VERTICAL);
-			elev.add(slider, 1, 0, 1, m_Elevator.getFloorNum()+1);
-			stack.getChildren().add(elev); 
-		}*/
+			GridPane.setValignment(slider, VPos.CENTER);
+			slider.setMinorTickCount(1);
+			slider.setMin(0);
+			slider.setMax(m_Controller.getBuilding().getFloors().size());
+			slider.setId("sliPosition_" + e.getNum());
+			elev.add(slider, 1, 0, 1, m_Controller.getBuilding().getFloors().size());
+			e.addPositionPropertyChangeListener(pl -> slider.setValue((int)pl.getNewValue()));
+
+			stack.getChildren().add(elev);
+		}
 
 		return stack;
 	}
@@ -367,6 +371,11 @@ public class ElevatorGUI implements IElevatorGUI {
 	@Override
 	public Scene getScene() {
 		return m_Scene;
+	}
+
+	@Override 
+	public void setController(IElevatorController c){
+		m_Controller = c;
 	}
 	
 }
