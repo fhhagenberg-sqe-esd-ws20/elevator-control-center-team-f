@@ -18,7 +18,7 @@ public class ElevatorModelImpl implements IElevatorModel {
     DoorStatus m_DoorStatus = DoorStatus.CLOSED;
     int m_Accell = 0;
     int m_Capacity = 1;
-    SmartList<Boolean> m_Buttons = null;
+    SmartList<Boolean> m_Buttons = new SmartList<Boolean>();
     int m_FloorPos = 0;
     int m_Speed = 0;
     int m_Target = 0;
@@ -31,7 +31,6 @@ public class ElevatorModelImpl implements IElevatorModel {
     private PropertyChangeSupport m_ChangesCommitedDirection = new PropertyChangeSupport(this);
     private PropertyChangeSupport m_ChangesDoorStatus  = new PropertyChangeSupport(this);
     private PropertyChangeSupport m_ChangesAccell = new PropertyChangeSupport(this);
-    private PropertyChangeSupport m_ChangesButtonState = new PropertyChangeSupport(this);
     private PropertyChangeSupport m_ChangesFloorPos = new PropertyChangeSupport(this);
     private PropertyChangeSupport m_ChangesSpeed = new PropertyChangeSupport(this);
     private PropertyChangeSupport m_ChangesTarget = new PropertyChangeSupport(this);
@@ -64,7 +63,6 @@ public class ElevatorModelImpl implements IElevatorModel {
         m_Building = b;
         m_Num = num;
         m_Capacity = personCapacity;
-        m_Buttons = new SmartList<Boolean>();
         m_Buttons.addAll(Arrays.asList(new Boolean[m_Building.getFloors().size()]));
         m_Buttons.setPropertyChangedName("m_Buttons");
         Collections.fill(m_Buttons, Boolean.FALSE);
@@ -81,7 +79,7 @@ public class ElevatorModelImpl implements IElevatorModel {
             em.addCommitedDirectionPropertyChangeListener(l);
         for(PropertyChangeListener l : m_ChangesDoorStatus.getPropertyChangeListeners())
             em.addDoorStatusPropertyChangeListener(l);
-        for(PropertyChangeListener l : m_ChangesButtonState.getPropertyChangeListeners())
+        for(PropertyChangeListener l : m_Buttons.getPropertyChangeListeners())
             em.addButtonStatusPropertyChangeListener(l);
         for(PropertyChangeListener l : m_ChangesFloorPos.getPropertyChangeListeners())
             em.addFloorPositionPropertyChangeListener(l);
@@ -237,12 +235,12 @@ public class ElevatorModelImpl implements IElevatorModel {
 
     @Override
     public void addButtonStatusPropertyChangeListener(PropertyChangeListener l){
-        m_ChangesButtonState.addPropertyChangeListener(l);
+        m_Buttons.addPropertyChangeListener(l);
     }
 
     @Override
     public void removeButtonStatusPropertyChangeListener(PropertyChangeListener l){
-        m_ChangesButtonState.removePropertyChangeListener(l);
+        m_Buttons.removePropertyChangeListener(l);
     }
 
     @Override
