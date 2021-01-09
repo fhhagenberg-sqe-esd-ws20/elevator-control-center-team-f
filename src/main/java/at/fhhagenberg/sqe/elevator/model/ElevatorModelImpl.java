@@ -348,7 +348,11 @@ public class ElevatorModelImpl implements IElevatorModel {
                 m_AutoDirVal = -1;
             else if(m_FloorPos == 0)
                 m_AutoDirVal = 1;
-            return m_FloorPos + m_AutoDirVal;
+
+            if(m_DoorStatus == DoorStatus.OPEN)
+                return m_FloorPos + m_AutoDirVal;
+            else
+                return m_FloorPos;
         }
         else{
             return m_FloorPos;
