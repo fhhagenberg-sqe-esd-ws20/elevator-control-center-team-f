@@ -41,6 +41,7 @@ public class App extends Application {
         controller.startPolling();
         IElevatorGUI gui = new ElevatorGUI(controller);
         stage.setScene(gui.getScene());
+        stage.setTitle("Elevator Control Center [Team F]");
         stage.show();
     }
 
