@@ -354,6 +354,7 @@ public class ElevatorGUI implements IElevatorGUI {
 					else
 						upArrow.setFill(Color.WHITE);
 					});
+				upArrow.setId("upBtnArrow_" + e.getNum() + "_" + f.getNum());
 
 				Polygon downArrow = new Polygon();
 				downArrow.setStroke(Color.BLACK);
@@ -370,6 +371,7 @@ public class ElevatorGUI implements IElevatorGUI {
 					else
 						downArrow.setFill(Color.WHITE);
 				 });
+				 downArrow.setId("downBtnArrow_" + e.getNum() + "_" + f.getNum());
 					
 				elev.add(downArrow, 4, m_Controller.getBuilding().getFloors().size() - f.getNum() - 1);
 			}
@@ -386,6 +388,7 @@ public class ElevatorGUI implements IElevatorGUI {
 			if(e.getCommitedDirection() == CommitedDirection.UP)
 				bigUpArrow.setFill(Color.BLUE);
 			GridPane.setValignment(bigUpArrow, VPos.BOTTOM);
+			bigUpArrow.setId("upArrowComittedDir_" + e.getNum());
 
 			Polygon bigDownArrow = new Polygon();
 			bigDownArrow.setStroke(Color.BLACK);
@@ -398,6 +401,8 @@ public class ElevatorGUI implements IElevatorGUI {
 			if(e.getCommitedDirection() == CommitedDirection.DOWN)
 				bigDownArrow.setFill(Color.BLUE);
 			GridPane.setValignment(bigDownArrow, VPos.TOP);
+			bigDownArrow.setId("downArrowComittedDir_" + e.getNum());
+
 
 			e.addCommitedDirectionPropertyChangeListener(pl -> {
 				bigDownArrow.setFill(Color.WHITE);
@@ -523,6 +528,7 @@ public class ElevatorGUI implements IElevatorGUI {
 		m_taErrorMessages.setMaxWidth(200);
 		
 		m_Controller.getBuilding().addErrorPropertyChangeListener(pl -> m_taErrorMessages.setText(m_taErrorMessages.getText() + "\n" + (String)pl.getNewValue()));
+		m_taErrorMessages.setId("m_taErrorMessage");
 
 		err.add(m_taErrorMessages, 0, 1);
 		return err;
