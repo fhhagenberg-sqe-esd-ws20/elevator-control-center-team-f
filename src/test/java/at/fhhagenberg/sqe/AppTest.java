@@ -47,6 +47,42 @@ public class AppTest {
     }
 
 
+    // -- GUI Element IDs:
+    // (E->elevatorNum, F->FloorNum)
+    //
+    // ElevatorPanel: 
+    // --------------
+    // #upBtnArrow_E_F (polygon)
+    // #downBtnArrow_E_F (polygon)
+    // #chkServiced_E_F (checkbox)
+    // #btnFloor_E_F (button, displays pressed floors in orange)
+    // #btnAutomaticMode_E (button)
+    // #btnManualMode_E (button)
+    // #sliPosition_E (slider)
+    // #upArrowComittedDir_E (polygon)
+    // #downArrowComittedDir_E (polygon)
+    //
+    // ElevatorStatusPanel:
+    // --------------------
+    // #lbStatsWeight_E (label)
+    // #lbStatsSpeed_E (label)
+    // #lbStatsTarget_E (label)
+    // #lbStatsDoor_E (label)
+    // #lbStatsDir_E (label)
+    // #lbStatsCap_E (label)
+    //
+    // ElevatorSelectionPanel:
+    // -----------------------
+    // #m_rbSelectElevator_E (radiobutton)
+    //
+    // ManualModePanel:
+    // ----------------
+    // #cbNavigateFloor_E (combobox)
+    //
+    // ErrorsPanel:
+    // ------------
+    // #m_taErrorMessage (textarea)
+
     @Test
     public void testElevator0Stats(FxRobot robot) throws Exception {
         robot.clickOn("#m_rbSelectElevator_0");
@@ -102,4 +138,5 @@ public class AppTest {
         robot.clickOn("#chkServiced_0_3");
         assertTrue(m_Mock.getElevators().get(0).getServicesFloors(3));
     }
+
 }
