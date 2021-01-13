@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import sqelevator.IElevator;
 import at.fhhagenberg.sqe.elevator.mock.ElevatorWrapperTestImpl;
 import at.fhhagenberg.sqe.elevator.mock.MockElevator;
+import at.fhhagenberg.sqe.elevator.model.IElevatorModel;
 import at.fhhagenberg.sqe.elevator.wrappers.IElevatorWrapper;
 
 @ExtendWith(ApplicationExtension.class)
@@ -31,6 +32,48 @@ public class AppTest {
 
     private IElevatorWrapper m_Elevator;
     private MockElevator m_Mock;
+    
+    
+    private String ConvertDoorStatusToString(int doorStatus)
+    {
+    	
+    	switch (doorStatus)
+    	{
+    		case IElevator.ELEVATOR_DOORS_CLOSED:
+    			return "Closed";
+    		
+    		case IElevator.ELEVATOR_DOORS_CLOSING:
+    			return "Closing";
+    			
+    		case IElevator.ELEVATOR_DOORS_OPEN:
+    			return "Open";
+    			
+    		case IElevator.ELEVATOR_DOORS_OPENING:
+    			return "Opening";
+    			
+    			default:
+    			  return "Undefined Door State";
+    	}
+    }
+    
+    private String ConvertDirectionToString(int dir)
+    {
+    	
+    	switch (dir)
+    	{
+    		case IElevator.ELEVATOR_DIRECTION_DOWN:
+    			return "Down";
+    		
+    		case IElevator.ELEVATOR_DIRECTION_UP:
+    			return "Up";
+    			
+    		case IElevator.ELEVATOR_DIRECTION_UNCOMMITTED:
+    			return "Uncommited";
+    			  			
+    			default:
+    			  return "Undefined Direction";
+    	}
+    }
 
     /**
      * Will be called with {@code @Before} semantics, i. e. before each test method.
@@ -90,8 +133,8 @@ public class AppTest {
         verifyThat("#lbStatsWeight_0", LabeledMatchers.hasText(Integer.toString(m_Elevator.getElevatorWeight(0))));
 		verifyThat("#lbStatsSpeed_0", LabeledMatchers.hasText(Integer.toString(m_Elevator.getElevatorSpeed(0))));
 		verifyThat("#lbStatsTarget_0", LabeledMatchers.hasText(Integer.toString(m_Elevator.getTarget(0))));
-		//verifyThat("#lbStatsDoor_0", LabeledMatchers.hasText(Integer.toString(m_Elevator.getElevatorWeight(0))));
-        //verifyThat("#lbStatsDir_0", LabeledMatchers.hasText(Integer.toString(m_Elevator.getElevatorWeight(0))));
+		verifyThat("#lbStatsDoor_0", LabeledMatchers.hasText(ConvertDoorStatusToString(m_Elevator.getElevatorDoorStatus(0))));
+        verifyThat("#lbStatsDir_0", LabeledMatchers.hasText(ConvertDirectionToString(m_Elevator.getCommittedDirection(0))));
         verifyThat("#lbStatsCap_0", LabeledMatchers.hasText(Integer.toString(m_Elevator.getElevatorCapacity(0))));
     }
 
@@ -101,8 +144,8 @@ public class AppTest {
         verifyThat("#lbStatsWeight_1", LabeledMatchers.hasText(Integer.toString(m_Elevator.getElevatorWeight(1))));
 		verifyThat("#lbStatsSpeed_1", LabeledMatchers.hasText(Integer.toString(m_Elevator.getElevatorSpeed(1))));
 		verifyThat("#lbStatsTarget_1", LabeledMatchers.hasText(Integer.toString(m_Elevator.getTarget(1))));
-		//verifyThat("#lbStatsDoor_0", LabeledMatchers.hasText(Integer.toString(m_Elevator.getElevatorWeight(0))));
-        //verifyThat("#lbStatsDir_0", LabeledMatchers.hasText(Integer.toString(m_Elevator.getElevatorWeight(0))));
+		verifyThat("#lbStatsDoor_0", LabeledMatchers.hasText(ConvertDoorStatusToString(m_Elevator.getElevatorDoorStatus(1))));
+        verifyThat("#lbStatsDir_0", LabeledMatchers.hasText(ConvertDirectionToString(m_Elevator.getCommittedDirection(1))));
         verifyThat("#lbStatsCap_1", LabeledMatchers.hasText(Integer.toString(m_Elevator.getElevatorCapacity(1))));
     }
 
@@ -122,7 +165,7 @@ public class AppTest {
     }
 
     @Test
-    public void testSimpleBackendFrontend(FxRobot robot) throws Exception{
+    public void testSimpleFrontendUpdated(FxRobot robot) throws Exception{
         m_Mock.getElevators().get(0).setServicesFloors(2, false);
         robot.sleep(200); // ==> polling update interval
         verifyThat("#chkServiced_0_2", (CheckBox c) -> !c.isSelected());
@@ -132,7 +175,7 @@ public class AppTest {
     }
 
     @Test
-    public void testSimpleFrontendBackend(FxRobot robot) throws Exception{
+    public void testSimpleBackendUpdated(FxRobot robot) throws Exception{
         robot.clickOn("#chkServiced_0_3");
         assertFalse(m_Mock.getElevators().get(0).getServicesFloors(3));
         robot.clickOn("#chkServiced_0_3");
