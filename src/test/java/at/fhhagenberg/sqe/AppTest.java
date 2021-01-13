@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.testfx.api.FxAssert.verifyThat;
 
-
+import java.io.Console;
 import java.rmi.RemoteException;
 
 import org.junit.jupiter.api.Test;
@@ -19,6 +19,7 @@ import org.testfx.matcher.control.TextInputControlMatchers;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -134,16 +135,6 @@ public class AppTest {
     // ErrorsPanel:
     // ------------
     // #m_taErrorMessage (textarea)
-
-    @Test
-    public void testErrorString(FxRobot robot) throws Exception{
-    	
-    	verifyThat("#m_taErrorMessage", (TextArea t) -> t.getText().equals(""));
-    	app.getController().getBuilding().setError("Test Error Occured");
-    	robot.sleep(200);
-
-    	verifyThat("#m_taErrorMessage", (TextArea t) -> t.getText().equals("\nTest Error Occured"));
-    }
     
     @Test
     public void testElevator0Stats(FxRobot robot) throws Exception {
@@ -169,7 +160,17 @@ public class AppTest {
     }
     
     @Test
-    public void testSetDirection(FxRobot robot) throws Exception{
+    public void testSimpleFrontendUpdated(FxRobot robot) throws Exception{
+        m_Mock.getElevators().get(0).setServicesFloors(2, false);
+        robot.sleep(200); // ==> polling update interval
+        verifyThat("#chkServiced_0_2", (CheckBox c) -> !c.isSelected());
+        m_Mock.getElevators().get(0).setServicesFloors(2, true);
+        robot.sleep(200);
+        verifyThat("#chkServiced_0_2", (CheckBox c) -> c.isSelected());
+    }
+    
+    @Test
+    public void testFrontendUpdateSetDirection(FxRobot robot) throws Exception{
     	m_Mock.getElevators().get(0).setDirection(IElevatorWrapper.ELEVATOR_DIRECTION_UP);
     	robot.sleep(200);
     	verifyThat("#upArrowComittedDir_0", (Polygon p) -> p.getFill().equals(Color.BLUE));
@@ -181,24 +182,34 @@ public class AppTest {
     }
     
     @Test
-    public void testSetSpeed(FxRobot robot) throws Exception{
+    public void testFrontendUpdateSetSpeed(FxRobot robot) throws Exception{
     	m_Mock.getElevators().get(0).setSpeed(-5);
     	
     	// this wait is required due to network delay (polling=200ms)
     	robot.sleep(200);
     	verifyThat("#lbStatsSpeed_0", LabeledMatchers.hasText(Integer.toString(-5)));
     }
-
-
     
     @Test
-    public void testSimpleFrontendUpdated(FxRobot robot) throws Exception{
-        m_Mock.getElevators().get(0).setServicesFloors(2, false);
-        robot.sleep(200); // ==> polling update interval
-        verifyThat("#chkServiced_0_2", (CheckBox c) -> !c.isSelected());
-        m_Mock.getElevators().get(0).setServicesFloors(2, true);
-        robot.sleep(200);
-        verifyThat("#chkServiced_0_2", (CheckBox c) -> c.isSelected());
+    public void testFrontendTargetFloor(FxRobot robot) throws Exception{
+    
+    	
+    	// this wait is required due to network delay (polling=200ms)
+    	m_Mock.getElevators().get(0).setTargetFloor(1);
+    	m_Mock.getElevators().get(0).setCurrentFloor(1);
+    	robot.sleep(2000);
+    
+    	verifyThat("#sliPosition_0", (Slider s) -> s.getValue() ==((double)1));
+    }
+    
+    @Test
+    public void testErrorString(FxRobot robot) throws Exception{
+    	
+    	verifyThat("#m_taErrorMessage", (TextArea t) -> t.getText().equals(""));
+    	app.getController().getBuilding().setError("Test Error Occured");
+    	robot.sleep(200);
+
+    	verifyThat("#m_taErrorMessage", (TextArea t) -> t.getText().equals("\nTest Error Occured"));
     }
 
     @Test
@@ -209,6 +220,12 @@ public class AppTest {
         assertTrue(m_Mock.getElevators().get(0).getServicesFloors(3));
     }
     
+    public void testBackendUpdatedOn(FxRobot robot) throws Exception{
+        robot.clickOn("#chkServiced_0_3");
+        assertFalse(m_Mock.getElevators().get(0).getServicesFloors(3));
+        robot.clickOn("#chkServiced_0_3");
+        assertTrue(m_Mock.getElevators().get(0).getServicesFloors(3));
+    }
     
-
+   
 }
