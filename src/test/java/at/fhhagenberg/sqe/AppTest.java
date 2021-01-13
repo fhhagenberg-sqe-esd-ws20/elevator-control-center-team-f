@@ -20,6 +20,8 @@ import org.testfx.matcher.control.TextInputControlMatchers;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import sqelevator.IElevator;
 import at.fhhagenberg.sqe.elevator.mock.ElevatorWrapperTestImpl;
@@ -165,7 +167,30 @@ public class AppTest {
         verifyThat("#lbStatsDir_0", LabeledMatchers.hasText(ConvertDirectionToString(m_Elevator.getCommittedDirection(1))));
         verifyThat("#lbStatsCap_1", LabeledMatchers.hasText(Integer.toString(m_Elevator.getElevatorCapacity(1))));
     }
+    
+    @Test
+    public void testSetDirection(FxRobot robot) throws Exception{
+    	m_Mock.getElevators().get(0).setDirection(IElevatorWrapper.ELEVATOR_DIRECTION_UP);
+    	robot.sleep(200);
+    	verifyThat("#upArrowComittedDir_0", (Polygon p) -> p.getFill().equals(Color.BLUE));
+    	verifyThat("#lbStatsDir_0", LabeledMatchers.hasText(ConvertDirectionToString(IElevatorWrapper.ELEVATOR_DIRECTION_UP)));
+      	m_Mock.getElevators().get(0).setDirection(IElevatorWrapper.ELEVATOR_DIRECTION_DOWN);
+    	robot.sleep(200);
+    	verifyThat("#downArrowComittedDir_0", (Polygon p) -> p.getFill().equals(Color.BLUE));
+    	verifyThat("#lbStatsDir_0", LabeledMatchers.hasText(ConvertDirectionToString(IElevatorWrapper.ELEVATOR_DIRECTION_DOWN)));
+    }
+    
+    @Test
+    public void testSetSpeed(FxRobot robot) throws Exception{
+    	m_Mock.getElevators().get(0).setSpeed(-5);
+    	
+    	// this wait is required due to network delay (polling=200ms)
+    	robot.sleep(200);
+    	verifyThat("#lbStatsSpeed_0", LabeledMatchers.hasText(Integer.toString(-5)));
+    }
 
+
+    
     @Test
     public void testSimpleFrontendUpdated(FxRobot robot) throws Exception{
         m_Mock.getElevators().get(0).setServicesFloors(2, false);
@@ -183,7 +208,6 @@ public class AppTest {
         robot.clickOn("#chkServiced_0_3");
         assertTrue(m_Mock.getElevators().get(0).getServicesFloors(3));
     }
-    
     
     
 
