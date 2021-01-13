@@ -16,11 +16,15 @@ import org.testfx.framework.junit5.Start;
 import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.matcher.control.TextInputControlMatchers;
 
-
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
@@ -160,7 +164,7 @@ public class AppTest {
     }
     
     @Test
-    public void testSimpleFrontendUpdated(FxRobot robot) throws Exception{
+    public void testFrontendUpdatedServicesFloors(FxRobot robot) throws Exception{
         m_Mock.getElevators().get(0).setServicesFloors(2, false);
         robot.sleep(200); // ==> polling update interval
         verifyThat("#chkServiced_0_2", (CheckBox c) -> !c.isSelected());
@@ -213,19 +217,40 @@ public class AppTest {
     }
 
     @Test
-    public void testSimpleBackendUpdated(FxRobot robot) throws Exception{
+    public void testSimpleBackendUpdatedServicesFloors(FxRobot robot) throws Exception{
         robot.clickOn("#chkServiced_0_3");
         assertFalse(m_Mock.getElevators().get(0).getServicesFloors(3));
         robot.clickOn("#chkServiced_0_3");
         assertTrue(m_Mock.getElevators().get(0).getServicesFloors(3));
     }
     
-    public void testBackendUpdatedOn(FxRobot robot) throws Exception{
-        robot.clickOn("#chkServiced_0_3");
-        assertFalse(m_Mock.getElevators().get(0).getServicesFloors(3));
-        robot.clickOn("#chkServiced_0_3");
-        assertTrue(m_Mock.getElevators().get(0).getServicesFloors(3));
+    @Test
+    public void testBackendUpdatedSetTargetFloorsElev0(FxRobot robot) throws Exception{
+        
+    	robot.clickOn("#cbNavigateFloor_0");
+       	robot.type(KeyCode.DOWN);
+    	robot.type(KeyCode.DOWN);
+    	robot.type(KeyCode.DOWN);
+    	robot.type(KeyCode.DOWN);
+    	robot.sleep(200);
+    	robot.type(KeyCode.ENTER);
+    	robot.sleep(2000);
+        assertTrue(m_Mock.getElevators().get(0).getCurrentFloor()==3);
     }
     
-   
+    @Test
+    public void testBackendUpdatedSetTargetFloorsElev1(FxRobot robot) throws Exception{
+    	
+    	// implicit test of elevator selection
+    	robot.clickOn("#m_rbSelectElevator_1");
+    	robot.clickOn("#cbNavigateFloor_1");
+    	robot.type(KeyCode.DOWN);
+    	robot.type(KeyCode.DOWN);
+    	robot.type(KeyCode.DOWN);
+    	robot.type(KeyCode.DOWN);
+    	robot.sleep(200);
+    	robot.type(KeyCode.ENTER);
+        robot.sleep(2000);
+        assertTrue(m_Mock.getElevators().get(1).getCurrentFloor()==3);
+    }
 }
