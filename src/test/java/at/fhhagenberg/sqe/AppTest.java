@@ -167,22 +167,6 @@ public class AppTest {
     }
 
     @Test
-    public void testToTestStuffRemoveMe(FxRobot robot) throws Exception {
-        m_Mock.getElevators().get(0).setFloorButtonActive(3, true);
-        m_Mock.getElevators().get(1).setFloorButtonActive(2, true);
-        m_Mock.getFloors().get(0).setDownButtonActive(true);
-        m_Mock.getFloors().get(4).setUpButtonActive(true);
-        robot.sleep(1000);
-        m_Mock.getElevators().get(0).setFloorButtonActive(3, false);
-        m_Mock.getElevators().get(1).setFloorButtonActive(2, false);
-        m_Mock.getFloors().get(0).setDownButtonActive(false);
-        m_Mock.getFloors().get(4).setUpButtonActive(false);
-        robot.sleep(1000);
-      //  robot.clickOn("#cbNavigateFloor_1");
-        // TODO: DELETE THIS TEST!!
-    }
-
-    @Test
     public void testSimpleFrontendUpdated(FxRobot robot) throws Exception{
         m_Mock.getElevators().get(0).setServicesFloors(2, false);
         robot.sleep(200); // ==> polling update interval
