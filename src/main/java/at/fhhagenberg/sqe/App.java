@@ -28,6 +28,10 @@ public class App extends Application {
 
 
     private IElevatorWrapper m_Elevator;
+    private BuildingModelImpl m_BuildingModel;
+    private ElevatorModelImpl m_ElevatorModel;
+    private FloorModelImpl m_FloorModelImpl;
+    private ElevatorControllerImpl m_ElevatorController;
 
 
     @Override
@@ -37,12 +41,20 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
-        ElevatorControllerImpl controller = new ElevatorControllerImpl(m_Elevator, new BuildingModelImpl(), new ElevatorModelImpl(), new FloorModelImpl()); 
-        controller.startPolling();
-        IElevatorGUI gui = new ElevatorGUI(controller);
+    	m_BuildingModel = new BuildingModelImpl();
+    	m_ElevatorModel = new ElevatorModelImpl();
+    	m_FloorModelImpl = new FloorModelImpl();
+    	m_ElevatorController = new ElevatorControllerImpl(m_Elevator, m_BuildingModel,  m_ElevatorModel, m_FloorModelImpl); 
+    	m_ElevatorController.startPolling();
+        IElevatorGUI gui = new ElevatorGUI(m_ElevatorController);
         stage.setScene(gui.getScene());
         stage.setTitle("Elevator Control Center [Team F]");
         stage.show();
+    }
+    
+    public ElevatorControllerImpl getController()
+    {
+    	return m_ElevatorController;
     }
 
     /**

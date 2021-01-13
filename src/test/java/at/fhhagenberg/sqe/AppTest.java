@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.testfx.api.FxAssert.verifyThat;
 
+
+import java.rmi.RemoteException;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxAssert;
@@ -13,8 +16,10 @@ import org.testfx.framework.junit5.Start;
 import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.matcher.control.TextInputControlMatchers;
 
+
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import sqelevator.IElevator;
 import at.fhhagenberg.sqe.elevator.mock.ElevatorWrapperTestImpl;
@@ -25,10 +30,12 @@ import at.fhhagenberg.sqe.elevator.wrappers.IElevatorWrapper;
 @ExtendWith(ApplicationExtension.class)
 public class AppTest {
     
+	private App app;
     private static final Integer ELEVATOR_CAPACITY = 10;
 	private static final Integer NUM_ELEVATORS = 3;
 	private static final Integer NUM_FLOORS = 10;
 	private static final Integer FLOOR_HEIGHT = 5;
+	
 
     private IElevatorWrapper m_Elevator;
     private MockElevator m_Mock;
@@ -82,7 +89,7 @@ public class AppTest {
      */
     @Start
     public void start(Stage stage) {
-        var app = new App();
+        app = new App();
         m_Mock = new MockElevator(NUM_ELEVATORS, NUM_FLOORS, FLOOR_HEIGHT, ELEVATOR_CAPACITY);
         m_Elevator = new ElevatorWrapperTestImpl(m_Mock);
         app.setElevator(m_Elevator); // inject mocked elevator into main application
@@ -127,6 +134,16 @@ public class AppTest {
     // #m_taErrorMessage (textarea)
 
     @Test
+    public void testErrorString(FxRobot robot) throws Exception{
+    	
+    	verifyThat("#m_taErrorMessage", (TextArea t) -> t.getText().equals(""));
+    	app.getController().getBuilding().setError("Test Error Occured");
+    	robot.sleep(200);
+
+    	verifyThat("#m_taErrorMessage", (TextArea t) -> t.getText().equals("\nTest Error Occured"));
+    }
+    
+    @Test
     public void testElevator0Stats(FxRobot robot) throws Exception {
         robot.clickOn("#m_rbSelectElevator_0");
 
@@ -162,6 +179,7 @@ public class AppTest {
         m_Mock.getFloors().get(4).setUpButtonActive(false);
         robot.sleep(1000);
       //  robot.clickOn("#cbNavigateFloor_1");
+        // TODO: DELETE THIS TEST!!
     }
 
     @Test
@@ -181,5 +199,8 @@ public class AppTest {
         robot.clickOn("#chkServiced_0_3");
         assertTrue(m_Mock.getElevators().get(0).getServicesFloors(3));
     }
+    
+    
+    
 
 }
