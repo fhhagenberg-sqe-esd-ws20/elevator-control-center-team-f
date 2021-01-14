@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -86,5 +88,31 @@ public class FloorModelTests {
         assertTrue(hasHanged.get());
         assertEquals(t.getServicedElevators(), newVal.get());
         assertEquals(1 ,newVal.get().size());
+    }
+
+	@Test
+    void testRemovePropertyChangeListener() throws Exception {
+        IFloorModel f = new FloorModelImpl();
+
+        AtomicReference<Boolean> hasHanged = new AtomicReference<Boolean>(); hasHanged.set(false);
+
+        PropertyChangeListener pl = (new PropertyChangeListener(){
+            @Override public void propertyChange( PropertyChangeEvent e ){
+                hasHanged.set(true);  
+            }
+        });
+
+        f.addButtonDownPropertyChangeListener(pl);
+        f.addButtonUpPropertyChangeListener(pl);
+        f.addServicedElevatorsPropertyChangeListener(pl);
+        f.removeButtonDownPropertyChangeListener(pl);
+        f.removeButtonUpPropertyChangeListener(pl);
+        f.removeServicedElevatorsPropertyChangeListener(pl);
+        
+        f.setButtonDownPressed(true);
+        f.setButtonUpPressed(true);
+        f.getServicedElevators().add(new ElevatorModelImpl());
+
+        assertFalse(hasHanged.get());
     }
 }
