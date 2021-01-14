@@ -23,7 +23,6 @@ public class ElevatorControllerImpl implements IElevatorController {
     private IFloorModel m_FloorModel;
     private IElevatorModel m_ElevatorModel;
     private Timer m_PollingCall;
-    private boolean m_Initialized = false;
 
     /**
      * CTor
@@ -54,14 +53,13 @@ public class ElevatorControllerImpl implements IElevatorController {
         try{
             m_Elevator.reconnect();
 
-            if(!m_Initialized){
-                m_BuildingModel = m_BuildingModel.createBuildingModel(m_Elevator.getClockTick(), m_Elevator.getFloorHeight());
-                for(int i = 0; i < m_Elevator.getFloorNum(); i++)
-                    m_BuildingModel.getFloors().add(m_FloorModel.createFloorModel(i));
+            m_BuildingModel = m_BuildingModel.createBuildingModel(m_Elevator.getClockTick(), m_Elevator.getFloorHeight());
+            for(int i = 0; i < m_Elevator.getFloorNum(); i++)
+                m_BuildingModel.getFloors().add(m_FloorModel.createFloorModel(i));
 
-                for(int i = 0; i < m_Elevator.getElevatorNum(); i++)
-                    m_BuildingModel.getElevators().add(m_ElevatorModel.createElevatorModel(m_Elevator.getElevatorCapacity(i), i, m_BuildingModel));
-            }
+            for(int i = 0; i < m_Elevator.getElevatorNum(); i++)
+                m_BuildingModel.getElevators().add(m_ElevatorModel.createElevatorModel(m_Elevator.getElevatorCapacity(i), i, m_BuildingModel));
+
         }
         catch(Exception ex){
             m_BuildingModel.setError(ex.getMessage());
@@ -69,7 +67,6 @@ public class ElevatorControllerImpl implements IElevatorController {
             return;
         }
         m_BuildingModel.setConnectionState(true);
-        m_Initialized = true;
     }
 
     @Override
