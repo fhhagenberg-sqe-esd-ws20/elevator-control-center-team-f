@@ -4,28 +4,18 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.testfx.api.FxAssert.verifyThat;
 
-import java.io.Console;
-import java.rmi.RemoteException;
-import java.util.concurrent.TimeUnit;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.testfx.api.FxAssert;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.matcher.control.LabeledMatchers;
-import org.testfx.matcher.control.TextInputControlMatchers;
 
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
+
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
@@ -106,14 +96,10 @@ public class AppTest {
         m_Mock = new MockElevator(NUM_ELEVATORS, NUM_FLOORS, FLOOR_HEIGHT, ELEVATOR_CAPACITY);
         m_Elevator = new ElevatorWrapperTestImpl(m_Mock);
         ElevatorControllerImpl contr = new ElevatorControllerImpl(m_Elevator, new BuildingModelImpl(),  new ElevatorModelImpl(), new FloorModelImpl());
-        try {
-			TimeUnit.MILLISECONDS.sleep(300);
-		} catch (InterruptedException e) {}
         m_Controller = contr;
     	contr.startPolling();
         
     	// inject mocked objects into main application
-        app.setElevator(m_Elevator);
         app.setController(m_Controller);
         app.start(stage);
     }

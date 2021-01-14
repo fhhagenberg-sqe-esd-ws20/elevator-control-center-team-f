@@ -44,7 +44,7 @@ public class App extends Application {
 
     @Override
     public void init() throws Exception {
-        m_Elevator = new ElevatorWrapperImpl(null);
+        m_Elevator = new ElevatorWrapperImpl();
     	m_BuildingModel = new BuildingModelImpl();
     	m_ElevatorModel = new ElevatorModelImpl();
     	m_FloorModel = new FloorModelImpl();
@@ -80,14 +80,6 @@ public class App extends Application {
     public void setController(IElevatorController e)
     {
     	m_ElevatorController = e;
-    }
-
-    /**
-     * Allow injecting custom Elevator implementations.
-     * @param e custom Elevator implementation
-     */
-    public void setElevator(IElevatorWrapper e){
-        m_Elevator = e;
     }
 
     public static void main(String[] args) {

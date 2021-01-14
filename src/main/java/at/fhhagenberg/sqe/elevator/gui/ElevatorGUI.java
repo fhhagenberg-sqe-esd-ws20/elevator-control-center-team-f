@@ -100,13 +100,7 @@ public class ElevatorGUI implements IElevatorGUI {
 
 		m_Scene = new Scene(m_ScrollPane, 800, 500);
 		
-		m_Controller.getBuilding().addConnectionStatePropertyChangeListener(pr -> { 
-			if(m_Controller.getBuilding().getConnectionState())
-			{
-				m_Controller.fillModel();
-				Redraw();
-			}
-		});
+		m_Controller.getBuilding().addConnectionStatePropertyChangeListener(pr -> { if((boolean)pr.getNewValue()) Redraw(); });
 	}
 	
 	public void Redraw()
@@ -559,7 +553,7 @@ public class ElevatorGUI implements IElevatorGUI {
 		
 		m_Controller.getBuilding().addErrorPropertyChangeListener(pl -> m_taErrorMessages.setText(m_taErrorMessages.getText() + "\n" + (String)pl.getNewValue()));
 		m_taErrorMessages.setId("m_taErrorMessage");
-
+		m_taErrorMessages.setText(m_Controller.getBuilding().getError());
 		err.add(m_taErrorMessages, 0, 1);
 		return err;
 	}

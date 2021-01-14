@@ -44,7 +44,11 @@ public interface IElevatorController {
      */
     public void maintainConnection();
     
+    /**
+     * Pulls values from the elevator interface and stores them into the model objects.
+     */
     public void fillModel();
+
     /**
      * @return Building which is controlled by this controller.
      */

@@ -15,8 +15,12 @@ public class ElevatorWrapperImpl implements IElevatorWrapper {
     private IElevator m_Elev;
 
     public ElevatorWrapperImpl(IElevator e) {
+        if(e == null)
+            throw new NullPointerException("Invalid IElevator Object passed to the wrapper!");
     	m_Elev = e;
     }
+
+    public ElevatorWrapperImpl() {}
 
     @Override
     public void reconnect() throws java.rmi.RemoteException, java.rmi.NotBoundException, java.net.MalformedURLException {
