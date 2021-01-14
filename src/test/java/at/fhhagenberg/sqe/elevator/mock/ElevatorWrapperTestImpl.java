@@ -15,6 +15,10 @@ public class ElevatorWrapperTestImpl extends ElevatorWrapperImpl {
         super(e);
     }
 
+    public ElevatorWrapperTestImpl(){
+        super();
+    }
+
     @Override
     public void reconnect(){
         // do nothing

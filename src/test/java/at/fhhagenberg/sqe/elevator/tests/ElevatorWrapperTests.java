@@ -38,6 +38,11 @@ public class ElevatorWrapperTests {
 		assertEquals(NUM_FLOORS, wrapper.getFloorNum());
 	}
 
+    @Test
+    void testCTorWithInvalidParams() {
+        assertThrows(NullPointerException.class, () -> new ElevatorWrapperImpl(null));
+    }
+
 	@Test
 	void testNumElevators() throws Exception {
 		assertEquals(NUM_ELEVATORS, wrapper.getElevatorNum());

@@ -17,6 +17,7 @@ public class MockElevator implements IElevator {
     private int floorHeight;
     private List<MockElevatorState> elevators;
     private List<MockFloorState> floors;
+    private boolean shouldThrow = false;
 
     public MockElevator(int numElevators, int numFloors, int floorHeight, int elevatorCapacity) {
         this.numElevators = numElevators;
@@ -40,6 +41,15 @@ public class MockElevator implements IElevator {
         }
     }
 
+    /**
+     * If set true, this mock will throw exceptions on every overridden method without 
+     * doing anything else.
+     * The exception message is set to the function name which was called.
+     */
+    public void setShouldThrow(boolean t){
+        shouldThrow = t;
+    }
+
     public List<MockElevatorState> getElevators() {
         return elevators;   //expose elevators for mocking
     }
@@ -50,6 +60,9 @@ public class MockElevator implements IElevator {
 
     @Override
     public int getCommittedDirection(int elevatorNumber) throws RemoteException {
+        if(shouldThrow)
+            throw new RemoteException("getCommittedDirection");
+
         checkElevatorNumber(elevatorNumber);
 
         return elevators.get(elevatorNumber).getDirection();
@@ -57,6 +70,9 @@ public class MockElevator implements IElevator {
 
     @Override
     public int getElevatorAccel(int elevatorNumber) throws RemoteException {
+        if(shouldThrow)
+            throw new RemoteException("getElevatorAccel");
+
         checkElevatorNumber(elevatorNumber);
 
         return elevators.get(elevatorNumber).getAcceleration();
@@ -64,6 +80,9 @@ public class MockElevator implements IElevator {
 
     @Override
     public boolean getElevatorButton(int elevatorNumber, int floor) throws RemoteException {
+        if(shouldThrow)
+            throw new RemoteException("getElevatorButton");
+
         checkElevatorNumber(elevatorNumber);
         checkFloorNumber(floor);
 
@@ -72,6 +91,9 @@ public class MockElevator implements IElevator {
 
     @Override
     public int getElevatorDoorStatus(int elevatorNumber) throws RemoteException {
+        if(shouldThrow)
+            throw new RemoteException("getElevatorDoorStatus");
+
         checkElevatorNumber(elevatorNumber);
 
         return elevators.get(elevatorNumber).getDoorStatus();
@@ -79,6 +101,9 @@ public class MockElevator implements IElevator {
 
     @Override
     public int getElevatorFloor(int elevatorNumber) throws RemoteException {
+        if(shouldThrow)
+            throw new RemoteException("getElevatorFloor");
+
         checkElevatorNumber(elevatorNumber);
 
         return elevators.get(elevatorNumber).getCurrentFloor();
@@ -86,11 +111,17 @@ public class MockElevator implements IElevator {
 
     @Override
     public int getElevatorNum() throws RemoteException {
+        if(shouldThrow)
+            throw new RemoteException("getElevatorNum");
+
         return numElevators;
     }
 
     @Override
     public int getElevatorPosition(int elevatorNumber) throws RemoteException {
+        if(shouldThrow)
+            throw new RemoteException("getElevatorPosition");
+
         checkElevatorNumber(elevatorNumber);
 
         return elevators.get(elevatorNumber).getCurrentFloor() * floorHeight;
@@ -98,6 +129,9 @@ public class MockElevator implements IElevator {
 
     @Override
     public int getElevatorSpeed(int elevatorNumber) throws RemoteException {
+        if(shouldThrow)
+            throw new RemoteException("getElevatorSpeed");
+
         checkElevatorNumber(elevatorNumber);
 
         return elevators.get(elevatorNumber).getSpeed();
@@ -105,6 +139,9 @@ public class MockElevator implements IElevator {
 
     @Override
     public int getElevatorWeight(int elevatorNumber) throws RemoteException {
+        if(shouldThrow)
+            throw new RemoteException("getElevatorWeight");
+
         checkElevatorNumber(elevatorNumber);
 
         return elevators.get(elevatorNumber).getWeight();
@@ -112,6 +149,9 @@ public class MockElevator implements IElevator {
 
     @Override
     public int getElevatorCapacity(int elevatorNumber) throws RemoteException {
+        if(shouldThrow)
+            throw new RemoteException("getElevatorCapacity");
+
         checkElevatorNumber(elevatorNumber);
 
         return elevators.get(elevatorNumber).getCapacity();
@@ -119,6 +159,9 @@ public class MockElevator implements IElevator {
 
     @Override
     public boolean getFloorButtonDown(int floor) throws RemoteException {
+        if(shouldThrow)
+            throw new RemoteException("getFloorButtonDown");
+
         checkFloorNumber(floor);
 
         return floors.get(floor).isDownButtonActive();
@@ -126,6 +169,9 @@ public class MockElevator implements IElevator {
 
     @Override
     public boolean getFloorButtonUp(int floor) throws RemoteException {
+        if(shouldThrow)
+            throw new RemoteException("getFloorButtonUp");
+
         checkFloorNumber(floor);
 
         return floors.get(floor).isUpButtonActive();
@@ -133,16 +179,25 @@ public class MockElevator implements IElevator {
 
     @Override
     public int getFloorHeight() throws RemoteException {
+        if(shouldThrow)
+            throw new RemoteException("getFloorHeight");
+
         return floorHeight;
     }
 
     @Override
     public int getFloorNum() throws RemoteException {
+        if(shouldThrow)
+            throw new RemoteException("getFloorNum");
+
         return numFloors;
     }
 
     @Override
     public boolean getServicesFloors(int elevatorNumber, int floor) throws RemoteException {
+        if(shouldThrow)
+            throw new RemoteException("getServicesFloors");
+
         checkElevatorNumber(elevatorNumber);
         checkFloorNumber(floor);
 
@@ -151,6 +206,9 @@ public class MockElevator implements IElevator {
 
     @Override
     public int getTarget(int elevatorNumber) throws RemoteException {
+        if(shouldThrow)
+            throw new RemoteException("getTarget");
+
         checkElevatorNumber(elevatorNumber);
 
         return elevators.get(elevatorNumber).getTargetFloor();
@@ -158,6 +216,9 @@ public class MockElevator implements IElevator {
 
     @Override
     public void setCommittedDirection(int elevatorNumber, int direction) throws RemoteException {
+        if(shouldThrow)
+            throw new RemoteException("setCommittedDirection");
+
         checkElevatorNumber(elevatorNumber);
         checkDirection(direction);
 
@@ -166,6 +227,9 @@ public class MockElevator implements IElevator {
 
     @Override
     public void setServicesFloors(int elevatorNumber, int floor, boolean service) throws RemoteException {
+        if(shouldThrow)
+            throw new RemoteException("setServicesFloors");
+
         checkElevatorNumber(elevatorNumber);
         checkFloorNumber(floor);
 
@@ -174,6 +238,9 @@ public class MockElevator implements IElevator {
 
     @Override
     public void setTarget(int elevatorNumber, int target) throws RemoteException {
+        if(shouldThrow)
+            throw new RemoteException("setTarget");
+
         checkElevatorNumber(elevatorNumber);
         checkFloorNumber(target);
 

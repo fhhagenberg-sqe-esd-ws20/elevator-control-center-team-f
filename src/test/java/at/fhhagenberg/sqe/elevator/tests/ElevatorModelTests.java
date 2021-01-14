@@ -43,6 +43,7 @@ public class ElevatorModelTests {
         assertThrows(ElevatorInvalidCapacityException.class, () -> {e.createElevatorModel(-1, 1, new BuildingModelImpl());});
         assertThrows(ElevatorInvalidNumberException.class, () -> {e.createElevatorModel(5, -1, new BuildingModelImpl());});
         assertThrows(NullPointerException.class, () -> {e.createElevatorModel(5, 1, null);});
+        assertThrows(NullPointerException.class, () -> {e.createElevatorModel(5, 1, null);});
     }
 
     @Test

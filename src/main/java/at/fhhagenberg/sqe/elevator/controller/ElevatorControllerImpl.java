@@ -3,7 +3,6 @@
  */
 package at.fhhagenberg.sqe.elevator.controller;
 
-import java.rmi.RemoteException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -176,7 +175,7 @@ public class ElevatorControllerImpl implements IElevatorController {
             if(!m_BuildingModel.getElevators().get(elevatorNumber).getAutomaticMode())
                 m_Elevator.setTarget(elevatorNumber, target);
         }
-        catch(RemoteException ex){
+        catch(Exception ex){
             m_BuildingModel.setError(ex.getMessage());
             m_BuildingModel.setConnectionState(false);
         }

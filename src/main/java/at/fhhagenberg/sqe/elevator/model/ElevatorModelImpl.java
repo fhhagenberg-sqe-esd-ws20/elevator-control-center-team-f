@@ -61,9 +61,6 @@ public class ElevatorModelImpl implements IElevatorModel {
         if(b == null)
             throw new NullPointerException("Invalid building passed!");
         
-        if(b.getFloors() == null)
-            throw new NullPointerException("Floors not initialized! Make sure IBuildingModel has valid floors!");
-        
         m_Building = b;
         m_Num = num;
         m_Capacity = personCapacity;

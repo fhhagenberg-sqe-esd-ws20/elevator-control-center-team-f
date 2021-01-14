@@ -6,6 +6,7 @@ package at.fhhagenberg.sqe.elevator.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -43,6 +44,19 @@ public class ElevatorControllerTests {
     }
 
     @Test
+    void testSetCommitedDirException() throws Exception {
+        MockElevator e = new MockElevator(NUM_ELEVATORS, NUM_FLOORS, FLOOR_HEIGHT, ELEVATOR_CAPACITY);
+        IElevatorWrapper w = new ElevatorWrapperTestImpl(e);
+        IElevatorController c = new ElevatorControllerImpl(w, new BuildingModelImpl(), new ElevatorModelImpl(), new FloorModelImpl());
+        e.setShouldThrow(true);
+
+        c.setCommittedDirection(0, 2);
+
+        assertEquals("setCommittedDirection", c.getBuilding().getError());
+        assertEquals(false, c.getBuilding().getConnectionState());
+    }
+
+    @Test
     void testServicesFloor() throws Exception {
         IElevator e = new MockElevator(NUM_ELEVATORS, NUM_FLOORS, FLOOR_HEIGHT, ELEVATOR_CAPACITY);
         IElevatorWrapper w = new ElevatorWrapperTestImpl(e);
@@ -55,6 +69,19 @@ public class ElevatorControllerTests {
     }
 
     @Test
+    void testServicesFloorException() throws Exception {
+        MockElevator e = new MockElevator(NUM_ELEVATORS, NUM_FLOORS, FLOOR_HEIGHT, ELEVATOR_CAPACITY);
+        IElevatorWrapper w = new ElevatorWrapperTestImpl(e);
+        IElevatorController c = new ElevatorControllerImpl(w, new BuildingModelImpl(), new ElevatorModelImpl(), new FloorModelImpl());
+        e.setShouldThrow(true);
+
+        c.setServicesFloors(0, 1, true);
+
+        assertEquals("setServicesFloors", c.getBuilding().getError());
+        assertEquals(false, c.getBuilding().getConnectionState());
+    }
+
+    @Test
     void testSetTarget() throws Exception {
         IElevator e = new MockElevator(NUM_ELEVATORS, NUM_FLOORS, FLOOR_HEIGHT, ELEVATOR_CAPACITY);
         IElevatorWrapper w = new ElevatorWrapperTestImpl(e);
@@ -64,6 +91,53 @@ public class ElevatorControllerTests {
         assertEquals(1, e.getTarget(0));
         c.setTarget(0, 2);
         assertEquals(2, e.getTarget(0));
+
+        c.getBuilding().getElevators().get(0).setAutomaticMode(true);
+        c.setTarget(0, 1);
+        assertNotEquals(1, e.getTarget(0));
+        assertEquals(2, e.getTarget(0));
+    }
+
+    @Test
+    void testSetTargetException() throws Exception {
+        MockElevator e = new MockElevator(NUM_ELEVATORS, NUM_FLOORS, FLOOR_HEIGHT, ELEVATOR_CAPACITY);
+        IElevatorWrapper w = new ElevatorWrapperTestImpl(e);
+        IElevatorController c = new ElevatorControllerImpl(w, new BuildingModelImpl(), new ElevatorModelImpl(), new FloorModelImpl());
+        e.setShouldThrow(true);
+
+        c.setTarget(0, 1);
+        assertEquals("setTarget", c.getBuilding().getError());
+        assertEquals(false, c.getBuilding().getConnectionState());
+    }
+
+    @Test
+    void testCTorWithException() throws Exception {
+        MockElevator e = new MockElevator(NUM_ELEVATORS, NUM_FLOORS, FLOOR_HEIGHT, ELEVATOR_CAPACITY);
+        IElevatorWrapper w = new ElevatorWrapperTestImpl(e);
+        e.setShouldThrow(true);
+        IElevatorController c = new ElevatorControllerImpl(w, new BuildingModelImpl(), new ElevatorModelImpl(), new FloorModelImpl());
+
+        assertEquals(false, c.getBuilding().getConnectionState());
+    }
+
+    @Test
+    void testCTorWithInvalidParams() {
+        assertThrows(NullPointerException.class, () -> new ElevatorControllerImpl(null, new BuildingModelImpl(), new ElevatorModelImpl(), new FloorModelImpl()));
+        assertThrows(NullPointerException.class, () -> new ElevatorControllerImpl(new ElevatorWrapperTestImpl(), null, new ElevatorModelImpl(), new FloorModelImpl()));
+        assertThrows(NullPointerException.class, () -> new ElevatorControllerImpl(new ElevatorWrapperTestImpl(), new BuildingModelImpl(), null, new FloorModelImpl()));
+        assertThrows(NullPointerException.class, () -> new ElevatorControllerImpl(new ElevatorWrapperTestImpl(), new BuildingModelImpl(), new ElevatorModelImpl(), null));
+    }
+
+    @Test
+    void testFillModelWithException() throws Exception {
+        MockElevator e = new MockElevator(NUM_ELEVATORS, NUM_FLOORS, FLOOR_HEIGHT, ELEVATOR_CAPACITY);
+        IElevatorWrapper w = new ElevatorWrapperTestImpl(e);
+        IElevatorController c = new ElevatorControllerImpl(w, new BuildingModelImpl(), new ElevatorModelImpl(), new FloorModelImpl());
+        e.setShouldThrow(true);
+
+        c.fillModel();
+
+        assertEquals(false, c.getBuilding().getConnectionState());
     }
 
     @Test
