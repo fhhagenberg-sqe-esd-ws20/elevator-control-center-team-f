@@ -61,6 +61,8 @@ public class ElevatorGUI implements IElevatorGUI {
 	private StackPane m_StatsPane;
 	private StackPane m_ElevatorPane;
 	private StackPane m_ManualModePane;
+	private GridPane m_ErrorPane;
+	private ScrollPane m_ScrollPane;
 	private Scene m_Scene;
 
 	// elevator selector
@@ -76,7 +78,39 @@ public class ElevatorGUI implements IElevatorGUI {
 
 		m_taErrorMessages.setId("m_taErrorMessages");
 
+		GridPane full = new GridPane();
 
+		full.setPadding(new Insets(10, 10, 10, 10));
+		full.setVgap(10); 
+		full.setHgap(10); 
+
+		m_StatsPane = constructStatusPane();
+		m_ManualModePane = constructManualModePane();
+		m_ElevatorPane = constructElevatorPane();
+		m_ErrorPane = constructErrorPane();
+
+		full.add(m_ElevatorPane, 0 , 0, 1, 2);
+		full.add(m_StatsPane, 1, 0);
+		full.add(m_ManualModePane, 2, 0);
+		full.add(constructElevatorSelectionPane(), 1, 1);
+		full.add(m_ErrorPane, 2, 1);
+
+		m_ScrollPane = new ScrollPane();
+		m_ScrollPane.setContent(full);
+
+		m_Scene = new Scene(m_ScrollPane, 800, 500);
+		
+		m_Controller.getBuilding().addConnectionStatePropertyChangeListener(pr -> { 
+			if(m_Controller.getBuilding().getConnectionState())
+			{
+				m_Controller.fillModel();
+				Redraw();
+			}
+		});
+	}
+	
+	public void Redraw()
+	{
 		GridPane full = new GridPane();
 
 		full.setPadding(new Insets(10, 10, 10, 10));
@@ -91,13 +125,9 @@ public class ElevatorGUI implements IElevatorGUI {
 		full.add(m_StatsPane, 1, 0);
 		full.add(m_ManualModePane, 2, 0);
 		full.add(constructElevatorSelectionPane(), 1, 1);
-		full.add(constructErrorPane(), 2, 1);
+		full.add(m_ErrorPane, 2, 1);
 
-		ScrollPane sp = new ScrollPane();
-		sp.setContent(full);
-
-		m_Scene = new Scene(sp, 800, 500);
-
+		m_ScrollPane.setContent(full);
 	}
 	
 	/**

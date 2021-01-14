@@ -43,7 +43,8 @@ public interface IElevatorController {
      * Try to restore a failsafe state after loosing connection.
      */
     public void maintainConnection();
-
+    
+    public void fillModel();
     /**
      * @return Building which is controlled by this controller.
      */

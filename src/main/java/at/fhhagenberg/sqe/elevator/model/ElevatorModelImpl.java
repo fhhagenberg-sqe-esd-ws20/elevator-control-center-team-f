@@ -340,17 +340,35 @@ public class ElevatorModelImpl implements IElevatorModel {
        m_ChangesAutomaticMode.firePropertyChange("m_AutomaticMode", oldVal, m_AutomaticMode);
     }
 
+    private boolean shouldStopAt(int floor){
+    	return m_Building.getFloors().get(floor).getServicedElevators().contains(this)
+    			&& (m_Building.getFloors().get(floor).getButtonDownPressed()
+    				|| m_Building.getFloors().get(floor).getButtonUpPressed()
+    				|| m_Buttons.get(floor));
+    }
+    
     @Override
     public int getNextTargetFloor(){
         if(m_AutomaticMode){
             // idiotic automatic mode implement better one here if there is time
-            if(m_FloorPos == m_Building.getFloors().size()-1)
-                m_AutoDirVal = -1;
-            else if(m_FloorPos == 0)
-                m_AutoDirVal = 1;
+        	int nextTargetFloor = m_FloorPos + m_AutoDirVal;
+        	boolean foundNext = false;
+        	
+        	while(nextTargetFloor >= 0 && nextTargetFloor < m_Building.getFloors().size()) {
+        		if(shouldStopAt(nextTargetFloor)) {
+        			foundNext = true;
+        			break;
+        		}
+        		nextTargetFloor += m_AutoDirVal;
+        	}
+        	
+        	if(foundNext == false) {
+        		nextTargetFloor = m_FloorPos;
+        		m_AutoDirVal = -m_AutoDirVal;
+        	}
 
             if(m_DoorStatus == DoorStatus.OPEN)
-                return m_FloorPos + m_AutoDirVal;
+                return nextTargetFloor;
             else
                 return m_FloorPos;
         }

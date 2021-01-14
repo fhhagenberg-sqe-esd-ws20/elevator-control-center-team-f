@@ -15,10 +15,7 @@ public class ElevatorWrapperImpl implements IElevatorWrapper {
     private IElevator m_Elev;
 
     public ElevatorWrapperImpl(IElevator e) {
-        m_Elev = e;
-
-        if(m_Elev == null)
-            throw new NullPointerException("Invalid IElevator Object passed to the wrapper!");
+    	m_Elev = e;
     }
 
     @Override

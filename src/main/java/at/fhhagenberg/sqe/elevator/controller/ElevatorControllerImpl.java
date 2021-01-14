@@ -25,6 +25,9 @@ public class ElevatorControllerImpl implements IElevatorController {
     private IElevatorModel m_ElevatorModel;
     private Timer m_PollingCall;
     private boolean m_Initialized = false;
+    private Thread m_ConnectThread;
+    private boolean m_NewConnectionState;
+    private String m_LastErrorMessage;
 
     /**
      * CTor
@@ -52,29 +55,49 @@ public class ElevatorControllerImpl implements IElevatorController {
 
     @Override
     public void maintainConnection(){
-        try{
-            m_Elevator.reconnect();
+    	if(m_ConnectThread == null) {
+    		m_ConnectThread = new Thread(() -> {
+    	        try{
+            		m_Elevator.reconnect();
 
-            if(!m_Initialized){
-                m_BuildingModel = m_BuildingModel.createBuildingModel(m_Elevator.getClockTick(), m_Elevator.getFloorHeight());
-                for(int i = 0; i < m_Elevator.getFloorNum(); i++)
-                    m_BuildingModel.getFloors().add(m_FloorModel.createFloorModel(i));
+                    if(!m_Initialized){
+                        m_BuildingModel = m_BuildingModel.createBuildingModel(m_Elevator.getClockTick(), m_Elevator.getFloorHeight());
+                        for(int i = 0; i < m_Elevator.getFloorNum(); i++)
+                            m_BuildingModel.getFloors().add(m_FloorModel.createFloorModel(i));
 
-                for(int i = 0; i < m_Elevator.getElevatorNum(); i++)
-                    m_BuildingModel.getElevators().add(m_ElevatorModel.createElevatorModel(m_Elevator.getElevatorCapacity(i), i, m_BuildingModel));
-            }
-        }
-        catch(Exception ex){
-            ex.printStackTrace();
-            m_BuildingModel.setError(ex.getMessage());
-            m_BuildingModel.setConnectionState(false);
-        }
-        m_BuildingModel.setConnectionState(true);
-        m_Initialized = true;
+                        for(int i = 0; i < m_Elevator.getElevatorNum(); i++)
+                            m_BuildingModel.getElevators().add(m_ElevatorModel.createElevatorModel(m_Elevator.getElevatorCapacity(i), i, m_BuildingModel));
+                    }
+                    
+                    m_NewConnectionState = true;
+    	        }
+    	        catch(Exception ex){
+    	            ex.printStackTrace();
+    	            m_NewConnectionState = false;
+    	            m_LastErrorMessage = ex.getMessage();
+    	        }
+    		});
+    		
+    		m_ConnectThread.start();
+    	}
+    	
+    	else if(!m_ConnectThread.isAlive()) {
+    		m_ConnectThread = null;
+    		
+    		if(m_NewConnectionState == true) {
+                m_BuildingModel.setConnectionState(true);
+                m_Initialized = true;
+    		}
+    		else {
+    			m_BuildingModel.setError(m_LastErrorMessage);
+	            m_BuildingModel.setConnectionState(false);
+	            m_LastErrorMessage = null;
+    		}
+    	}
     }
 
-
-    private void fillModel(){
+    @Override
+    public void fillModel(){
 
         if(!m_BuildingModel.getConnectionState()){
             maintainConnection();
@@ -204,6 +227,10 @@ public class ElevatorControllerImpl implements IElevatorController {
 				Platform.runLater(() -> fillModel());
 			}
 		}, 0, 200);
+    }
+    
+    public void stopPolling() {
+    	m_PollingCall.cancel();
     }
 
     @Override
