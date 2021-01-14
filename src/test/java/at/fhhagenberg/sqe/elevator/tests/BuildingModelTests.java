@@ -4,10 +4,13 @@
 package at.fhhagenberg.sqe.elevator.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.Test;
@@ -104,5 +107,56 @@ public class BuildingModelTests {
 
         b.addClockTickPropertyChangeListener(pl -> {hasHanged.set(true); newVal.set((Long)pl.getNewValue());});
         assertThrows(BuildingInvalidClockTickException.class, () -> {b.setClockTick(-1);;});
+    }
+
+	@Test
+    void testRemovePropertyChangeListener() throws Exception {
+        IBuildingModel b = new BuildingModelImpl();
+
+        AtomicReference<Boolean> hasHanged = new AtomicReference<Boolean>(); hasHanged.set(false);
+
+        PropertyChangeListener pl = (new PropertyChangeListener(){
+            @Override public void propertyChange( PropertyChangeEvent e ){
+                hasHanged.set(true);  
+            }
+        });
+
+        b.addClockTickPropertyChangeListener(pl);
+        b.addConnectionStatePropertyChangeListener(pl);
+        b.addErrorPropertyChangeListener(pl);
+        b.removeClockTickPropertyChangeListener(pl);
+        b.removeConnectionStatePropertyChangeListener(pl);
+        b.removeErrorPropertyChangeListener(pl);
+        
+        b.setClockTick(1);
+        b.setConnectionState(true);
+        b.setError("error");
+
+        assertFalse(hasHanged.get());
+    }
+
+	@Test
+    void testCopyListenerViaSimpleFactoryCreate() throws Exception {
+        IBuildingModel b = new BuildingModelImpl();
+
+        AtomicReference<Integer> numChanged = new AtomicReference<Integer>(); numChanged.set(0);
+
+        PropertyChangeListener pl = (new PropertyChangeListener(){
+            @Override public void propertyChange( PropertyChangeEvent e ){
+                numChanged.set(numChanged.get() + 1);  
+            }
+        });
+
+        b.addClockTickPropertyChangeListener(pl);
+        b.addConnectionStatePropertyChangeListener(pl);
+        b.addErrorPropertyChangeListener(pl);
+
+        IBuildingModel c = b.createBuildingModel(2, 2);
+        
+        c.setClockTick(1);
+        c.setConnectionState(true);
+        c.setError("error");
+
+        assertEquals(3, numChanged.get());
     }
 }

@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -291,6 +293,59 @@ public class ElevatorModelTests {
         assertTrue(hasHanged.get());
         assertTrue(t.getAutomaticMode());
         assertTrue(newVal.get());
+    }
+
+	@Test
+    void testRemovePropertyChangeListener() throws Exception {
+        IBuildingModel b = new BuildingModelImpl();
+        b.getFloors().add(new FloorModelImpl());
+        b.getFloors().add(new FloorModelImpl());
+        b.getFloors().add(new FloorModelImpl());
+        b.getFloors().add(new FloorModelImpl());
+        IElevatorModel e = new ElevatorModelImpl(2, 0, b);
+
+        AtomicReference<Boolean> hasHanged = new AtomicReference<Boolean>(); hasHanged.set(false);
+
+        PropertyChangeListener l = (new PropertyChangeListener(){
+            @Override public void propertyChange( PropertyChangeEvent e ){
+                hasHanged.set(true);  
+            }
+        });
+
+        e.addAccelerationPropertyChangeListener(l);
+        e.addAutomaticModePropertyChangeListener(l);
+        e.addButtonStatusPropertyChangeListener(l);
+        e.addCommitedDirectionPropertyChangeListener(l);
+        e.addDoorStatusPropertyChangeListener(l);
+        e.addFloorPositionPropertyChangeListener(l);
+        e.addPositionPropertyChangeListener(l);
+        e.addSpeedPropertyChangeListener(l);
+        e.addTargetPropertyChangeListener(l);
+        e.addWeightPropertyChangeListener(l);
+
+        e.removeAccelerationPropertyChangeListener(l);
+        e.removeAutomaticModePropertyChangeListener(l);
+        e.removeButtonStatusPropertyChangeListener(l);
+        e.removeCommitedDirectionPropertyChangeListener(l);
+        e.removeDoorStatusPropertyChangeListener(l);
+        e.removeFloorPositionPropertyChangeListener(l);
+        e.removePositionPropertyChangeListener(l);
+        e.removeSpeedPropertyChangeListener(l);
+        e.removeTargetPropertyChangeListener(l);
+        e.removeWeightPropertyChangeListener(l);
+
+        e.setAccel(5);
+        e.setAutomaticMode(true);
+        e.getButtons().set(0, true);
+        e.setCommitedDirection(IElevatorModel.CommitedDirection.DOWN);
+        e.setDoorStatus(IElevatorModel.DoorStatus.OPENING);
+        e.setFloorPos(2);
+        e.setPos(2);
+        e.setSpeed(2);
+        e.setTarget(2);
+        e.setWeight(2);
+
+        assertFalse(hasHanged.get());
     }
 
 }

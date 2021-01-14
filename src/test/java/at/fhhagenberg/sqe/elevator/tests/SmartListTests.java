@@ -4,14 +4,17 @@
 package at.fhhagenberg.sqe.elevator.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.Test;
 
-
 import at.fhhagenberg.sqe.elevator.utils.SmartList;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 public class SmartListTests {
@@ -220,6 +223,31 @@ public class SmartListTests {
         
         l.set(1, "C");
         assertTrue(hasHanged.get());
+        assertEquals("C", l.get(1));
+        assertEquals(0, sizeDiff.get());
+    }
+
+	@Test
+    void testRemovePropertyChangeListener() throws Exception {
+        SmartList<String> l = new SmartList<String>();
+        l.add("A");
+        l.add("B");
+
+        AtomicReference<Boolean> hasHanged = new AtomicReference<Boolean>(); hasHanged.set(false);
+        AtomicReference<Integer> sizeDiff = new AtomicReference<Integer>(); sizeDiff.set(0);
+
+        PropertyChangeListener pl = (new PropertyChangeListener(){
+            @Override public void propertyChange( PropertyChangeEvent e ){
+                hasHanged.set(true); 
+                sizeDiff.set(((ArrayList<String>)e.getNewValue()).size() - ((ArrayList<String>)e.getOldValue()).size()); 
+            }
+        });
+
+        l.addPropertyChangeListener(pl);
+        l.removePropertyChangeListener(pl);
+        
+        l.set(1, "C");
+        assertFalse(hasHanged.get());
         assertEquals("C", l.get(1));
         assertEquals(0, sizeDiff.get());
     }
