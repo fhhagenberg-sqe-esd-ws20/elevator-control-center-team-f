@@ -29,9 +29,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import sqelevator.IElevator;
+import at.fhhagenberg.sqe.elevator.controller.ElevatorControllerImpl;
+import at.fhhagenberg.sqe.elevator.controller.IElevatorController;
 import at.fhhagenberg.sqe.elevator.mock.ElevatorWrapperTestImpl;
 import at.fhhagenberg.sqe.elevator.mock.MockElevator;
-import at.fhhagenberg.sqe.elevator.model.IElevatorModel;
+import at.fhhagenberg.sqe.elevator.model.BuildingModelImpl;
+import at.fhhagenberg.sqe.elevator.model.ElevatorModelImpl;
+import at.fhhagenberg.sqe.elevator.model.FloorModelImpl;
 import at.fhhagenberg.sqe.elevator.wrappers.IElevatorWrapper;
 
 @ExtendWith(ApplicationExtension.class)
@@ -45,6 +49,7 @@ public class AppTest {
 	
 
     private IElevatorWrapper m_Elevator;
+    private IElevatorController m_Controller;
     private MockElevator m_Mock;
     
     
@@ -99,7 +104,13 @@ public class AppTest {
         app = new App();
         m_Mock = new MockElevator(NUM_ELEVATORS, NUM_FLOORS, FLOOR_HEIGHT, ELEVATOR_CAPACITY);
         m_Elevator = new ElevatorWrapperTestImpl(m_Mock);
-        app.setElevator(m_Elevator); // inject mocked elevator into main application
+        ElevatorControllerImpl contr = new ElevatorControllerImpl(m_Elevator, new BuildingModelImpl(),  new ElevatorModelImpl(), new FloorModelImpl());
+        m_Controller = contr;
+    	contr.startPolling();
+        
+    	// inject mocked objects into main application
+        app.setElevator(m_Elevator);
+        app.setController(m_Controller);
         app.start(stage);
     }
 
@@ -210,7 +221,7 @@ public class AppTest {
     public void testErrorString(FxRobot robot) throws Exception{
     	
     	verifyThat("#m_taErrorMessage", (TextArea t) -> t.getText().equals(""));
-    	app.getController().getBuilding().setError("Test Error Occured");
+    	m_Controller.getBuilding().setError("Test Error Occured");
     	robot.sleep(200);
 
     	verifyThat("#m_taErrorMessage", (TextArea t) -> t.getText().equals("\nTest Error Occured"));
