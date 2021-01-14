@@ -83,7 +83,7 @@ public interface IFloorModel {
      * Removes a formerly added button up propertychangedlistener.
      * @param l PropertyChangeListener to remove.
      */
-    public void removeUpDownPropertyChangeListener(PropertyChangeListener l);
+    public void removeButtonUpPropertyChangeListener(PropertyChangeListener l);
 
     /**
      * Allows adding a PropertyChangeListener which fires an event when the list of serviced elevators changes.

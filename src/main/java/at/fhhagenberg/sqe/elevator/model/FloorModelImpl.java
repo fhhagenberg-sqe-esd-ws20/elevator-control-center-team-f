@@ -98,7 +98,7 @@ public class FloorModelImpl implements IFloorModel {
     }
 
     @Override
-    public void removeUpDownPropertyChangeListener(PropertyChangeListener l){
+    public void removeButtonUpPropertyChangeListener(PropertyChangeListener l){
         m_ChangesBtnUp.removePropertyChangeListener(l);
     }
 

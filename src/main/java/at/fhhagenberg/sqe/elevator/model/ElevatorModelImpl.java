@@ -225,7 +225,7 @@ public class ElevatorModelImpl implements IElevatorModel {
     }
 
     @Override
-    public void removeDoorStatusDirectionPropertyChangeListener(PropertyChangeListener l){
+    public void removeDoorStatusPropertyChangeListener(PropertyChangeListener l){
         m_ChangesDoorStatus.removePropertyChangeListener(l);
     }
 

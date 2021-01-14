@@ -207,7 +207,7 @@ public interface IElevatorModel {
      * Removes a formerly added DoorStatus propertychangedlistener.
      * @param l PropertyChangeListener to remove.
      */
-    public void removeDoorStatusDirectionPropertyChangeListener(PropertyChangeListener l);
+    public void removeDoorStatusPropertyChangeListener(PropertyChangeListener l);
 
     /**
      * Allows adding a PropertyChangeListener which fires an event when the acceleration property changes.
