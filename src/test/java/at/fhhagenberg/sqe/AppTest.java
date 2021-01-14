@@ -6,6 +6,7 @@ import static org.testfx.api.FxAssert.verifyThat;
 
 import java.io.Console;
 import java.rmi.RemoteException;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -105,6 +106,9 @@ public class AppTest {
         m_Mock = new MockElevator(NUM_ELEVATORS, NUM_FLOORS, FLOOR_HEIGHT, ELEVATOR_CAPACITY);
         m_Elevator = new ElevatorWrapperTestImpl(m_Mock);
         ElevatorControllerImpl contr = new ElevatorControllerImpl(m_Elevator, new BuildingModelImpl(),  new ElevatorModelImpl(), new FloorModelImpl());
+        try {
+			TimeUnit.MILLISECONDS.sleep(300);
+		} catch (InterruptedException e) {}
         m_Controller = contr;
     	contr.startPolling();
         
@@ -222,7 +226,7 @@ public class AppTest {
     	
     	verifyThat("#m_taErrorMessage", (TextArea t) -> t.getText().equals(""));
     	m_Controller.getBuilding().setError("Test Error Occured");
-    	robot.sleep(200);
+    	robot.sleep(300);
 
     	verifyThat("#m_taErrorMessage", (TextArea t) -> t.getText().equals("\nTest Error Occured"));
     }

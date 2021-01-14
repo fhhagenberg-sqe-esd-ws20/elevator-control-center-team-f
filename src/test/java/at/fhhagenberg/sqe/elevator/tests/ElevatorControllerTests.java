@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.concurrent.TimeUnit;
+
 import org.junit.jupiter.api.Test;
 
 import at.fhhagenberg.sqe.elevator.controller.ElevatorControllerImpl;
@@ -35,6 +37,7 @@ public class ElevatorControllerTests {
         IElevator e = new MockElevator(NUM_ELEVATORS, NUM_FLOORS, FLOOR_HEIGHT, ELEVATOR_CAPACITY);
         IElevatorWrapper w = new ElevatorWrapperTestImpl(e);
         IElevatorController c = new ElevatorControllerImpl(w, new BuildingModelImpl(), new ElevatorModelImpl(), new FloorModelImpl());
+        TimeUnit.MILLISECONDS.sleep(300);
 
         c.setCommittedDirection(0, 2);
         assertEquals(2, e.getCommittedDirection(0));
@@ -47,6 +50,7 @@ public class ElevatorControllerTests {
         IElevator e = new MockElevator(NUM_ELEVATORS, NUM_FLOORS, FLOOR_HEIGHT, ELEVATOR_CAPACITY);
         IElevatorWrapper w = new ElevatorWrapperTestImpl(e);
         IElevatorController c = new ElevatorControllerImpl(w, new BuildingModelImpl(), new ElevatorModelImpl(), new FloorModelImpl());
+        TimeUnit.MILLISECONDS.sleep(300);
 
         c.setServicesFloors(0, 1, true);
         assertTrue(e.getServicesFloors(0, 1));
@@ -59,7 +63,8 @@ public class ElevatorControllerTests {
         IElevator e = new MockElevator(NUM_ELEVATORS, NUM_FLOORS, FLOOR_HEIGHT, ELEVATOR_CAPACITY);
         IElevatorWrapper w = new ElevatorWrapperTestImpl(e);
         IElevatorController c = new ElevatorControllerImpl(w, new BuildingModelImpl(), new ElevatorModelImpl(), new FloorModelImpl());
-
+        TimeUnit.MILLISECONDS.sleep(300);
+        
         c.setTarget(0, 1);
         assertEquals(1, e.getTarget(0));
         c.setTarget(0, 2);
@@ -81,7 +86,8 @@ public class ElevatorControllerTests {
         IElevatorWrapper w = new ElevatorWrapperTestImpl(e);
         IBuildingModel b = new BuildingModelImpl(1,1);
         IElevatorController c = new ElevatorControllerImpl(w, b, new ElevatorModelImpl(), new FloorModelImpl());
-
+        TimeUnit.MILLISECONDS.sleep(300);
+        
         IElevatorModel eimp =  c.getBuilding().getElevators().get(0);
         c.setAutomaticMode(0, true);
         assertTrue(eimp.getAutomaticMode());
