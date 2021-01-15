@@ -20,6 +20,7 @@ import java.util.ArrayList;
 public class SmartListTests {
 
     @Test
+    @SuppressWarnings("unchecked")
     void testAdd() throws Exception {
         SmartList<Boolean> l = new SmartList<Boolean>();
         AtomicReference<Boolean> hasHanged = new AtomicReference<Boolean>(); hasHanged.set(false);
@@ -30,7 +31,8 @@ public class SmartListTests {
         assertEquals(1, sizeDiff.get());
 	}
 
-	@Test
+    @Test
+    @SuppressWarnings("unchecked")
     void testAddByIndex() throws Exception {
         SmartList<Boolean> l = new SmartList<Boolean>();
         AtomicReference<Boolean> hasHanged = new AtomicReference<Boolean>(); hasHanged.set(false);
@@ -41,7 +43,8 @@ public class SmartListTests {
         assertEquals(1, sizeDiff.get());
     }
 
-	@Test
+    @Test
+    @SuppressWarnings("unchecked")
     void testAddAll() throws Exception {
         ArrayList<Integer> arrlist2 = new ArrayList<Integer>();
         arrlist2.add(1);
@@ -58,7 +61,8 @@ public class SmartListTests {
         assertEquals(4, sizeDiff.get());
     }
 
-	@Test
+    @Test
+    @SuppressWarnings("unchecked")
     void testAddAllByIndex() throws Exception {
         ArrayList<Integer> arrlist2 = new ArrayList<Integer>();
         arrlist2.add(1);
@@ -75,7 +79,8 @@ public class SmartListTests {
         assertEquals(4, sizeDiff.get());
     }
 
-	@Test
+    @Test
+    @SuppressWarnings("unchecked")
     void testAddAllCleaar() throws Exception {
         ArrayList<Integer> arrlist2 = new ArrayList<Integer>();
         arrlist2.add(1);
@@ -95,7 +100,8 @@ public class SmartListTests {
         assertEquals(-4, sizeDiff.get());
     }
 
-	@Test
+    @Test
+    @SuppressWarnings("unchecked")
     void testRemoveByIndex() throws Exception {
         ArrayList<Integer> arrlist2 = new ArrayList<Integer>();
         arrlist2.add(1);
@@ -115,7 +121,8 @@ public class SmartListTests {
         assertEquals(-1, sizeDiff.get());
     }
 
-	@Test
+    @Test
+    @SuppressWarnings("unchecked")
     void testRemoveByObject() throws Exception {
         ArrayList<Integer> arrlist2 = new ArrayList<Integer>();
         arrlist2.add(1);
@@ -135,7 +142,8 @@ public class SmartListTests {
         assertEquals(-1, sizeDiff.get());
     }
 
-	@Test
+    @Test
+    @SuppressWarnings("unchecked")
     void testRemoveAll() throws Exception {
         ArrayList<Integer> arrlist1 = new ArrayList<Integer>();
         arrlist1.add(1);
@@ -158,7 +166,8 @@ public class SmartListTests {
         assertEquals(-2, sizeDiff.get());
     }
 
-	@Test
+    @Test
+    @SuppressWarnings("unchecked")
     void testRetainAll() throws Exception {
         ArrayList<Integer> arrlist1 = new ArrayList<Integer>();
         arrlist1.add(1);
@@ -179,7 +188,8 @@ public class SmartListTests {
         assertEquals(-1, sizeDiff.get());
     }
 
-	@Test
+    @Test
+    @SuppressWarnings("unchecked")
     void testRelaceAll() throws Exception {
         SmartList<String> l = new SmartList<String>();
         l.add("A");
@@ -196,7 +206,8 @@ public class SmartListTests {
         assertEquals(0, sizeDiff.get());
     }
 
-	@Test
+    @Test
+    @SuppressWarnings("unchecked")
     void testRemoveIf() throws Exception {
         SmartList<String> l = new SmartList<String>();
         l.add("A");
@@ -211,7 +222,8 @@ public class SmartListTests {
         assertEquals(-1, sizeDiff.get());
     }
 
-	@Test
+    @Test
+    @SuppressWarnings("unchecked")
     void testSet() throws Exception {
         SmartList<String> l = new SmartList<String>();
         l.add("A");
@@ -227,7 +239,8 @@ public class SmartListTests {
         assertEquals(0, sizeDiff.get());
     }
 
-	@Test
+    @Test
+    @SuppressWarnings("unchecked")
     void testRemovePropertyChangeListener() throws Exception {
         SmartList<String> l = new SmartList<String>();
         l.add("A");

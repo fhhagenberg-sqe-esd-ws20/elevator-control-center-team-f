@@ -3,16 +3,8 @@ package at.fhhagenberg.sqe;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import sqelevator.IElevator;
-
-import java.rmi.Naming;
-import java.rmi.RemoteException;
 
 import at.fhhagenberg.sqe.elevator.controller.ElevatorControllerImpl;
 import at.fhhagenberg.sqe.elevator.controller.IElevatorController;

@@ -14,6 +14,7 @@ public interface IFloorModel {
     /**
      * Exception to be thrown when trying to set an invalid floor number.
      */
+    @SuppressWarnings("serial")
     public class FloorInvalidFloorException extends Exception{
         public FloorInvalidFloorException(String errorMessage) {
             super(errorMessage);

@@ -72,7 +72,8 @@ public class FloorModelTests {
         assertTrue(newVal.get());
     }
 
-	@Test
+    @Test
+    @SuppressWarnings("unchecked")
     void testServicedElevators() throws Exception {
         IFloorModel f = new FloorModelImpl();
 

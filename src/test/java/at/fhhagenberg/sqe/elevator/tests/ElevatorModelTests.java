@@ -83,6 +83,7 @@ public class ElevatorModelTests {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void testButtons() throws Exception {
         IElevatorModel e = new ElevatorModelImpl();
 

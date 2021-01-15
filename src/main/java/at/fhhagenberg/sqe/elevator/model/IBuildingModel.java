@@ -15,6 +15,7 @@ public interface IBuildingModel {
     /**
      * Exception to be thrown when trying to set a invalid floor height.
      */
+    @SuppressWarnings("serial")
     public class BuildingInvalidFloorHeightException extends Exception{
         public BuildingInvalidFloorHeightException(String errorMessage) {
             super(errorMessage);
@@ -24,6 +25,7 @@ public interface IBuildingModel {
     /**
      * Exception to be thrown when trying to set a invalid clock tick value.
      */
+    @SuppressWarnings("serial")
     public class BuildingInvalidClockTickException extends Exception{
         public BuildingInvalidClockTickException(String errorMessage) {
             super(errorMessage);

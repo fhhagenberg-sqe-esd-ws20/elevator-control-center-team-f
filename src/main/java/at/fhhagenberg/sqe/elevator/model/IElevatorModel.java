@@ -28,6 +28,7 @@ public interface IElevatorModel {
     /**
      * Exception to be thrown when trying to set an invalid floor position.
      */
+    @SuppressWarnings("serial")
     public class ElevatorInvalidFloorPositionException extends Exception{
         public ElevatorInvalidFloorPositionException(String errorMessage) {
             super(errorMessage);
@@ -37,6 +38,7 @@ public interface IElevatorModel {
     /**
      * Exception to be thrown when trying to set an invalid elevator position.
      */
+    @SuppressWarnings("serial")
     public class ElevatorInvalidPositionException extends Exception{
         public ElevatorInvalidPositionException(String errorMessage) {
             super(errorMessage);
@@ -46,6 +48,7 @@ public interface IElevatorModel {
     /**
      * Exception to be thrown when trying to set an invalid weight value.
      */
+    @SuppressWarnings("serial")
     public class ElevatorInvalidWeightException extends Exception{
         public ElevatorInvalidWeightException(String errorMessage) {
             super(errorMessage);
@@ -55,6 +58,7 @@ public interface IElevatorModel {
     /**
      * Exception to be thrown when trying to set an invalid target value.
      */
+    @SuppressWarnings("serial")
     public class ElevatorInvalidTargetException extends Exception{
         public ElevatorInvalidTargetException(String errorMessage) {
             super(errorMessage);
@@ -64,6 +68,7 @@ public interface IElevatorModel {
     /**
      * Exception to be thrown when trying to set an invalid target value.
      */
+    @SuppressWarnings("serial")
     public class ElevatorInvalidCapacityException extends Exception{
         public ElevatorInvalidCapacityException(String errorMessage) {
             super(errorMessage);
@@ -73,6 +78,7 @@ public interface IElevatorModel {
     /**
      * Exception to be thrown when trying to set an invalid elevator number.
      */
+    @SuppressWarnings("serial")
     public class ElevatorInvalidNumberException extends Exception{
         public ElevatorInvalidNumberException(String errorMessage) {
             super(errorMessage);

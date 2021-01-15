@@ -15,6 +15,7 @@ import java.beans.PropertyChangeSupport;
  * Simple wrapper around ArrayList, which allows listening on
  * changes via PropertyChangeListener.
  */
+@SuppressWarnings("serial")
 public class SmartList<T> extends ArrayList<T> {
 
     private PropertyChangeSupport m_Changes = new PropertyChangeSupport(this);

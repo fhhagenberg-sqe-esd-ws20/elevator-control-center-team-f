@@ -286,7 +286,7 @@ public class ElevatorGUI implements IElevatorGUI {
 			lb_nf.setStyle(m_LabelStyle);
 			mmode.add(lb_nf, 0, 1);
 
-			ComboBox cb_floors = new ComboBox();
+			ComboBox<Integer> cb_floors = new ComboBox<Integer>();
 			cb_floors.setId("cbNavigateFloor_" + e.getNum());
 
 			for(IFloorModel f : m_Controller.getBuilding().getFloors()){
@@ -308,6 +308,7 @@ public class ElevatorGUI implements IElevatorGUI {
 	/**
 	 * @return The elevator section of the control panel.
 	 */
+	@SuppressWarnings("unchecked")
 	private StackPane constructElevatorPane() {
 		StackPane stack = new StackPane();
 
