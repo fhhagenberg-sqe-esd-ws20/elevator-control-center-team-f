@@ -483,8 +483,8 @@ public class ElevatorGUI implements IElevatorGUI {
 			Slider slider = new Slider();
 			slider.setOrientation(Orientation.VERTICAL);
 			GridPane.setValignment(slider, VPos.CENTER);
-			slider.setMin(0);
-			slider.setMax(m_Controller.getBuilding().getFloors().size() - 1);
+			slider.setMin(0.0);
+			slider.setMax((double)m_Controller.getBuilding().getFloors().size() - 1.0);
 			slider.setId("sliPosition_" + e.getNum());
 			slider.setDisable(true);
 			slider.setOpacity(1);
