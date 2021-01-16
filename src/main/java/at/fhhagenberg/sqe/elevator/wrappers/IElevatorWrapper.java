@@ -12,20 +12,20 @@ import sqelevator.IElevator;
 public interface IElevatorWrapper extends java.rmi.Remote {
 	
 	/** State variable for elevator doors open.	 */
-	public final static int ELEVATOR_DOORS_OPEN = IElevator.ELEVATOR_DOORS_OPEN;	
+	public static final int ELEVATOR_DOORS_OPEN = IElevator.ELEVATOR_DOORS_OPEN;	
 	/** State variable for elevator doors closed. */
-	public final static int ELEVATOR_DOORS_CLOSED = IElevator.ELEVATOR_DOORS_CLOSED;
+	public static final int ELEVATOR_DOORS_CLOSED = IElevator.ELEVATOR_DOORS_CLOSED;
 	/** State variable for elevator doors opening. */
-	public final static int ELEVATOR_DOORS_OPENING = IElevator.ELEVATOR_DOORS_OPENING;
+	public static final int ELEVATOR_DOORS_OPENING = IElevator.ELEVATOR_DOORS_OPENING;
 	/** State variable for elevator doors closing. */
-	public final static int ELEVATOR_DOORS_CLOSING = IElevator.ELEVATOR_DOORS_CLOSING;
+	public static final int ELEVATOR_DOORS_CLOSING = IElevator.ELEVATOR_DOORS_CLOSING;
 		
 	/** State variable for elevator status when going up */
-	public final static int ELEVATOR_DIRECTION_UP = IElevator.ELEVATOR_DIRECTION_UP;				
+	public static final int ELEVATOR_DIRECTION_UP = IElevator.ELEVATOR_DIRECTION_UP;				
 	/** State variable for elevator status when going down. */
-	public final static int ELEVATOR_DIRECTION_DOWN = IElevator.ELEVATOR_DIRECTION_DOWN;				
+	public static final int ELEVATOR_DIRECTION_DOWN = IElevator.ELEVATOR_DIRECTION_DOWN;				
 	/** State variables for elevator status stopped and uncommitted. */
-	public final static int ELEVATOR_DIRECTION_UNCOMMITTED = IElevator.ELEVATOR_DIRECTION_UNCOMMITTED;	
+	public static final int ELEVATOR_DIRECTION_UNCOMMITTED = IElevator.ELEVATOR_DIRECTION_UNCOMMITTED;	
 	
 
 	/**
