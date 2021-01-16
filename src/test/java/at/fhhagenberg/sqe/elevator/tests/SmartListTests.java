@@ -29,6 +29,16 @@ class SmartListTests {
         l.add(true);
         assertTrue(hasHanged.get());
         assertEquals(1, sizeDiff.get());
+    }
+    
+    @Test
+    void testEquals() throws Exception {
+        SmartList<Boolean> l = new SmartList<Boolean>();
+        SmartList<Boolean> l2 = new SmartList<Boolean>();
+        SmartList<Boolean> l3 = l;
+
+        assertTrue(l.equals(l3));
+        assertFalse(l.equals(l2));
 	}
 
     @Test

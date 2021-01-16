@@ -22,6 +22,11 @@ public class SmartList<T> extends ArrayList<T> {
     private String m_PropertyName = "SmartList";
 
     @Override
+    public boolean equals(Object l){
+        return this == l;
+    }
+
+    @Override
     public boolean add(T e) {
         ArrayList<T> oldVal = new ArrayList<>(this);
         boolean ok = super.add(e);
