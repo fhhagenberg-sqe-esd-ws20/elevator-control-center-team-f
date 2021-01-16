@@ -293,9 +293,7 @@ public class ElevatorGUI implements IElevatorGUI {
 				cb_floors.getItems().add(f.getNum());
 			}
 
-			cb_floors.getSelectionModel().selectedItemProperty().addListener( (options, oldValue, newValue) -> {
-					m_Controller.setTarget(m_SelectedElevator, (int)newValue);
-			});
+			cb_floors.getSelectionModel().selectedItemProperty().addListener( (options, oldValue, newValue) -> m_Controller.setTarget(m_SelectedElevator, (int)newValue));
 			 
 			mmode.add(cb_floors, 0, 2);
 			mmode.setVisible(e.getNum() == 0);
@@ -348,12 +346,7 @@ public class ElevatorGUI implements IElevatorGUI {
 					cb.setSelected(true);
 
 				f.addServicedElevatorsPropertyChangeListener(pl -> cb.setSelected(((ArrayList<IElevatorModel>)pl.getNewValue()).contains(e)));
-				cb.selectedProperty().addListener(new ChangeListener<Boolean>() {
-					@Override
-					public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-						m_Controller.setServicesFloors(e.getNum(), f.getNum(), newValue);
-					}
-				});
+				cb.selectedProperty().addListener((observable, oldValue, newValue) -> m_Controller.setServicesFloors(e.getNum(), f.getNum(), newValue));
 				elev.add(cb, 5, m_Controller.getBuilding().getFloors().size() - f.getNum() - 1);
 
 				// Up/Down Arrows
@@ -445,20 +438,10 @@ public class ElevatorGUI implements IElevatorGUI {
 			}
 
 			btn_auto.setId("btnAutomaticMode_" + e.getNum());
-			btn_auto.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent event) {
-					e.setAutomaticMode(true);
-				}
-			});
+			btn_auto.setOnAction(event -> e.setAutomaticMode(true));
 
 			btn_manual.setId("btnManualMode_" + e.getNum());
-			btn_manual.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent event) {
-					e.setAutomaticMode(false);
-				}
-			});
+			btn_manual.setOnAction(event -> e.setAutomaticMode(false));
 
 			e.addAutomaticModePropertyChangeListener(pl -> {
 				if((boolean)pl.getNewValue()){
@@ -515,14 +498,10 @@ public class ElevatorGUI implements IElevatorGUI {
 			m_rbSelectElevator.add(rb);
 		}
 
-		group.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
-			@Override
-			public void changed(ObservableValue<? extends Toggle> ov,
-				Toggle old_toggle, Toggle new_toggle) {
+		group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
 					if (group.getSelectedToggle() != null) {
 							showElevator((int)group.getSelectedToggle().getUserData());
 					}                
-				}
 		});
 		
 		return sel;
