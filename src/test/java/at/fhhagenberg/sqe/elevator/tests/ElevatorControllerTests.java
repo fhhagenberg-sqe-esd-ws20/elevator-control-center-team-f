@@ -121,7 +121,7 @@ class ElevatorControllerTests {
     }
 
     @Test
-    void testCTorWithInvalidParams() {
+    void testCTorWithInvalidParams() throws Exception {
         assertThrows(NullPointerException.class, () -> new ElevatorControllerImpl(null, new BuildingModelImpl(), new ElevatorModelImpl(), new FloorModelImpl()));
         assertThrows(NullPointerException.class, () -> new ElevatorControllerImpl(new ElevatorWrapperTestImpl(), null, new ElevatorModelImpl(), new FloorModelImpl()));
         assertThrows(NullPointerException.class, () -> new ElevatorControllerImpl(new ElevatorWrapperTestImpl(), new BuildingModelImpl(), null, new FloorModelImpl()));

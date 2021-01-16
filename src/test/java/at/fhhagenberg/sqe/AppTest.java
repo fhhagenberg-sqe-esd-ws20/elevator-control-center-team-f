@@ -1,5 +1,6 @@
 package at.fhhagenberg.sqe;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.testfx.api.FxAssert.verifyThat;
@@ -236,7 +237,7 @@ class AppTest {
     	robot.sleep(200);
     	robot.type(KeyCode.ENTER);
     	robot.sleep(2000);
-        assertTrue(m_Mock.getElevators().get(0).getCurrentFloor()==3);
+        assertEquals(3, m_Mock.getElevators().get(0).getCurrentFloor());
     }
     
     @Test
@@ -252,6 +253,6 @@ class AppTest {
     	robot.sleep(200);
     	robot.type(KeyCode.ENTER);
         robot.sleep(2000);
-        assertTrue(m_Mock.getElevators().get(1).getCurrentFloor()==3);
+        assertEquals(3, m_Mock.getElevators().get(1).getCurrentFloor());
     }
 }
