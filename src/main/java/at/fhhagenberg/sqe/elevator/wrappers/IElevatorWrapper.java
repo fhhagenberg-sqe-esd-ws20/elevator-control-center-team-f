@@ -4,26 +4,28 @@
 
 package at.fhhagenberg.sqe.elevator.wrappers;
 
+import sqelevator.IElevator;
+
 /**
  * Wrapper around IElevator Object, which can be adjusted when the IElevator API changes.
  */
 public interface IElevatorWrapper extends java.rmi.Remote {
 	
 	/** State variable for elevator doors open.	 */
-	public final static int ELEVATOR_DOORS_OPEN = 1;	
+	public final static int ELEVATOR_DOORS_OPEN = IElevator.ELEVATOR_DOORS_OPEN;	
 	/** State variable for elevator doors closed. */
-	public final static int ELEVATOR_DOORS_CLOSED = 2;
+	public final static int ELEVATOR_DOORS_CLOSED = IElevator.ELEVATOR_DOORS_CLOSED;
 	/** State variable for elevator doors opening. */
-	public final static int ELEVATOR_DOORS_OPENING = 3;
+	public final static int ELEVATOR_DOORS_OPENING = IElevator.ELEVATOR_DOORS_OPENING;
 	/** State variable for elevator doors closing. */
-	public final static int ELEVATOR_DOORS_CLOSING = 4;
+	public final static int ELEVATOR_DOORS_CLOSING = IElevator.ELEVATOR_DOORS_CLOSING;
 		
 	/** State variable for elevator status when going up */
-	public final static int ELEVATOR_DIRECTION_UP = 0;				
+	public final static int ELEVATOR_DIRECTION_UP = IElevator.ELEVATOR_DIRECTION_UP;				
 	/** State variable for elevator status when going down. */
-	public final static int ELEVATOR_DIRECTION_DOWN = 1;			
+	public final static int ELEVATOR_DIRECTION_DOWN = IElevator.ELEVATOR_DIRECTION_DOWN;				
 	/** State variables for elevator status stopped and uncommitted. */
-	public final static int ELEVATOR_DIRECTION_UNCOMMITTED = 2;		
+	public final static int ELEVATOR_DIRECTION_UNCOMMITTED = IElevator.ELEVATOR_DIRECTION_UNCOMMITTED;	
 	
 
 	/**
