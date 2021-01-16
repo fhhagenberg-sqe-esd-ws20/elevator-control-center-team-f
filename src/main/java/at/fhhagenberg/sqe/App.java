@@ -2,9 +2,7 @@ package at.fhhagenberg.sqe;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import at.fhhagenberg.sqe.elevator.controller.ElevatorControllerImpl;
 import at.fhhagenberg.sqe.elevator.controller.IElevatorController;
