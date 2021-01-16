@@ -20,6 +20,7 @@ import at.fhhagenberg.sqe.elevator.model.ElevatorModelImpl;
 import at.fhhagenberg.sqe.elevator.model.FloorModelImpl;
 import at.fhhagenberg.sqe.elevator.model.IBuildingModel;
 import at.fhhagenberg.sqe.elevator.model.IElevatorModel;
+import at.fhhagenberg.sqe.elevator.model.IFloorModel;
 import at.fhhagenberg.sqe.elevator.wrappers.IElevatorWrapper;
 import sqelevator.IElevator;
 
@@ -122,10 +123,14 @@ class ElevatorControllerTests {
 
     @Test
     void testCTorWithInvalidParams() throws Exception {
-        assertThrows(NullPointerException.class, () -> new ElevatorControllerImpl(null, new BuildingModelImpl(), new ElevatorModelImpl(), new FloorModelImpl()));
-        assertThrows(NullPointerException.class, () -> new ElevatorControllerImpl(new ElevatorWrapperTestImpl(), null, new ElevatorModelImpl(), new FloorModelImpl()));
-        assertThrows(NullPointerException.class, () -> new ElevatorControllerImpl(new ElevatorWrapperTestImpl(), new BuildingModelImpl(), null, new FloorModelImpl()));
-        assertThrows(NullPointerException.class, () -> new ElevatorControllerImpl(new ElevatorWrapperTestImpl(), new BuildingModelImpl(), new ElevatorModelImpl(), null));
+        IElevatorWrapper ew = new ElevatorWrapperTestImpl();
+        IBuildingModel b = new BuildingModelImpl();
+        IElevatorModel e = new ElevatorModelImpl();
+        IFloorModel f = new FloorModelImpl();
+        assertThrows(NullPointerException.class, () -> new ElevatorControllerImpl(null, b, e, f));
+        assertThrows(NullPointerException.class, () -> new ElevatorControllerImpl(ew, null, e, f));
+        assertThrows(NullPointerException.class, () -> new ElevatorControllerImpl(ew, b, null, f));
+        assertThrows(NullPointerException.class, () -> new ElevatorControllerImpl(ew, b, e, null));
     }
 
     @Test
