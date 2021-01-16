@@ -21,7 +21,7 @@ import at.fhhagenberg.sqe.elevator.model.IBuildingModel.BuildingInvalidClockTick
 import at.fhhagenberg.sqe.elevator.model.IBuildingModel.BuildingInvalidFloorHeightException;
 
 
-public class BuildingModelTests {
+class BuildingModelTests {
 
     @Test
     void testCreateBuildingModel() throws Exception {

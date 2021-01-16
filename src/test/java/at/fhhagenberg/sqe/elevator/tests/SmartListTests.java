@@ -17,7 +17,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
-public class SmartListTests {
+class SmartListTests {
 
     @Test
     @SuppressWarnings("unchecked")

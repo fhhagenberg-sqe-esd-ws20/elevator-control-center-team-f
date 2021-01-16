@@ -11,7 +11,7 @@ import at.fhhagenberg.sqe.elevator.mock.MockElevatorException;
 import at.fhhagenberg.sqe.elevator.wrappers.ElevatorWrapperImpl;
 import at.fhhagenberg.sqe.elevator.wrappers.IElevatorWrapper;
 
-public class ElevatorWrapperTests {
+class ElevatorWrapperTests {
 	private static final Integer ELEVATOR_CAPACITY = 10;
 	private static final Integer NUM_ELEVATORS = 2;
 	private static final Integer NUM_FLOORS = 3;

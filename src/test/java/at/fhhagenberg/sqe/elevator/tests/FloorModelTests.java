@@ -21,7 +21,7 @@ import at.fhhagenberg.sqe.elevator.model.IElevatorModel;
 import at.fhhagenberg.sqe.elevator.model.IFloorModel;
 import at.fhhagenberg.sqe.elevator.model.IFloorModel.FloorInvalidFloorException;
 
-public class FloorModelTests {
+class FloorModelTests {
 
     @Test
     void testCreateFloorModel() throws Exception {

@@ -24,7 +24,7 @@ import at.fhhagenberg.sqe.elevator.wrappers.IElevatorWrapper;
 import sqelevator.IElevator;
 
 
-public class ElevatorControllerTests {
+class ElevatorControllerTests {
 
     private static final Integer ELEVATOR_CAPACITY = 10;
 	private static final Integer NUM_ELEVATORS = 2;

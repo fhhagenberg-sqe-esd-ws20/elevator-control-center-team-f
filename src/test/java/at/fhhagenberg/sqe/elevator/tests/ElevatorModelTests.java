@@ -27,7 +27,7 @@ import at.fhhagenberg.sqe.elevator.model.IElevatorModel.ElevatorInvalidPositionE
 import at.fhhagenberg.sqe.elevator.model.IElevatorModel.ElevatorInvalidTargetException;
 import at.fhhagenberg.sqe.elevator.model.IElevatorModel.ElevatorInvalidWeightException;
 
-public class ElevatorModelTests {
+class ElevatorModelTests {
 
     @Test
     void testCreateElavatorModel() throws Exception {

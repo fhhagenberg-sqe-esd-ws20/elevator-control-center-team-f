@@ -30,7 +30,7 @@ import at.fhhagenberg.sqe.elevator.model.FloorModelImpl;
 import at.fhhagenberg.sqe.elevator.wrappers.IElevatorWrapper;
 
 @ExtendWith(ApplicationExtension.class)
-public class AppTest {
+class AppTest {
     
 	private App app;
     private static final Integer ELEVATOR_CAPACITY = 10;
@@ -142,7 +142,7 @@ public class AppTest {
     // #m_taErrorMessage (textarea)
     
     @Test
-    public void testElevator0Stats(FxRobot robot) throws Exception {
+    void testElevator0Stats(FxRobot robot) throws Exception {
         robot.clickOn("#m_rbSelectElevator_0");
 
         verifyThat("#lbStatsWeight_0", LabeledMatchers.hasText(Integer.toString(m_Elevator.getElevatorWeight(0))));
@@ -154,7 +154,7 @@ public class AppTest {
     }
 
     @Test
-    public void testElevator1Stats(FxRobot robot) throws Exception {
+    void testElevator1Stats(FxRobot robot) throws Exception {
         robot.clickOn("#m_rbSelectElevator_1");
         verifyThat("#lbStatsWeight_1", LabeledMatchers.hasText(Integer.toString(m_Elevator.getElevatorWeight(1))));
 		verifyThat("#lbStatsSpeed_1", LabeledMatchers.hasText(Integer.toString(m_Elevator.getElevatorSpeed(1))));
@@ -165,7 +165,7 @@ public class AppTest {
     }
     
     @Test
-    public void testFrontendUpdatedServicesFloors(FxRobot robot) throws Exception{
+    void testFrontendUpdatedServicesFloors(FxRobot robot) throws Exception{
         m_Mock.getElevators().get(0).setServicesFloors(2, false);
         robot.sleep(200); // ==> polling update interval
         verifyThat("#chkServiced_0_2", (CheckBox c) -> !c.isSelected());
@@ -175,7 +175,7 @@ public class AppTest {
     }
     
     @Test
-    public void testFrontendUpdateSetDirection(FxRobot robot) throws Exception{
+    void testFrontendUpdateSetDirection(FxRobot robot) throws Exception{
     	m_Mock.getElevators().get(0).setDirection(IElevatorWrapper.ELEVATOR_DIRECTION_UP);
     	robot.sleep(200);
     	verifyThat("#upArrowComittedDir_0", (Polygon p) -> p.getFill().equals(Color.BLUE));
@@ -187,7 +187,7 @@ public class AppTest {
     }
     
     @Test
-    public void testFrontendUpdateSetSpeed(FxRobot robot) throws Exception{
+    void testFrontendUpdateSetSpeed(FxRobot robot) throws Exception{
     	m_Mock.getElevators().get(0).setSpeed(-5);
     	
     	// this wait is required due to network delay (polling=200ms)
@@ -196,7 +196,7 @@ public class AppTest {
     }
     
     @Test
-    public void testFrontendTargetFloor(FxRobot robot) throws Exception{
+    void testFrontendTargetFloor(FxRobot robot) throws Exception{
     
     	
     	// this wait is required due to network delay (polling=200ms)
@@ -208,7 +208,7 @@ public class AppTest {
     }
     
     @Test
-    public void testErrorString(FxRobot robot) throws Exception{
+    void testErrorString(FxRobot robot) throws Exception{
     	
     	verifyThat("#m_taErrorMessage", (TextArea t) -> t.getText().equals(""));
     	m_Controller.getBuilding().setError("Test Error Occured");
@@ -218,7 +218,7 @@ public class AppTest {
     }
 
     @Test
-    public void testSimpleBackendUpdatedServicesFloors(FxRobot robot) throws Exception{
+    void testSimpleBackendUpdatedServicesFloors(FxRobot robot) throws Exception{
         robot.clickOn("#chkServiced_0_3");
         assertFalse(m_Mock.getElevators().get(0).getServicesFloors(3));
         robot.clickOn("#chkServiced_0_3");
@@ -226,7 +226,7 @@ public class AppTest {
     }
     
     @Test
-    public void testBackendUpdatedSetTargetFloorsElev0(FxRobot robot) throws Exception{
+    void testBackendUpdatedSetTargetFloorsElev0(FxRobot robot) throws Exception{
         
     	robot.clickOn("#cbNavigateFloor_0");
        	robot.type(KeyCode.DOWN);
@@ -240,7 +240,7 @@ public class AppTest {
     }
     
     @Test
-    public void testBackendUpdatedSetTargetFloorsElev1(FxRobot robot) throws Exception{
+    void testBackendUpdatedSetTargetFloorsElev1(FxRobot robot) throws Exception{
     	
     	// implicit test of elevator selection
     	robot.clickOn("#m_rbSelectElevator_1");
