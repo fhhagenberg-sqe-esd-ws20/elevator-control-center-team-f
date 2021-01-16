@@ -178,11 +178,11 @@ class AppTest {
     @Test
     void testFrontendUpdateSetDirection(FxRobot robot) throws Exception{
     	m_Mock.getElevators().get(0).setDirection(IElevatorWrapper.ELEVATOR_DIRECTION_UP);
-    	robot.sleep(200);
+    	robot.sleep(250);
     	verifyThat("#upArrowComittedDir_0", (Polygon p) -> p.getFill().equals(Color.BLUE));
     	verifyThat("#lbStatsDir_0", LabeledMatchers.hasText(ConvertDirectionToString(IElevatorWrapper.ELEVATOR_DIRECTION_UP)));
       	m_Mock.getElevators().get(0).setDirection(IElevatorWrapper.ELEVATOR_DIRECTION_DOWN);
-    	robot.sleep(200);
+    	robot.sleep(250);
     	verifyThat("#downArrowComittedDir_0", (Polygon p) -> p.getFill().equals(Color.BLUE));
     	verifyThat("#lbStatsDir_0", LabeledMatchers.hasText(ConvertDirectionToString(IElevatorWrapper.ELEVATOR_DIRECTION_DOWN)));
     }
