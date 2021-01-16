@@ -43,22 +43,20 @@ public class App extends Application {
     	ElevatorControllerImpl contr = new ElevatorControllerImpl(m_Elevator, m_BuildingModel,  m_ElevatorModel, m_FloorModel);
     	m_ElevatorController = contr;
     	contr.startPolling();
-    	m_OnStopFunction = () -> { contr.stopPolling(); };
+    	m_OnStopFunction = () -> contr.stopPolling();
     }
 
     @Override
     public void start(Stage stage) { 
         IElevatorGUI gui = new ElevatorGUI(m_ElevatorController);
         
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-	        @Override
-	        public void handle(WindowEvent e) {
+        stage.setOnCloseRequest(e -> {
 	        	if(m_OnStopFunction != null)
 	        		m_OnStopFunction.exec();
 	            Platform.exit();
 	            System.exit(0);
 	        }
-	    });
+	    );
         
         stage.setScene(gui.getScene());
         stage.setTitle("Elevator Control Center [Team F]");
