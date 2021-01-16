@@ -19,7 +19,7 @@ public interface IFloorModel {
         public FloorInvalidFloorException(String errorMessage) {
             super(errorMessage);
         }
-    };
+    }
 
 
     /**

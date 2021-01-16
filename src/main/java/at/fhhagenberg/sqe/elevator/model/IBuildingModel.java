@@ -20,7 +20,7 @@ public interface IBuildingModel {
         public BuildingInvalidFloorHeightException(String errorMessage) {
             super(errorMessage);
         }
-    };
+    }
 
     /**
      * Exception to be thrown when trying to set a invalid clock tick value.
@@ -30,7 +30,7 @@ public interface IBuildingModel {
         public BuildingInvalidClockTickException(String errorMessage) {
             super(errorMessage);
         }
-    };
+    }
 
     /**
      * Create instance of implementation class. Listeners of current object are assiged to returned object aswell.

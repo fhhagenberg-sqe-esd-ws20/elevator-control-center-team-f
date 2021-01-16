@@ -16,14 +16,14 @@ public interface IElevatorModel {
      */
     public enum CommitedDirection {
         UP, DOWN, UNCOMMITED
-    };
+    }
 
     /**
      * Enum describing the current state of the elevators doors.
      */
     public enum DoorStatus {
         OPEN, CLOSED, OPENING, CLOSING
-    };
+    }
 
     /**
      * Exception to be thrown when trying to set an invalid floor position.
@@ -33,7 +33,7 @@ public interface IElevatorModel {
         public ElevatorInvalidFloorPositionException(String errorMessage) {
             super(errorMessage);
         }
-    };
+    }
 
     /**
      * Exception to be thrown when trying to set an invalid elevator position.
@@ -43,7 +43,7 @@ public interface IElevatorModel {
         public ElevatorInvalidPositionException(String errorMessage) {
             super(errorMessage);
         }
-    };
+    }
 
     /**
      * Exception to be thrown when trying to set an invalid weight value.
@@ -53,7 +53,7 @@ public interface IElevatorModel {
         public ElevatorInvalidWeightException(String errorMessage) {
             super(errorMessage);
         }
-    };
+    }
 
     /**
      * Exception to be thrown when trying to set an invalid target value.
@@ -63,7 +63,7 @@ public interface IElevatorModel {
         public ElevatorInvalidTargetException(String errorMessage) {
             super(errorMessage);
         }
-    };
+    }
 
     /**
      * Exception to be thrown when trying to set an invalid target value.
@@ -73,7 +73,7 @@ public interface IElevatorModel {
         public ElevatorInvalidCapacityException(String errorMessage) {
             super(errorMessage);
         }
-    };
+    }
 
     /**
      * Exception to be thrown when trying to set an invalid elevator number.
@@ -83,7 +83,7 @@ public interface IElevatorModel {
         public ElevatorInvalidNumberException(String errorMessage) {
             super(errorMessage);
         }
-    };
+    }
 
     /**
      * Create instance of implementation class. Listeners of current object are assiged to returned object aswell.
