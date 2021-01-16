@@ -43,7 +43,7 @@ public class BuildingModelImpl implements IBuildingModel {
         m_FloorHeight = floorHeight;
     }
 
-    public BuildingModelImpl(){};
+    public BuildingModelImpl(){}
 
     @Override
     public IBuildingModel createBuildingModel(long clockTick, int floorHeight) throws BuildingInvalidFloorHeightException, BuildingInvalidClockTickException{

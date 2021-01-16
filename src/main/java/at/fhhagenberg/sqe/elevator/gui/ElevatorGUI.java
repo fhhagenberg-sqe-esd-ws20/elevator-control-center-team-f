@@ -330,11 +330,11 @@ public class ElevatorGUI implements IElevatorGUI {
 				btn.setId("btnFloor_" + e.getNum() + "_" + f.getNum());
 				btn.setDisable(true);
 				btn.setStyle(m_ButtonDefaultSyle);
-				if(e.getButtons().get(f.getNum()))
+				if(Boolean.TRUE.equals(e.getButtons().get(f.getNum())))
 					btn.setStyle(m_ButtonSelectStyle);
 				btn.setOpacity(1);
 				e.addButtonStatusPropertyChangeListener(pl -> { 
-					if(((ArrayList<Boolean>)pl.getNewValue()).get(f.getNum()))
+					if(Boolean.TRUE.equals(((ArrayList<Boolean>)pl.getNewValue()).get(f.getNum())))
 						btn.setStyle(m_ButtonSelectStyle);
 					else
 						btn.setStyle(m_ButtonDefaultSyle);
@@ -347,13 +347,7 @@ public class ElevatorGUI implements IElevatorGUI {
 				if(f.getServicedElevators().contains(e))
 					cb.setSelected(true);
 
-				f.addServicedElevatorsPropertyChangeListener(pl -> {
-					if(((ArrayList<IElevatorModel>)pl.getNewValue()).contains(e))
-						cb.setSelected(true);
-					else
-						cb.setSelected(false);
-					}
-				);
+				f.addServicedElevatorsPropertyChangeListener(pl -> cb.setSelected(((ArrayList<IElevatorModel>)pl.getNewValue()).contains(e)));
 				cb.selectedProperty().addListener(new ChangeListener<Boolean>() {
 					@Override
 					public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -365,10 +359,10 @@ public class ElevatorGUI implements IElevatorGUI {
 				// Up/Down Arrows
 				Polygon upArrow = new Polygon();
 				upArrow.setStroke(Color.BLACK);
-				upArrow.getPoints().addAll(new Double[]{
+				upArrow.getPoints().addAll(
 					5.0, 0.0,
 					0.0, 10.0,
-					10.0, 10.0 });
+					10.0, 10.0);
 				elev.add(upArrow, 3, m_Controller.getBuilding().getFloors().size() - f.getNum() - 1);
 				upArrow.setFill(Color.WHITE);
 				if(f.getButtonUpPressed())
@@ -383,10 +377,10 @@ public class ElevatorGUI implements IElevatorGUI {
 
 				Polygon downArrow = new Polygon();
 				downArrow.setStroke(Color.BLACK);
-				downArrow.getPoints().addAll(new Double[]{
+				downArrow.getPoints().addAll(
 					0.0, 0.0,
 					10.0, 0.0,
-					5.0, 10.0 });
+					5.0, 10.0);
 				downArrow.setFill(Color.WHITE);
 				if(f.getButtonUpPressed())
 					downArrow.setFill(Color.BLUE);
@@ -404,10 +398,10 @@ public class ElevatorGUI implements IElevatorGUI {
 			// --- Big Up/Down Arrows
 			Polygon bigUpArrow = new Polygon();
 			bigUpArrow.setStroke(Color.BLACK);
-			bigUpArrow.getPoints().addAll(new Double[]{
+			bigUpArrow.getPoints().addAll(
 				15.0, 0.0,
 				0.0, 30.0,
-				30.0, 30.0 });
+				30.0, 30.0);
 			elev.add(bigUpArrow, 0, 0, 1, m_Controller.getBuilding().getFloors().size() / 2);
 			bigUpArrow.setFill(Color.WHITE);
 			if(e.getCommitedDirection() == CommitedDirection.UP)
@@ -417,10 +411,10 @@ public class ElevatorGUI implements IElevatorGUI {
 
 			Polygon bigDownArrow = new Polygon();
 			bigDownArrow.setStroke(Color.BLACK);
-			bigDownArrow.getPoints().addAll(new Double[]{
+			bigDownArrow.getPoints().addAll(
 				0.0, 0.0,
 				30.0, 0.0,
-				15.0, 30.0 });
+				15.0, 30.0);
 			elev.add(bigDownArrow, 0, m_Controller.getBuilding().getFloors().size() / 2, 1, m_Controller.getBuilding().getFloors().size() / 2);
 			bigDownArrow.setFill(Color.WHITE);
 			if(e.getCommitedDirection() == CommitedDirection.DOWN)

@@ -87,7 +87,7 @@ public class ElevatorModelImpl implements IElevatorModel {
         for(PropertyChangeListener l : m_ChangesPos.getPropertyChangeListeners())
             em.addPositionPropertyChangeListener(l);
         for(PropertyChangeListener l : m_ChangesSpeed.getPropertyChangeListeners())
-            em.addSpeedPropertyChangeListener(l);;
+            em.addSpeedPropertyChangeListener(l);
         for(PropertyChangeListener l : m_ChangesTarget.getPropertyChangeListeners())
             em.addTargetPropertyChangeListener(l);
         for(PropertyChangeListener l : m_ChangesWeight.getPropertyChangeListeners())
@@ -359,7 +359,7 @@ public class ElevatorModelImpl implements IElevatorModel {
         		nextTargetFloor += m_AutoDirVal;
         	}
         	
-        	if(foundNext == false) {
+        	if(Boolean.FALSE.equals(foundNext)) {
         		nextTargetFloor = m_FloorPos;
         		m_AutoDirVal = -m_AutoDirVal;
         	}
