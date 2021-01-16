@@ -195,7 +195,7 @@ public class ElevatorControllerImpl implements IElevatorController {
 			public void run() {
 				Platform.runLater(() -> fillModel());
 			}
-		}, 0, 200);
+		}, 0, 150);
     }
     
     /**
