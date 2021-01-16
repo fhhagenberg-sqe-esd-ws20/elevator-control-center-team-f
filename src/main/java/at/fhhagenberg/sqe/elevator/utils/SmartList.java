@@ -27,6 +27,11 @@ public class SmartList<T> extends ArrayList<T> {
     }
 
     @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
     public boolean add(T e) {
         ArrayList<T> oldVal = new ArrayList<>(this);
         boolean ok = super.add(e);
