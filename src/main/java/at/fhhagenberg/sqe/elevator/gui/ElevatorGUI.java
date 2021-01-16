@@ -286,7 +286,7 @@ public class ElevatorGUI implements IElevatorGUI {
 			lb_nf.setStyle(m_LabelStyle);
 			mmode.add(lb_nf, 0, 1);
 
-			ComboBox<Integer> cb_floors = new ComboBox<Integer>();
+			ComboBox<Integer> cb_floors = new ComboBox<>();
 			cb_floors.setId("cbNavigateFloor_" + e.getNum());
 
 			for(IFloorModel f : m_Controller.getBuilding().getFloors()){

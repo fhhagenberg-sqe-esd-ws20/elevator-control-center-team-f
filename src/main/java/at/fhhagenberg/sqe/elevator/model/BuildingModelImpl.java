@@ -16,8 +16,8 @@ public class BuildingModelImpl implements IBuildingModel {
     private boolean m_ConnectionState = false;
     private String m_Error = "";
 
-    ArrayList<IElevatorModel> m_Elevators = new ArrayList<IElevatorModel>();
-    ArrayList<IFloorModel> m_Floors = new ArrayList<IFloorModel>();
+    ArrayList<IElevatorModel> m_Elevators = new ArrayList<>();
+    ArrayList<IFloorModel> m_Floors = new ArrayList<>();
 
     private PropertyChangeSupport m_ChangesClockTick = new PropertyChangeSupport(this);
     private PropertyChangeSupport m_ChangesConnState = new PropertyChangeSupport(this);

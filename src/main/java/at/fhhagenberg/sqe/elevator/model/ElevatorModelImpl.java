@@ -18,7 +18,7 @@ public class ElevatorModelImpl implements IElevatorModel {
     private DoorStatus m_DoorStatus = DoorStatus.CLOSED;
     private int m_Accell = 0;
     private int m_Capacity = 1;
-    private SmartList<Boolean> m_Buttons = new SmartList<Boolean>();
+    private SmartList<Boolean> m_Buttons = new SmartList<>();
     private int m_FloorPos = 0;
     private int m_Speed = 0;
     private int m_Target = 0;

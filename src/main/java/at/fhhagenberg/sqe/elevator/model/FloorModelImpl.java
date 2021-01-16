@@ -17,7 +17,7 @@ public class FloorModelImpl implements IFloorModel {
     private boolean m_ButtonDown = false;
     private boolean m_ButtonUp = false;
     private int m_Num;
-    private SmartList<IElevatorModel> m_ServicedElevators = new SmartList<IElevatorModel>();
+    private SmartList<IElevatorModel> m_ServicedElevators = new SmartList<>();
 
     private PropertyChangeSupport m_ChangesBtnDown = new PropertyChangeSupport(this);
     private PropertyChangeSupport m_ChangesBtnUp = new PropertyChangeSupport(this);
