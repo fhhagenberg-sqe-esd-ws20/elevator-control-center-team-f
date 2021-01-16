@@ -11,6 +11,26 @@ import at.fhhagenberg.sqe.elevator.model.IBuildingModel;
 public interface IElevatorController {
 
     /**
+     * Exception to be thrown when receiving an invalid door state.
+     */
+    @SuppressWarnings("serial")
+    public class ControllerInvalidDoorStateException extends Exception{
+        public ControllerInvalidDoorStateException(String errorMessage) {
+            super(errorMessage);
+        }
+    }
+
+    /**
+     * Exception to be thrown when receiving an invalid elevator direction.
+     */
+    @SuppressWarnings("serial")
+    public class ControllerInvalidElevatorDirectionException extends Exception{
+        public ControllerInvalidElevatorDirectionException(String errorMessage) {
+            super(errorMessage);
+        }
+    }
+
+    /**
      * Sets the committed direction of the specified elevator (up / down / uncommitted). 
      * @param elevatorNumber elevator number whose committed direction is being set
      * @param direction direction being set where up=0, down=1 and uncommitted=2

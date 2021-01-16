@@ -93,7 +93,7 @@ public class ElevatorControllerImpl implements IElevatorController {
                 else if(d == IElevatorWrapper.ELEVATOR_DIRECTION_UNCOMMITTED)
                     e.setCommitedDirection(IElevatorModel.CommitedDirection.UNCOMMITED);
                 else
-                    throw new Exception("Invalid Commited direction.");
+                    throw new ControllerInvalidElevatorDirectionException("Invalid Commited direction.");
 
                 int ds = m_Elevator.getElevatorDoorStatus(e.getNum());
                 if(ds == IElevatorWrapper.ELEVATOR_DOORS_CLOSED)
@@ -105,7 +105,7 @@ public class ElevatorControllerImpl implements IElevatorController {
                 else if(ds == IElevatorWrapper.ELEVATOR_DOORS_OPENING)
                     e.setDoorStatus(IElevatorModel.DoorStatus.OPENING);
                 else
-                    throw new Exception("Invalid Door status.");
+                    throw new ControllerInvalidDoorStateException("Invalid Door status.");
 
                 e.setFloorPos(m_Elevator.getElevatorFloor(e.getNum()));
                 e.setPos(m_Elevator.getElevatorPosition(e.getNum()));
