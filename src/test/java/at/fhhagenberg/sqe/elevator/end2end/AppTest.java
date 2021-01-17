@@ -1,4 +1,4 @@
-package at.fhhagenberg.sqe;
+package at.fhhagenberg.sqe.elevator.end2end;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -16,6 +16,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.matcher.control.LabeledMatchers;
 
+import at.fhhagenberg.sqe.App;
 import javafx.application.Platform;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
