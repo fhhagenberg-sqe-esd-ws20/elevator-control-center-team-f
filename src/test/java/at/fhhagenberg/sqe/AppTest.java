@@ -286,17 +286,13 @@ class AppTest {
     
     @Test
     void testBackendUpdateAutomaticMode(FxRobot robot) throws Exception{
-    	
-    	robot.clickOn("#btnAutomaticMode_0");
-    	assertEquals(true,false); // TODO
+        robot.clickOn("#btnAutomaticMode_0");
+        robot.sleep(200);
+        assertTrue(m_Controller.getBuilding().getElevators().get(0).getAutomaticMode());
     }
     
     @Test
-    void testSynchronization(FxRobot robot) throws Exception{
-    	
-    	m_Controller.getBuilding().setClockTick(200);
-    	robot.sleep(200);
-    	assertEquals(200, m_Mock.getClockTick());
-    	// TODO: 
+    void testClockTick(FxRobot robot) throws Exception{
+    	assertEquals(MockElevator.CLOCK_TICK_MOCK_VALUE, m_Controller.getBuilding().getClockTick());
     }
 }
