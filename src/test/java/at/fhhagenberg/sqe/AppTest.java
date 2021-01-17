@@ -26,13 +26,11 @@ import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import sqelevator.IElevator;
 import at.fhhagenberg.sqe.elevator.controller.ElevatorControllerImpl;
-import at.fhhagenberg.sqe.elevator.controller.IElevatorController;
 import at.fhhagenberg.sqe.elevator.mock.ElevatorWrapperTestImpl;
 import at.fhhagenberg.sqe.elevator.mock.MockElevator;
 import at.fhhagenberg.sqe.elevator.model.BuildingModelImpl;
 import at.fhhagenberg.sqe.elevator.model.ElevatorModelImpl;
 import at.fhhagenberg.sqe.elevator.model.FloorModelImpl;
-import at.fhhagenberg.sqe.elevator.model.IElevatorModel;
 import at.fhhagenberg.sqe.elevator.wrappers.IElevatorWrapper;
 
 @ExtendWith(ApplicationExtension.class)
