@@ -199,7 +199,7 @@ class AppTest {
     }
     
     @Test
-    void testFrontendTargetFloor(FxRobot robot) throws Exception{
+    void testFrontendUpdateTargetFloor(FxRobot robot) throws Exception{
     
     	
     	// this wait is required due to network delay (polling=200ms)
@@ -209,6 +209,32 @@ class AppTest {
     
     	verifyThat("#sliPosition_0", (Slider s) -> s.getValue() ==((double)1));
     }
+    
+    @Test
+    void testFrontendUpdateSetFloorButtonUp(FxRobot robot) throws Exception{
+    
+    	
+    	// test UpBtnArrow
+    	m_Mock.getFloors().get(1).setUpButtonActive(true);
+    	robot.sleep(2000);
+    	verifyThat("#upBtnArrow_0_1", (Polygon p) -> p.getFill().equals(Color.BLUE));
+    	m_Mock.getFloors().get(1).setUpButtonActive(false);
+    	robot.sleep(2000);
+    	verifyThat("#upBtnArrow_0_1", (Polygon p) -> p.getFill().equals(Color.WHITE));
+   }
+    
+    @Test
+    void testFrontendUpdateSetFloorButtonDown(FxRobot robot) throws Exception{
+    
+    	
+    	// test DownBtnArrow
+    	m_Mock.getFloors().get(2).setDownButtonActive(true);
+    	robot.sleep(2000);
+    	verifyThat("#downBtnArrow_0_2", (Polygon p) -> p.getFill().equals(Color.BLUE));
+    	m_Mock.getFloors().get(2).setDownButtonActive(false);
+    	robot.sleep(2000);
+    	verifyThat("#downBtnArrow_0_2", (Polygon p) -> p.getFill().equals(Color.WHITE));
+   }
     
     @Test
     void testErrorString(FxRobot robot) throws Exception{
