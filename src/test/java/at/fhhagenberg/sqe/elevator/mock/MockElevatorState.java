@@ -85,6 +85,10 @@ public class MockElevatorState {
         this.doorStatus = doorStatus;
     }
 
+    public void setDoorStatusUnChecked(int doorStatus) {
+        this.doorStatus = doorStatus;
+    }
+
     public int getCurrentFloor() {
         return currentFloor;
     }

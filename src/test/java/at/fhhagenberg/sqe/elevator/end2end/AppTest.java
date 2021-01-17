@@ -196,9 +196,41 @@ class AppTest {
         robot.sleep(150);
         verifyThat("#upArrowComittedDir_0", (Polygon p) -> p.getFill().equals(Color.WHITE));
         verifyThat("#downArrowComittedDir_0", (Polygon p) -> p.getFill().equals(Color.BLUE));
-    	verifyThat("#lbStatsDir_0", LabeledMatchers.hasText(ConvertDirectionToString(IElevatorWrapper.ELEVATOR_DIRECTION_DOWN)));
+        verifyThat("#lbStatsDir_0", LabeledMatchers.hasText(ConvertDirectionToString(IElevatorWrapper.ELEVATOR_DIRECTION_DOWN)));
+        m_Mock.getElevators().get(0).setDirection(IElevatorWrapper.ELEVATOR_DIRECTION_UNCOMMITTED);
+        robot.sleep(150);
+        verifyThat("#upArrowComittedDir_0", (Polygon p) -> p.getFill().equals(Color.WHITE));
+        verifyThat("#downArrowComittedDir_0", (Polygon p) -> p.getFill().equals(Color.WHITE));
+        verifyThat("#lbStatsDir_0", LabeledMatchers.hasText(ConvertDirectionToString(IElevatorWrapper.ELEVATOR_DIRECTION_UNCOMMITTED)));
+        m_Mock.getElevators().get(0).setDirection(3);
+        robot.sleep(150);
+        verifyThat("#upArrowComittedDir_0", (Polygon p) -> p.getFill().equals(Color.WHITE));
+        verifyThat("#downArrowComittedDir_0", (Polygon p) -> p.getFill().equals(Color.WHITE));
+        verifyThat("#lbStatsDir_0", LabeledMatchers.hasText(ConvertDirectionToString(IElevatorWrapper.ELEVATOR_DIRECTION_UNCOMMITTED)));
+        verifyThat("#m_taErrorMessage", (TextArea t) -> t.getText().equals("\nInvalid Commited direction."));
     }
     
+
+    @Test
+    void testFrontendUpdateSetDooStatus(FxRobot robot) throws Exception{
+    	m_Mock.getElevators().get(0).setDoorStatus(IElevatorWrapper.ELEVATOR_DOORS_CLOSED);
+    	robot.sleep(150);
+    	verifyThat("#lbStatsDoor_0", LabeledMatchers.hasText(ConvertDoorStatusToString(IElevatorWrapper.ELEVATOR_DOORS_CLOSED)));
+    	m_Mock.getElevators().get(0).setDoorStatus(IElevatorWrapper.ELEVATOR_DOORS_CLOSING);
+    	robot.sleep(150);
+    	verifyThat("#lbStatsDoor_0", LabeledMatchers.hasText(ConvertDoorStatusToString(IElevatorWrapper.ELEVATOR_DOORS_CLOSING)));
+    	m_Mock.getElevators().get(0).setDoorStatus(IElevatorWrapper.ELEVATOR_DOORS_OPEN);
+    	robot.sleep(150);
+    	verifyThat("#lbStatsDoor_0", LabeledMatchers.hasText(ConvertDoorStatusToString(IElevatorWrapper.ELEVATOR_DOORS_OPEN)));
+    	m_Mock.getElevators().get(0).setDoorStatus(IElevatorWrapper.ELEVATOR_DOORS_OPENING);
+    	robot.sleep(150);
+    	verifyThat("#lbStatsDoor_0", LabeledMatchers.hasText(ConvertDoorStatusToString(IElevatorWrapper.ELEVATOR_DOORS_OPENING)));
+    	m_Mock.getElevators().get(0).setDoorStatusUnChecked(7);
+    	robot.sleep(150);
+        verifyThat("#lbStatsDoor_0", LabeledMatchers.hasText(ConvertDoorStatusToString(IElevatorWrapper.ELEVATOR_DOORS_OPENING)));
+        verifyThat("#m_taErrorMessage", (TextArea t) -> t.getText().equals("\nInvalid Door status."));
+    }
+
     @Test
     void testFrontendUpdateSetSpeed(FxRobot robot) throws Exception{
     	m_Mock.getElevators().get(0).setSpeed(-5);
