@@ -2,8 +2,12 @@ package at.fhhagenberg.sqe;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.testfx.api.FxAssert.verifyThat;
+
+import java.rmi.RemoteException;
+import java.util.concurrent.Semaphore;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,7 +16,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.matcher.control.LabeledMatchers;
 
-
+import javafx.application.Platform;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
@@ -28,6 +32,7 @@ import at.fhhagenberg.sqe.elevator.mock.MockElevator;
 import at.fhhagenberg.sqe.elevator.model.BuildingModelImpl;
 import at.fhhagenberg.sqe.elevator.model.ElevatorModelImpl;
 import at.fhhagenberg.sqe.elevator.model.FloorModelImpl;
+import at.fhhagenberg.sqe.elevator.model.IElevatorModel;
 import at.fhhagenberg.sqe.elevator.wrappers.IElevatorWrapper;
 
 @ExtendWith(ApplicationExtension.class)
@@ -41,9 +46,15 @@ class AppTest {
 	
 
     private IElevatorWrapper m_Elevator;
-    private IElevatorController m_Controller;
+    private ElevatorControllerImpl m_Controller;
     private MockElevator m_Mock;
     
+    private static void waitForRunLater() throws InterruptedException {
+        Semaphore semaphore = new Semaphore(0);
+        Platform.runLater(() -> semaphore.release());
+        semaphore.acquire();
+
+    }
     
     private String ConvertDoorStatusToString(int doorStatus)
     {
@@ -280,19 +291,53 @@ class AppTest {
     	robot.type(KeyCode.DOWN);
     	robot.sleep(200);
     	robot.type(KeyCode.ENTER);
-        robot.sleep(2000);
+        robot.sleep(200);
         assertEquals(3, m_Mock.getElevators().get(1).getCurrentFloor());
     }
     
     @Test
-    void testBackendUpdateAutomaticMode(FxRobot robot) throws Exception{
+    void testAutomaticModeEnable(FxRobot robot) throws Exception{
         robot.clickOn("#btnAutomaticMode_0");
         robot.sleep(200);
+     
         assertTrue(m_Controller.getBuilding().getElevators().get(0).getAutomaticMode());
+    }
+    
+    @Test
+    void testAutomaticModeSetButtonActive(FxRobot robot) throws Exception{
+        
+    	m_Controller.stopPolling();
+    	m_Controller.getBuilding().getElevators().get(0).setAutomaticMode(true);
+    	m_Mock.getFloors().get(4).setUpButtonActive(true);
+    	m_Mock.getElevators().get(0).setDoorStatus((IElevator.ELEVATOR_DOORS_OPEN));
+    	Platform.runLater(() -> m_Controller.fillModel());
+    	waitForRunLater();
+        assertEquals(4,m_Controller.getBuilding().getElevators().get(0).getNextTargetFloor());
     }
     
     @Test
     void testClockTick(FxRobot robot) throws Exception{
     	assertEquals(MockElevator.CLOCK_TICK_MOCK_VALUE, m_Controller.getBuilding().getClockTick());
+    }
+    
+    @Test
+    void testGUIRedrawByExc(FxRobot robot) throws Exception{
+    	
+  
+    	m_Mock.setShouldThrow(true);
+    	
+    	RemoteException thrown1 = assertThrows(
+    			RemoteException.class,
+  		      () -> m_Mock.getCommittedDirection(0));
+    	
+
+    
+      // assertions on the thrown exception
+  	  assertEquals("getCommittedDirection", thrown1.getMessage());
+  	  
+	  robot.sleep(200);
+	  m_Mock.setShouldThrow(false);
+	  robot.sleep(2000);
+	  verifyThat("#m_taErrorMessage", (TextArea t) -> t.getText().length()>0);
     }
 }
