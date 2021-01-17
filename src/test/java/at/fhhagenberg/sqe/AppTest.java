@@ -304,7 +304,7 @@ class AppTest {
     }
     
     @Test
-    void testAutomaticModeSetButtonActive(FxRobot robot) throws Exception{
+    void testAutomaticModeSetButtonActiveUp(FxRobot robot) throws Exception{
         
     	m_Controller.stopPolling();
     	m_Controller.getBuilding().getElevators().get(0).setAutomaticMode(true);
@@ -313,6 +313,70 @@ class AppTest {
     	Platform.runLater(() -> m_Controller.fillModel());
     	waitForRunLater();
         assertEquals(4,m_Controller.getBuilding().getElevators().get(0).getNextTargetFloor());
+    }
+    
+    @Test
+    void testAutomaticModeSetButtonActiveUpDownMultiple(FxRobot robot) throws Exception{
+        
+    	m_Controller.stopPolling();
+    	m_Controller.getBuilding().getElevators().get(0).setAutomaticMode(true);
+    	m_Mock.getFloors().get(1).setUpButtonActive(true);
+    	m_Mock.getFloors().get(2).setDownButtonActive(true);
+    	m_Mock.getFloors().get(3).setUpButtonActive(true);
+    	m_Mock.getFloors().get(4).setDownButtonActive(true);
+    	m_Mock.getElevators().get(0).setDoorStatus((IElevator.ELEVATOR_DOORS_OPEN));
+    	Platform.runLater(() -> m_Controller.fillModel());
+    	waitForRunLater();
+        assertEquals(1,m_Controller.getBuilding().getElevators().get(0).getNextTargetFloor());
+    }
+    
+    @Test
+    void testAutomaticModeSetButtonActiveDown(FxRobot robot) throws Exception{
+        
+    	m_Controller.stopPolling();
+    	m_Controller.getBuilding().getElevators().get(0).setAutomaticMode(true);
+    	m_Mock.getFloors().get(5).setDownButtonActive(true);
+    	m_Mock.getElevators().get(0).setDoorStatus((IElevator.ELEVATOR_DOORS_OPEN));
+    	Platform.runLater(() -> m_Controller.fillModel());
+    	waitForRunLater();
+        assertEquals(5,m_Controller.getBuilding().getElevators().get(0).getNextTargetFloor()); 
+    }
+    
+    @Test
+    void testAutomaticModeSetServicedFloors(FxRobot robot) throws Exception{
+        
+    	m_Controller.stopPolling();
+    	m_Mock.setServicesFloors(0, 5, false);
+    	m_Controller.getBuilding().getElevators().get(0).setAutomaticMode(true);
+    	m_Mock.getFloors().get(5).setDownButtonActive(true);
+    	m_Mock.getElevators().get(0).setDoorStatus((IElevator.ELEVATOR_DOORS_OPEN));
+    	Platform.runLater(() -> m_Controller.fillModel());
+    	waitForRunLater();
+        assertEquals(0,m_Controller.getBuilding().getElevators().get(0).getNextTargetFloor());
+    }
+    
+    @Test
+    void testAutomaticModeSetElevatorFloorButtonFalse(FxRobot robot) throws Exception{
+        
+    	m_Controller.stopPolling();
+    	m_Controller.getBuilding().getElevators().get(0).setAutomaticMode(true);
+    	m_Mock.getElevators().get(0).setFloorButtonActive(7, false);
+    	m_Mock.getElevators().get(0).setDoorStatus((IElevator.ELEVATOR_DOORS_OPEN));
+    	Platform.runLater(() -> m_Controller.fillModel());
+    	waitForRunLater();
+        assertEquals(0,m_Controller.getBuilding().getElevators().get(0).getNextTargetFloor());
+    }
+    
+    @Test
+    void testAutomaticModeSetElevatorFloorButtonTrue(FxRobot robot) throws Exception{
+        
+    	m_Controller.stopPolling();
+    	m_Controller.getBuilding().getElevators().get(0).setAutomaticMode(true);
+    	m_Mock.getElevators().get(0).setFloorButtonActive(7, true);
+    	m_Mock.getElevators().get(0).setDoorStatus((IElevator.ELEVATOR_DOORS_OPEN));
+    	Platform.runLater(() -> m_Controller.fillModel());
+    	waitForRunLater();
+        assertEquals(7,m_Controller.getBuilding().getElevators().get(0).getNextTargetFloor());
     }
     
     @Test
