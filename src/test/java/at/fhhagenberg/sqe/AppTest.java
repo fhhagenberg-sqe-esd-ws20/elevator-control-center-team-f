@@ -283,4 +283,20 @@ class AppTest {
         robot.sleep(2000);
         assertEquals(3, m_Mock.getElevators().get(1).getCurrentFloor());
     }
+    
+    @Test
+    void testBackendUpdateAutomaticMode(FxRobot robot) throws Exception{
+    	
+    	robot.clickOn("#btnAutomaticMode_0");
+    	assertEquals(true,false);
+    }
+    
+    @Test
+    void testSynchronization(FxRobot robot) throws Exception{
+    	
+    	m_Controller.getBuilding().setClockTick(200);
+    	robot.sleep(200);
+    	assertEquals(200, m_Mock.getClockTick());
+    	
+    }
 }
