@@ -288,7 +288,7 @@ class AppTest {
     void testBackendUpdateAutomaticMode(FxRobot robot) throws Exception{
     	
     	robot.clickOn("#btnAutomaticMode_0");
-    	assertEquals(true,false);
+    	assertEquals(true,false); // TODO
     }
     
     @Test
@@ -297,6 +297,6 @@ class AppTest {
     	m_Controller.getBuilding().setClockTick(200);
     	robot.sleep(200);
     	assertEquals(200, m_Mock.getClockTick());
-    	
+    	// TODO: 
     }
 }
