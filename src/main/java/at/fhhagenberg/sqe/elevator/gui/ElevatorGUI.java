@@ -240,7 +240,7 @@ public class ElevatorGUI implements IElevatorGUI {
 	 * @param i Zero based index of elevator to show.
 	 */
 	private void showElevator(int i) {
-		if(i > m_Controller.getBuilding().getElevators().size() || i < 0)
+		if(i > m_Controller.getBuilding().getElevators().size())
 			return;
 
 		for (Node component : m_StatsPane.getChildren())

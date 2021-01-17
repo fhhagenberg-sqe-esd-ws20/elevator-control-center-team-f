@@ -216,7 +216,7 @@ class AppTest {
     	// this wait is required due to network delay (polling=200ms)
     	m_Mock.getElevators().get(0).setTargetFloor(1);
     	m_Mock.getElevators().get(0).setCurrentFloor(1);
-    	robot.sleep(2000);
+    	robot.sleep(200);
     
     	verifyThat("#sliPosition_0", (Slider s) -> s.getValue() ==((double)1));
     }
@@ -227,10 +227,10 @@ class AppTest {
     	
     	// test UpBtnArrow
     	m_Mock.getFloors().get(1).setUpButtonActive(true);
-    	robot.sleep(2000);
+    	robot.sleep(200);
     	verifyThat("#upBtnArrow_0_1", (Polygon p) -> p.getFill().equals(Color.BLUE));
     	m_Mock.getFloors().get(1).setUpButtonActive(false);
-    	robot.sleep(2000);
+    	robot.sleep(200);
     	verifyThat("#upBtnArrow_0_1", (Polygon p) -> p.getFill().equals(Color.WHITE));
    }
     
@@ -240,10 +240,10 @@ class AppTest {
     	
     	// test DownBtnArrow
     	m_Mock.getFloors().get(2).setDownButtonActive(true);
-    	robot.sleep(2000);
+    	robot.sleep(200);
     	verifyThat("#downBtnArrow_0_2", (Polygon p) -> p.getFill().equals(Color.BLUE));
     	m_Mock.getFloors().get(2).setDownButtonActive(false);
-    	robot.sleep(2000);
+    	robot.sleep(200);
     	verifyThat("#downBtnArrow_0_2", (Polygon p) -> p.getFill().equals(Color.WHITE));
    }
     
@@ -275,7 +275,7 @@ class AppTest {
     	robot.type(KeyCode.DOWN);
     	robot.sleep(200);
     	robot.type(KeyCode.ENTER);
-    	robot.sleep(2000);
+    	robot.sleep(200);
         assertEquals(3, m_Mock.getElevators().get(0).getCurrentFloor());
     }
     
@@ -401,7 +401,18 @@ class AppTest {
   	  
 	  robot.sleep(200);
 	  m_Mock.setShouldThrow(false);
-	  robot.sleep(2000);
+	  robot.sleep(200);
 	  verifyThat("#m_taErrorMessage", (TextArea t) -> t.getText().length()>0);
+    }
+    
+    @Test
+    void testNoElevators(FxRobot robot) throws Exception{
+    	
+    	m_Controller.stopPolling();
+    	m_Controller.getBuilding().getElevators().clear();
+    	robot.clickOn("#m_rbSelectElevator_2");
+    	Platform.runLater(() -> m_Controller.fillModel());
+    	waitForRunLater();
+    	assertEquals(0, m_Controller.getBuilding().getElevators().size());
     }
 }
