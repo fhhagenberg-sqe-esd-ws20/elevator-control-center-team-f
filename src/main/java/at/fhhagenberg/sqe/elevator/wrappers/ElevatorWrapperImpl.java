@@ -17,10 +17,13 @@ public class ElevatorWrapperImpl implements IElevatorWrapper {
     public ElevatorWrapperImpl(IElevator e) {
         if(e == null)
             throw new NullPointerException("Invalid IElevator Object passed to the wrapper!");
-    	m_Elev = e;
+        m_Elev = e;
+        System.setProperty("sun.rmi.transport.tcp.responseTimeout", "150");
     }
 
-    public ElevatorWrapperImpl() {}
+    public ElevatorWrapperImpl() {
+        System.setProperty("sun.rmi.transport.tcp.responseTimeout", "150");
+    }
 
     @Override
     public void reconnect() throws java.rmi.RemoteException, java.rmi.NotBoundException, java.net.MalformedURLException {
