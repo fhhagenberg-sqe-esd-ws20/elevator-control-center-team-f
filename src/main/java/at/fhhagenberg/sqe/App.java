@@ -38,8 +38,9 @@ public class App extends Application {
     	m_BuildingModel = new BuildingModelImpl();
     	m_ElevatorModel = new ElevatorModelImpl();
     	m_FloorModel = new FloorModelImpl();
-    	ElevatorControllerImpl contr = new ElevatorControllerImpl(m_Elevator, m_BuildingModel,  m_ElevatorModel, m_FloorModel);
-    	m_ElevatorController = contr;
+        ElevatorControllerImpl contr = new ElevatorControllerImpl(m_Elevator, m_BuildingModel,  m_ElevatorModel, m_FloorModel);
+        m_Elevator.setCustomSocketTimeout(100);
+        m_ElevatorController = contr;
     	contr.startPolling();
     	m_OnStopFunction = () -> contr.stopPolling();
     }

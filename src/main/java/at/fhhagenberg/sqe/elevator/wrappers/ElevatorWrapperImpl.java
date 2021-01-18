@@ -3,7 +3,12 @@
  */
 package at.fhhagenberg.sqe.elevator.wrappers;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.rmi.Naming;
+import java.rmi.server.RMISocketFactory;
 
 import sqelevator.IElevator;
 
@@ -18,11 +23,28 @@ public class ElevatorWrapperImpl implements IElevatorWrapper {
         if(e == null)
             throw new NullPointerException("Invalid IElevator Object passed to the wrapper!");
         m_Elev = e;
-        System.setProperty("sun.rmi.transport.tcp.responseTimeout", "150");
     }
 
     public ElevatorWrapperImpl() {
-        System.setProperty("sun.rmi.transport.tcp.responseTimeout", "150");
+    }
+
+    public void setCustomSocketTimeout(int timeout) throws IOException {
+        RMISocketFactory.setSocketFactory(new RMISocketFactory()
+        {
+            @Override
+            public Socket createSocket(String host, int port) throws IOException {
+                Socket socket = new Socket();
+                socket.setSoTimeout(timeout);
+                socket.setSoLinger(false, 0);
+                socket.connect(new InetSocketAddress(host, port), timeout);
+                return socket;
+            }
+
+            @Override
+            public ServerSocket createServerSocket(int port) throws IOException {
+                return new ServerSocket(port);
+            }
+        } );
     }
 
     @Override

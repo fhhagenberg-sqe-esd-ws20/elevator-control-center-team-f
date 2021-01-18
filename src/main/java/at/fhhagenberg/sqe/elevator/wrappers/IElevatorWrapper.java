@@ -4,6 +4,8 @@
 
 package at.fhhagenberg.sqe.elevator.wrappers;
 
+import java.io.IOException;
+
 import sqelevator.IElevator;
 
 /**
@@ -172,6 +174,13 @@ public interface IElevatorWrapper extends java.rmi.Remote {
 	 * Allows reconnecting if connection is lost.
 	 */
 	public void reconnect() throws java.rmi.RemoteException, java.rmi.NotBoundException, java.net.MalformedURLException;
-	
+
+	/**
+	 * Needed to avoid blocking of GUI due to way to long polling timeout on the RMI socket.
+	 * Especially needed for windows (default timeout 15 seconds).
+	 * @param timeout Maximum timeout in ms.
+	 * @throws IOException
+	 */
+	public void setCustomSocketTimeout(int timeout) throws IOException;
 }
 
