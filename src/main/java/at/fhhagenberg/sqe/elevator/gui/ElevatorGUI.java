@@ -336,8 +336,7 @@ public class ElevatorGUI implements IElevatorGUI {
 				// serviced checkbox
 				CheckBox cb = new CheckBox("Serviced");
 				cb.setId("chkServiced_" + e.getNum() + "_" + f.getNum());
-				if(f.getServicedElevators().contains(e))
-					cb.setSelected(true);
+				cb.setSelected(f.getServicedElevators().contains(e));
 
 				f.addServicedElevatorsPropertyChangeListener(pl -> cb.setSelected(((ArrayList<IElevatorModel>)pl.getNewValue()).contains(e)));
 				cb.selectedProperty().addListener((observable, oldValue, newValue) -> m_Controller.setServicesFloors(e.getNum(), f.getNum(), newValue));
@@ -529,11 +528,5 @@ public class ElevatorGUI implements IElevatorGUI {
 	@Override
 	public Scene getScene() {
 		return m_Scene;
-	}
-
-	@Override 
-	public void setController(IElevatorController c){
-		m_Controller = c;
-	}
-	
+	}	
 }

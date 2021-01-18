@@ -3,7 +3,6 @@
  */
 package at.fhhagenberg.sqe.elevator.gui;
 
-import at.fhhagenberg.sqe.elevator.controller.IElevatorController;
 import javafx.scene.Scene;
 
 /**
@@ -14,10 +13,4 @@ public interface IElevatorGUI {
 	 * @return The JavaFX scene to be drawn.
 	 */
 	public Scene getScene();
-
-	/**
-	 * Allows setting the views controller.
-	 * @param c Controller to set.
-	 */
-	public void setController(IElevatorController c);
 }
