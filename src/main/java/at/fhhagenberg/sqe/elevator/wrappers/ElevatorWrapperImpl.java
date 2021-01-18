@@ -42,7 +42,7 @@ public class ElevatorWrapperImpl implements IElevatorWrapper {
 
             @Override
             public ServerSocket createServerSocket(int port) throws IOException {
-                return new ServerSocket(port);
+                return RMISocketFactory.getDefaultSocketFactory().createServerSocket(port);
             }
         } );
     }
