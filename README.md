@@ -8,7 +8,7 @@ Elevator Control Center implemented in JavaFX
 Quick Start
 -----------
 
-* Install Java or OpenJDK.
+* Install Java or OpenJDK (JRE & JDK).
 * Download latest release [from here](https://github.com/fhhagenberg-sqe-esd-ws20/elevator-control-center-team-f/releases/).
 * Double Click the downloaded *.jar file or launch via command line (`java -jar *.jar`).
 * Start [Elevator Simulator](https://github.com/winterer/elevator/releases) and set up a new scenario.
