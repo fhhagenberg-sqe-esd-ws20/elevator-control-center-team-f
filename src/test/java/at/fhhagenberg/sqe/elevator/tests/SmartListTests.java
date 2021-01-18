@@ -39,6 +39,14 @@ class SmartListTests {
 
         assertTrue(l.equals(l3));
         assertFalse(l.equals(l2));
+    }
+    
+    @Test
+    void testHashCode() throws Exception {
+        SmartList<Boolean> l1 = new SmartList<Boolean>();
+        ArrayList<Boolean> l2 = new ArrayList<Boolean>();
+
+        assertEquals(l1.hashCode(), l2.hashCode());
 	}
 
     @Test
