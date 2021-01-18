@@ -33,19 +33,11 @@ public class ElevatorWrapperImpl implements IElevatorWrapper {
         {
             @Override
             public Socket createSocket(String host, int port) throws IOException {
-                Socket socket = new Socket();
-                try {
+                try(Socket socket = new Socket()){
                     socket.setSoTimeout(timeout);
                     socket.setSoLinger(false, 0);
                     socket.connect(new InetSocketAddress(host, port), timeout);
                     return socket;
-                }
-                catch(IOException e){
-                    socket.close();
-                    throw e;
-                }
-                finally{
-                    socket.close();
                 }
             }
 
